@@ -1,11 +1,13 @@
 // import  { useState } from 'react'
 import { Box, Center, Circle, Flex, Text } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 
-const DashboardHome = () => {
+const DataCreditStock = () => {
   return (
-    <div>
+    <>
       <Flex>
-        <Box w="300px" bg="#171717" h="1024px">
+        {/* #SIDEBAR DASHBOARD START  */}
+        <Box w={300} bg="#171717" h={1024}>
           <Center mt={"80px"} color="white">
             {" "}
             <img src="./Ellipse78.svg" alt="" />
@@ -20,19 +22,23 @@ const DashboardHome = () => {
           <Center color="white">
             <p>Admin</p>
           </Center>
-          <Circle
-            bg={"white"}
-            ml={"36px"}
-            mt={"80px"}
+          <Box
+            borderLeftRadius="7px"
+            bg="white"
+            ml="36px"
+            mt="80px"
             pl={3}
             py={2}
-            justifyContent={"start"}
           >
-            <img src="./dashboard-active.svg" alt="" />
-            <Text ml={2} color="#041561">
-              Dashboard
-            </Text>
-          </Circle>
+            <Flex alignItems="center" gap={2}>
+              <img src="./dashboard-active.svg" alt="" />
+              <Link to="/dashboardhome">
+                <Text ml={2} color="#041561">
+                  Dashboard
+                </Text>
+              </Link>
+            </Flex>
+          </Box>
           <Circle ml={"36px"} pl={3} py={2} justifyContent={"start"} mt={3}>
             <img src="./costumerdata.svg" alt="" />
             <Text ml={2} color="#95AEF0">
@@ -45,12 +51,21 @@ const DashboardHome = () => {
               Customer Transaction
             </Text>
           </Circle>
-          <Circle ml={"36px"} pl={3} py={2} justifyContent={"start"} mt={3}>
-            <img src="./creditdata.svg" alt="" />
-            <Text ml={2} color="#95AEF0">
-              Stock Credit/Data
-            </Text>
-          </Circle>
+          <Box
+            borderLeftRadius="7px"
+            bg="white"
+            ml="36px"
+            mt="20px"
+            pl={3}
+            py={2}
+          >
+            <Flex alignItems="center" gap={2}>
+              <img src="./creditdata.svg" alt="" color="black" />
+              <Text ml={2} color="#041561">
+                Stock Credit/Data
+              </Text>
+            </Flex>
+          </Box>
           <Circle ml={"36px"} pl={3} py={2} justifyContent={"start"} mt={3}>
             <img src="./cashout.svg" alt="" />
             <Text ml={2} color="#95AEF0">
@@ -58,6 +73,7 @@ const DashboardHome = () => {
             </Text>
           </Circle>
         </Box>
+        {/* #SIDEBAR DASHBOARD END  */}
 
         <Box mx={"114px"} my={"80px"}>
           <Text fontSize={32} as="b">
@@ -86,8 +102,8 @@ const DashboardHome = () => {
           </Center>
         </Box>
       </Flex>
-    </div>
+    </>
   );
 };
 
-export default DashboardHome;
+export default DataCreditStock;
