@@ -4,12 +4,10 @@ import {
   Button,
   ButtonGroup,
   Flex,
-  Heading,
   Image,
   Spacer,
   Stack,
 } from "@chakra-ui/react";
-import logo_1 from "../img/logoi-01 1.png";
 
 function Navbar() {
   return (
@@ -23,14 +21,23 @@ function Navbar() {
     >
       <Box p="2">
         <Stack direction={"row"}>
-          <Image src={logo_1} alt="Logo_1" />
-          <Heading size="md">TRAID Point</Heading>
+          <Image src="./Frame498.svg" alt="Logo" />
         </Stack>
       </Box>
       <Spacer />
       <ButtonGroup gap="2">
-        <Button colorScheme="teal">Get TRAID POINT App, Free!</Button>
-        <Button colorScheme="teal">Sign In</Button>
+        <Button colorScheme="facebook" fontSize={18} px={"36px"} py={"10px"}>
+          Get TRAID POINT App, Free!
+        </Button>
+        <Button
+          colorScheme="facebook"
+          variant="outline"
+          fontSize={20}
+          px={"25px"}
+          py={"10px"}
+        >
+          Sign In
+        </Button>
       </ButtonGroup>
     </Flex>
   );
