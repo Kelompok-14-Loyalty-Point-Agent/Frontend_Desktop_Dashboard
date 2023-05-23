@@ -25,7 +25,7 @@ function Form_ForgotPassword() {
           <Stack
             spacing={4}
             w={"full"}
-            maxW={"md"}
+            maxW={"lg"}
             bg={useColorModeValue("white", "gray.700")}
             rounded={"xl"}
             boxShadow={"dark-lg"}
@@ -33,17 +33,14 @@ function Form_ForgotPassword() {
             my={12}
           >
             <Heading lineHeight={1.1} fontSize={32} textAlign={"center"}>
-              Forgot your password?
+              Forgot Password
             </Heading>
             <br />
-            <Text
-              fontSize={16}
-              color={useColorModeValue("gray.800", "gray.400")}
-              textAlign={"center"}
-              px={1}
-            >
-              Please Enter Your Email Address to Receive a Verification Number
-            </Text>
+            <Center>
+              <Text fontSize={16} color="teal" textAlign={"center"} maxW={300}>
+                Please Enter Your Email Address to Receive a Verification Number
+              </Text>
+            </Center>
             <br />
             <br />
             <br />
