@@ -9,10 +9,17 @@ function App() {
     <>
       <Router>
         <Routes>
-          {/* <Route path="/" element={<LandingPage />} /> */}
+          <Route path="/" />
+          <Route path="/signin" />
           <Route path="/forgot" element={<ForgotPassword />} />
-          <Route path="/dashboardhome" element={<Sidebar />} />
-          <Route path="/stock" element={<DataCreditStock />} />
+          <Route path="/verify" />
+          <Route path="/newpassword" />
+          <Route path="/dashboard" element={<Sidebar />} />
+          <Route path="/profile" />
+          <Route path="/customers" />
+          <Route path="/transactions" />
+          <Route path="/stocks" element={<DataCreditStock />} />
+          <Route path="/cashout" />
         </Routes>
       </Router>
     </>
