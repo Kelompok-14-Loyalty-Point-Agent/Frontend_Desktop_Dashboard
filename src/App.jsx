@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ForgotPassword from "./pages/ForgotPassword";
 import Sidebar from "./pages/DashboardHome";
 import DataCreditStock from "./pages/DataCreditStock";
+import CreateNewPassword from "./pages/CreateNewPassword";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
           <Route path="/signin" />
           <Route path="/forgot" element={<ForgotPassword />} />
           <Route path="/verify" />
-          <Route path="/newpassword" />
+          <Route path="/newpassword" element={<CreateNewPassword />} />
           <Route path="/dashboard" element={<Sidebar />} />
           <Route path="/profile" />
           <Route path="/customers" />
