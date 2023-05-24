@@ -7,6 +7,7 @@ const Sidebar = () => {
       {/* #SIDEBAR DASHBOARD START  */}
       <Box w={330} bg="#171717" h={1024}>
         <Center mt={"80px"} color="white">
+          {" "}
           <img src="./Ellipse78.svg" alt="" />
         </Center>
         <Center mt={4} color="white">
