@@ -19,7 +19,12 @@ const LandingPage = () => {
           <Box mx="auto" shadow="2xl" borderRadius={6} py={10} px={16}>
             <Flex alignItems="center" flexDirection="column" gap={4}>
               <Image src="./illustrations/ewallet_illust_landing.svg" />
-              <Text fontSize={20} fontWeight={700} textAlign="center">
+              <Text
+                fontSize={20}
+                fontWeight={700}
+                textAlign="center"
+                fontFamily="heading"
+              >
                 Get point for your payment
               </Text>
               <Text fontSize={14} fontWeight={400} textAlign="center">
@@ -33,7 +38,12 @@ const LandingPage = () => {
           <Box mx="auto" shadow="2xl" borderRadius={6} py={7} px={16}>
             <Flex alignItems="center" flexDirection="column" gap={4}>
               <Image src="./illustrations/add_to_cart_illust_landing.svg" />
-              <Text fontSize={20} fontWeight={700} textAlign="center">
+              <Text
+                fontSize={20}
+                fontWeight={700}
+                textAlign="center"
+                fontFamily="heading"
+              >
                 The easy way to make a purchase
               </Text>
               <Text fontSize={14} fontWeight={400} textAlign="center" px={6}>
@@ -47,7 +57,12 @@ const LandingPage = () => {
           <Box mx="auto" shadow="2xl" borderRadius={6} py={7} px={16}>
             <Flex alignItems="center" flexDirection="column" gap={4}>
               <Image src="./illustrations/finance_leader_illust_landing.svg" />
-              <Text fontSize={20} textAlign="center" fontWeight={700}>
+              <Text
+                fontSize={20}
+                textAlign="center"
+                fontWeight={700}
+                fontFamily="heading"
+              >
                 Reedem for voucher
               </Text>
               <Text fontSize={14} fontWeight={400} textAlign="center" px={6}>
@@ -60,7 +75,13 @@ const LandingPage = () => {
       </Grid>
       <Flex flexDirection="column" alignItems="center" mt={24} mb={100}>
         <Box width={912}>
-          <Text textAlign="center" fontSize={48} fontWeight={700} mb={10}>
+          <Text
+            textAlign="center"
+            fontSize={48}
+            fontWeight={700}
+            mb={10}
+            fontFamily="heading"
+          >
             GET POINT FOR YOUR PAYMENT WITH TRADE POINT
           </Text>
           <Text textAlign="center" fontSize={20} fontWeight={400}>

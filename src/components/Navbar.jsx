@@ -35,6 +35,7 @@ function Navbar() {
           fontSize={20}
           px={"25px"}
           py={"10px"}
+          fontFamily="heading"
         >
           Sign In
         </Button>

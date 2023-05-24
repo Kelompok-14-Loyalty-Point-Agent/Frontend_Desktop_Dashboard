@@ -1,5 +1,5 @@
 // import  { useState } from 'react'
-import { Box, Center, Circle, Flex, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
 const DataCreditStock = () => {
@@ -15,63 +15,66 @@ const DataCreditStock = () => {
           <Center mt={4} color="white">
             <Text fontSize={"32px"}>Andrew</Text>
           </Center>
-          <Center mt={4} color="white">
+          <Center mt={4} color="purple.200" fontSize={20} fontWeight={700}>
             <p>Welcome back!</p>
+          </Center>
+          <Center color="purple.100" fontSize={16}>
             <p>Admin</p>
           </Center>
-          <Center color="white">
-            <p>Admin</p>
-          </Center>
-          <Box
-            borderLeftRadius="7px"
-            bg="white"
-            ml="36px"
-            mt="80px"
-            pl={3}
-            py={2}
-          >
-            <Flex alignItems="center" gap={2}>
-              <img src="./dashboard-active.svg" alt="" />
-              <Link to="/dashboardhome">
-                <Text ml={2} color="#041561">
-                  Dashboard
-                </Text>
-              </Link>
-            </Flex>
-          </Box>
-          <Circle ml={"36px"} pl={3} py={2} justifyContent={"start"} mt={3}>
-            <img src="./costumerdata.svg" alt="" />
-            <Text ml={2} color="#95AEF0">
-              Customer Data
-            </Text>
-          </Circle>
-          <Circle ml={"36px"} pl={3} py={2} justifyContent={"start"} mt={3}>
-            <img src="./transaction.svg" alt="" />
-            <Text ml={2} color="#95AEF0">
-              Customer Transaction
-            </Text>
-          </Circle>
-          <Box
-            borderLeftRadius="7px"
-            bg="white"
-            ml="36px"
-            mt="20px"
-            pl={3}
-            py={2}
-          >
-            <Flex alignItems="center" gap={2}>
-              <img src="./creditdata.svg" alt="" color="black" />
-              <Text ml={2} color="#041561">
-                Stock Credit/Data
-              </Text>
-            </Flex>
-          </Box>
-          <Circle ml={"36px"} pl={3} py={2} justifyContent={"start"} mt={3}>
-            <img src="./cashout.svg" alt="" />
-            <Text ml={2} color="#95AEF0">
-              Stock Cash Out
-            </Text>
-          </Circle>
+          <Flex flexDirection="column" mt={20} gap={5}>
+            <Box borderLeftRadius="7px" bg="white" ml="36px" pl={3} py={2}>
+              <Flex alignItems="center" gap={2}>
+                <img src="./dashboard-active.svg" alt="" />
+                <Link to="/dashboardhome">
+                  <Text ml={2} color="#041561">
+                    Dashboard
+                  </Text>
+                </Link>
+              </Flex>
+            </Box>
+            <Box borderLeftRadius="7px" bg="white" ml="36px" pl={3} py={2}>
+              <Flex alignItems="center" gap={2}>
+                <img
+                  src="./icons/black/people.svg"
+                  alt="people.svg"
+                  width={26}
+                />
+                <Link to="/dashboardhome">
+                  <Text ml={2} fontWeight={700} color="purple.700">
+                    Customer Data
+                  </Text>
+                </Link>
+              </Flex>
+            </Box>
+            <Box borderLeftRadius="7px" bg="white" ml="36px" pl={3} py={2}>
+              <Flex alignItems="center" gap={2}>
+                <img
+                  src="./icons/black/receiptitem.svg"
+                  alt="people.svg"
+                  width={26}
+                />
+                <Link to="/dashboardhome">
+                  <Text ml={2} fontWeight={700} color="purple.700">
+                    Customer Transaction
+                  </Text>
+                </Link>
+              </Flex>
+            </Box>
+            <Box borderLeftRadius="7px" bg="white" ml="36px" pl={3} py={2}>
+              <Flex alignItems="center" gap={2}>
+                <img
+                  src="./icons/black/emptywallet.svg"
+                  alt="people.svg"
+                  width={26}
+                />
+                <Link to="/dashboardhome">
+                  <Text ml={2} fontWeight={700} color="purple.700">
+                    Stock Credit / Data
+                  </Text>
+                </Link>
+              </Flex>
+            </Box>
+          </Flex>
         </Box>
         {/* #SIDEBAR DASHBOARD END  */}
 
