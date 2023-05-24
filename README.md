@@ -8,8 +8,6 @@
 
 ## If you wanted to create new feature
 
-#
-
 1. On your local, run / change current branch to `development` with `git checkout development`
 2. After that run this command `git pull origin development`
 3. Then `yarn install` or `yarn`
@@ -17,8 +15,6 @@
 5. After done working on feature, push to branch and create pull request to merge feature to development
 
 ## Branch and Commit Message Rule
-
-#
 
 1. For creating new feature branch, write `feature/<current-working-feature>`
 2. For commit message, visit [this link](https://gist.github.com/joshbuchea/6f47e86d2510bce28f8e7f42ae84c716)
