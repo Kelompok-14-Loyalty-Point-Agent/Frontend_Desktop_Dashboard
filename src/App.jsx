@@ -5,6 +5,7 @@ import Sidebar from "./pages/DashboardHome";
 import DataCreditStock from "./pages/DataCreditStock";
 import CreateNewPassword from "./pages/CreateNewPassword";
 import LandingPage from "./pages/LandingPage";
+import VerifyEmail from "./pages/VerifyEmail";
 
 function App() {
   return (
@@ -14,7 +15,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/signin" />
           <Route path="/forgot" element={<ForgotPassword />} />
-          <Route path="/verify" />
+          <Route path="/verify" element={<VerifyEmail/>} />
           <Route path="/newpassword" element={<CreateNewPassword />} />
           <Route path="/dashboard" element={<Sidebar />} />
           <Route path="/profile" />
