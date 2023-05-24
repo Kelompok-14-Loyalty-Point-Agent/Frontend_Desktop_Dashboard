@@ -7,6 +7,7 @@ import CreateNewPassword from './pages/CreateNewPassword';
 import LandingPage from './pages/LandingPage';
 import VerifyEmail from './pages/VerifyEmail';
 import SignIn from './pages/SignIn';
+import CustomerData from "./pages/CustomerData";
 
 function App() {
 	return (
@@ -20,7 +21,7 @@ function App() {
 					<Route path='/newpassword' element={<CreateNewPassword />} />
 					<Route path='/dashboard' element={<Sidebar />} />
 					<Route path='/profile' />
-					<Route path='/customers' />
+					<Route path="/customers" element={<CustomerData />} />
 					<Route path='/transactions' />
 					<Route path='/stocks' element={<DataCreditStock />} />
 					<Route path='/cashout' />
