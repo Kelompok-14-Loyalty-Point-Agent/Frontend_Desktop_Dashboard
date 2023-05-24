@@ -4,13 +4,14 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Sidebar from "./pages/DashboardHome";
 import DataCreditStock from "./pages/DataCreditStock";
 import CreateNewPassword from "./pages/CreateNewPassword";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/" />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/signin" />
           <Route path="/forgot" element={<ForgotPassword />} />
           <Route path="/verify" />
