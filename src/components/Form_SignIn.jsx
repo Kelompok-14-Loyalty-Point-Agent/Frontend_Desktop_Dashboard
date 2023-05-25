@@ -1,5 +1,6 @@
 // import React from 'react';
-import { ViewIcon } from '@chakra-ui/icons';
+import { useState } from 'react';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
 	Box,
 	Button,
@@ -16,6 +17,8 @@ import {
 } from '@chakra-ui/react';
 
 const Form_SignIn = () => {
+	const [showPassword, setShowPassword] = useState(false);
+
 	return (
 		<Box
 			border='1px'
@@ -41,27 +44,33 @@ const Form_SignIn = () => {
 			<Box>
 				<form>
 					<FormControl id='email'>
-						<FormLabel fontWeight={700}>Email Address</FormLabel>
-						<Input placeholder='Enter your email' fontSize={14} type='email' />
+						<FormLabel fontWeight={700} fontSize={20}>
+							Email Address
+						</FormLabel>
+						<Input placeholder='Enter your email' type='email' />
 					</FormControl>
 					<FormControl id='password' mt={3}>
-						<FormLabel fontWeight={700}>Password</FormLabel>
+						<FormLabel fontWeight={700} fontSize={20}>
+							Password
+						</FormLabel>
 						<InputGroup>
 							<Input
 								placeholder='Please Enter Your Password'
-								fontSize={14}
-								type='password'
+								type={showPassword ? 'text' : 'password'}
 							/>
 							<InputRightElement>
-								<ViewIcon />
+								<Button
+									variant={'ghost'}
+									onClick={() =>
+										setShowPassword((showPassword) => !showPassword)
+									}>
+									{showPassword ? <ViewIcon /> : <ViewOffIcon />}
+								</Button>
 							</InputRightElement>
 						</InputGroup>
 					</FormControl>
 					<Stack isInline justifyContent='end' mt={8}>
-						<Link
-							fontSize={14}
-							fontWeight={400}
-							color={useColorModeValue('red.600')}>
+						<Link fontWeight={400} color={useColorModeValue('red.600')}>
 							Forgot Password?
 						</Link>
 					</Stack>
