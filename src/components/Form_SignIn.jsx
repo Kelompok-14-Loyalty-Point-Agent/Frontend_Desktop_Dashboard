@@ -54,7 +54,10 @@ const Form_SignIn = () => {
 							Password
 						</FormLabel>
 						<InputGroup>
-							<Input placeholder='Please Enter Your Password' type='password' />
+							<Input
+								placeholder='Please Enter Your Password'
+								type={showPassword ? 'text' : 'password'}
+							/>
 							<InputRightElement>
 								<Button
 									variant={'ghost'}
