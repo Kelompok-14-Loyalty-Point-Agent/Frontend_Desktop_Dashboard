@@ -4,9 +4,9 @@ import { Box, Center, Text } from "@chakra-ui/react";
 
 function Sidebar_Profile() {
   return (
-    <Box w={420} bg="#171717" h={1024}>
-      <Center mt={"80px"} color="purple.200">
-        <Text fontSize={32} fontFamily="heading" fontWeight={700}>
+    <Box w={330} bg="#171717" h="full">
+      <Center mt={"80px"} color="#95AEF0">
+        <Text fontFamily="heading" fontWeight={700} fontSize={32}>
           Hello, Admin
         </Text>
       </Center>
@@ -19,7 +19,7 @@ function Sidebar_Profile() {
           style={{ marginTop: "140px" }}
         />
       </Center>
-      <Center mt={3} color="white" fontSize={16} fontWeight={400}>
+      <Center mt={3} color="white" fontWeight={400} fontSize={16}>
         <p>Change Photo Profile</p>
       </Center>
     </Box>

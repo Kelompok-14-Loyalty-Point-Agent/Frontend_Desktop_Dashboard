@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Flex,
   Img,
   Tab,
@@ -17,153 +16,24 @@ import {
   Th,
   Thead,
   Tr,
-  Center,
+  // Center,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import Sidebar from "../components/Sidebar";
+import NavbarDashboard from "../components/NavbarDashboard";
 
 const DataCreditStock = () => {
   return (
     <Flex height="100vh">
       {/* #SIDEBAR DASHBOARD START  */}
-      <Box w={420} bg="#171717" h={1024}>
-        <Center mt={"80px"} color="white">
-          {" "}
-          <img src="./Ellipse78.svg" alt="" />
-        </Center>
-        <Center mt={4} color="white">
-          <Text fontSize={32} fontFamily="heading" fontWeight={600}>
-            Andrew
-          </Text>
-        </Center>
-        <Center
-          mt={4}
-          color="purple.200"
-          fontSize={20}
-          fontFamily="heading"
-          fontWeight={700}
-        >
-          <p>Welcome back!</p>
-        </Center>
-        <Center color="purple.100" fontSize={16}>
-          <p>Admin</p>
-        </Center>
-        <Flex flexDirection="column" mt={20} gap={5}>
-          <Box borderLeftRadius="7px" ml="36px" pl={3} py={2}>
-            <Flex alignItems="center" gap={2}>
-              <img src="./icons/white/dashboard-active.svg" alt="" />
-              <Link to="/dashboard">
-                <Text
-                  ml={2}
-                  color="purple.200"
-                  fontFamily="heading"
-                  fontWeight={700}
-                  fontSize={20}
-                >
-                  Dashboard
-                </Text>
-              </Link>
-            </Flex>
-          </Box>
-          <Box borderLeftRadius="7px" ml="36px" pl={3} py={2}>
-            <Flex alignItems="center" gap={2}>
-              <img src="./icons/white/people.svg" alt="people.svg" width={26} />
-              <Link to="/customers">
-                <Text
-                  ml={2}
-                  fontWeight={700}
-                  color="purple.200"
-                  fontFamily="heading"
-                  fontSize={20}
-                >
-                  Customer Data
-                </Text>
-              </Link>
-            </Flex>
-          </Box>
-          <Box borderLeftRadius="7px" ml="36px" pl={3} py={2}>
-            <Flex alignItems="center" gap={2}>
-              <img
-                src="./icons/white/receiptitem.svg"
-                alt="people.svg"
-                width={26}
-              />
-              <Link to="/transactions">
-                <Text
-                  ml={2}
-                  fontWeight={700}
-                  color="purple.200"
-                  fontFamily="heading"
-                  fontSize={20}
-                >
-                  Customer Transaction
-                </Text>
-              </Link>
-            </Flex>
-          </Box>
-          <Box borderLeftRadius="7px" ml="36px" pl={3} py={2} bg="white">
-            <Flex alignItems="center" gap={2}>
-              <img src="./icons/black/moneys.svg" alt="people.svg" width={26} />
-              <Link to="/stocks">
-                <Text
-                  ml={2}
-                  fontWeight={700}
-                  color="black"
-                  fontFamily="heading"
-                  fontSize={20}
-                >
-                  Stock Credit / Data
-                </Text>
-              </Link>
-            </Flex>
-          </Box>
-          <Box borderLeftRadius="7px" ml="36px" pl={3} py={2}>
-            <Flex alignItems="center" gap={2}>
-              <img
-                src="./icons/white/emptywallet.svg"
-                alt="people.svg"
-                width={26}
-              />
-              <Link to="/dashboardhome">
-                <Text
-                  ml={2}
-                  fontWeight={700}
-                  color="purple.200"
-                  fontFamily="heading"
-                  fontSize={20}
-                >
-                  Stock Cashout
-                </Text>
-              </Link>
-            </Flex>
-          </Box>
-        </Flex>
-      </Box>
+      <Sidebar />
       {/* #SIDEBAR DASHBOARD END  */}
-      <Box px={10} pt={10} flex={"1"}>
-        <Flex gap={5} justifyContent="end" mb={4}>
-          <Button
-            variant="outline"
-            colorScheme="blue.700"
-            color="blue.700"
-            fontFamily="heading"
-            width={133}
-          >
-            Profile
-          </Button>
-          <Button
-            variant="outline"
-            colorScheme="red.700"
-            color="red.700"
-            fontFamily="heading"
-            px={25}
-          >
-            Sign Out
-          </Button>
-        </Flex>
-        <Text fontSize={32} fontFamily="heading" fontWeight={700} ml={10}>
-          Stock Pulsa / Data
-        </Text>
-        <Box ml={10} mt={7}>
+      <Box px={10} flex={"1"}>
+        <NavbarDashboard />
+        <Box mx={14} mt={7}>
+          <Text fontSize={32} fontFamily="heading" fontWeight={700} mb={10}>
+            Stock Pulsa / Data
+          </Text>
           <Tabs variant="unstyled">
             <TabList>
               <Tab fontWeight={700} fontFamily="heading">
