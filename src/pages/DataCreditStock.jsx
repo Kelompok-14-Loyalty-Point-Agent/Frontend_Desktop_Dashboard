@@ -139,7 +139,7 @@ const DataCreditStock = () => {
         </Flex>
       </Box>
       {/* #SIDEBAR DASHBOARD END  */}
-      <Box px={10} pt={10} width="full">
+      <Box px={10} pt={10} flex={"1"}>
         <Flex gap={5} justifyContent="end" mb={4}>
           <Button
             variant="outline"
