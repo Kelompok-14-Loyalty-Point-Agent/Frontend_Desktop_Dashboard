@@ -32,12 +32,24 @@ function Form_ForgotPassword() {
             p={8}
             my={12}
           >
-            <Heading lineHeight={1.1} fontSize={32} textAlign={"center"}>
+            <Heading
+              lineHeight={1.1}
+              fontFamily="heading"
+              fontWeight={700}
+              fontSize={32}
+              textAlign={"center"}
+            >
               Forgot Password
             </Heading>
             <br />
             <Center>
-              <Text fontSize={16} color="teal" textAlign={"center"} maxW={300}>
+              <Text
+                fontWeight={400}
+                fontSize={16}
+                color="#008284"
+                textAlign={"center"}
+                maxW={250}
+              >
                 Please Enter Your Email Address to Receive a Verification Number
               </Text>
             </Center>
@@ -45,8 +57,13 @@ function Form_ForgotPassword() {
             <br />
             <br />
             <FormControl id="email">
-              <FormLabel>Email Address</FormLabel>
+              <FormLabel fontFamily="heading" fontWeight={700} fontSize={20}>
+                Email Address
+              </FormLabel>
               <Input
+                height="50px"
+                fontWeight={400}
+                fontSize={16}
                 placeholder="Enter your email"
                 _placeholder={{ color: "gray.500" }}
                 type="email"
@@ -57,7 +74,18 @@ function Form_ForgotPassword() {
             <br />
             <br />
             <Stack spacing={6}>
-              <Button colorScheme="facebook">Send</Button>
+              <Button
+                bg="#030F51"
+                color="white"
+                _hover={{
+                  background: "#385898",
+                }}
+                fontFamily="heading"
+                fontWeight={700}
+                fontSize={20}
+              >
+                Send
+              </Button>
             </Stack>
             <br />
             <br />

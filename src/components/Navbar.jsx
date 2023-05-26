@@ -26,16 +26,27 @@ function Navbar() {
       </Box>
       <Spacer />
       <ButtonGroup gap="2">
-        <Button colorScheme="facebook" fontSize={18} px={"36px"} py={"10px"}>
+        <Button
+          bg="#030F51"
+          color="white"
+          _hover={{
+            background: "#385898",
+          }}
+          fontWeight={700}
+          fontSize={18}
+          px={"36px"}
+          py={"10px"}
+        >
           Get TRAID POINT App, Free!
         </Button>
         <Button
           colorScheme="facebook"
           variant="outline"
+          fontFamily="heading"
+          fontWeight={700}
           fontSize={20}
           px={"25px"}
           py={"10px"}
-          fontFamily="heading"
         >
           Sign In
         </Button>
