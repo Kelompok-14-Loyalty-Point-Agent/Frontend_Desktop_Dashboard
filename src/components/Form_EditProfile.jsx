@@ -19,7 +19,7 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
@@ -49,7 +49,7 @@ function Form_EditProfile() {
           fontSize={20}
           px={25}
         >
-          Home
+          <Link to="/dashboard">Home</Link>
         </Button>
       </Flex>
       <Box mx={14} mt={7}>
