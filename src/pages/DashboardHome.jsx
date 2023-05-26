@@ -29,7 +29,7 @@ const DashboardHome = () => {
                 </Text>
                 <Text>Transation Made</Text>
                 <Text
-                  fontSize={26}
+                  fontSize={32}
                   as="b"
                   color={"#2DB5AB"}
                   fontFamily={"heading"}
