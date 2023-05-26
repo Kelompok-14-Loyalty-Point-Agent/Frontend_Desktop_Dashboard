@@ -27,10 +27,8 @@ const DataCreditStock = () => {
   const navigate = useNavigate();
   return (
     <Flex height="100vh">
-      {/* #SIDEBAR DASHBOARD START  */}
       <Sidebar />
-      {/* #SIDEBAR DASHBOARD END  */}
-      <Box px={10} pt={10} flex={"1"}>
+      <Box px={10} flex={"1"}>
         <NavbarDashboard />
         <Box mx={14} mt={7}>
           <Text fontSize={32} fontFamily="heading" fontWeight={700} mb={10}>
@@ -269,7 +267,26 @@ const DataCreditStock = () => {
               </TabPanel>
             </TabPanels>
           </Tabs>
-          <Button onClick={() => navigate("/stocks/add")}>Add Stock</Button>
+          <Button
+            onClick={() => navigate("/stocks/add")}
+            mt={10}
+            fontFamily="heading"
+            fontSize={24}
+            colorScheme="teal"
+            height="max"
+            pl={10}
+            pr={12}
+            gap={3}
+            py={4}
+            borderRadius="xl"
+          >
+            <img
+              src="./icons/white/addcircle.svg"
+              alt="addcircle.svg"
+              width={32}
+            />{" "}
+            Add Stock
+          </Button>
         </Box>
       </Box>
       {/* #CONTENT DATA CREDIT AND STOCK END  */}
