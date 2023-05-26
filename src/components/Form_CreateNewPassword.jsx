@@ -38,12 +38,24 @@ function Form_ForgotPassword() {
             p={8}
             my={12}
           >
-            <Heading lineHeight={1.1} fontSize={32} textAlign={"center"}>
+            <Heading
+              lineHeight={1.1}
+              fontFamily="heading"
+              fontWeight={700}
+              fontSize={32}
+              textAlign={"center"}
+            >
               Create New Password
             </Heading>
             <br />
             <Center>
-              <Text fontSize={16} color="teal" textAlign={"center"} maxW={320}>
+              <Text
+                fontWeight={400}
+                fontSize={16}
+                color="#008284"
+                textAlign={"center"}
+                maxW={320}
+              >
                 Your New Password Must Be Different from Previously Used
                 Password
               </Text>
@@ -51,9 +63,14 @@ function Form_ForgotPassword() {
             <br />
             <br />
             <FormControl id="password" isRequired>
-              <FormLabel>Password</FormLabel>
+              <FormLabel fontFamily="heading" fontWeight={700} fontSize={20}>
+                Password
+              </FormLabel>
               <InputGroup>
                 <Input
+                  height="50px"
+                  fontWeight={400}
+                  fontSize={16}
                   placeholder="Please Enter Your Password"
                   _placeholder={{ color: "gray.500" }}
                   type={showPassword ? "text" : "password"}
@@ -71,9 +88,14 @@ function Form_ForgotPassword() {
               </InputGroup>
             </FormControl>
             <FormControl id="password" isRequired>
-              <FormLabel>Confirm Password</FormLabel>
+              <FormLabel fontFamily="heading" fontWeight={700} fontSize={20}>
+                Confirm Password
+              </FormLabel>
               <InputGroup>
                 <Input
+                  height="50px"
+                  fontWeight={400}
+                  fontSize={16}
                   placeholder="Confirm Your Password"
                   _placeholder={{ color: "gray.500" }}
                   type={showPassword ? "text" : "password"}
@@ -94,7 +116,18 @@ function Form_ForgotPassword() {
             <br />
             <br />
             <Stack spacing={6}>
-              <Button colorScheme="facebook">Save</Button>
+              <Button
+                bg="#030F51"
+                color="white"
+                _hover={{
+                  background: "#385898",
+                }}
+                fontFamily="heading"
+                fontWeight={700}
+                fontSize={20}
+              >
+                Save
+              </Button>
             </Stack>
             <br />
             <br />
