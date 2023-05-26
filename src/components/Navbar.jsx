@@ -1,4 +1,3 @@
-// import React from "react";
 import {
   Box,
   Button,
@@ -8,6 +7,8 @@ import {
   Spacer,
   Stack,
 } from "@chakra-ui/react";
+
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
@@ -21,7 +22,9 @@ function Navbar() {
     >
       <Box p="2">
         <Stack direction={"row"}>
-          <Image src="./Frame498.svg" alt="Logo" />
+          <Link to="/">
+            <Image src="./Frame498.svg" alt="Logo" />
+          </Link>
         </Stack>
       </Box>
       <Spacer />
