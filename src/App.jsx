@@ -11,6 +11,7 @@ import CustomerData from "./pages/CustomerData";
 import DashboardProfile from "./pages/DashboardProfile";
 import CashOutStock from "./pages/CashOutStock";
 
+
 function App() {
   return (
     <>
@@ -26,7 +27,7 @@ function App() {
           <Route path="/customers" element={<CustomerData />} />
           <Route path="/transactions" />
           <Route path="/stocks" element={<DataCreditStock />} />
-          <Route path="/cashout" element={<CashOutStock />}/>
+          <Route path="/cashout" element={<CashOutStock />} />
         </Routes>
       </Router>
     </>
