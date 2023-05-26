@@ -7,7 +7,7 @@ import Form_EditProfile from "../components/Form_EditProfile";
 function DashboardProfile() {
   return (
     <Flex height="100vh">
-      <Sidebar_Profile />;
+      <Sidebar_Profile />
       <Form_EditProfile />
     </Flex>
   );
