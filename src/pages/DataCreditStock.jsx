@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Flex,
   Img,
   Tab,
@@ -18,11 +19,12 @@ import {
   Tr,
   // Center,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import NavbarDashboard from "../components/NavbarDashboard";
 
 const DataCreditStock = () => {
+  const navigate = useNavigate();
   return (
     <Flex height="100vh">
       {/* #SIDEBAR DASHBOARD START  */}
@@ -267,6 +269,7 @@ const DataCreditStock = () => {
               </TabPanel>
             </TabPanels>
           </Tabs>
+          <Button onClick={() => navigate("/stocks/add")}>Add Stock</Button>
         </Box>
       </Box>
     </Flex>
