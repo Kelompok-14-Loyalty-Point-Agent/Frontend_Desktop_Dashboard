@@ -44,7 +44,7 @@ function Sidebar() {
           >
             <Flex alignItems="center" gap={2}>
               <img
-                src={`./icons/${
+                src={`../icons/${
                   currentPage === "/dashboard" ? "black" : "white"
                 }/dashboard-active.svg`}
                 alt=""
@@ -71,7 +71,7 @@ function Sidebar() {
           >
             <Flex alignItems="center" gap={2}>
               <img
-                src={`./icons/${
+                src={`../icons/${
                   currentPage === "/customers" ? "black" : "white"
                 }/people.svg`}
                 alt="people.svg"
@@ -99,7 +99,7 @@ function Sidebar() {
           >
             <Flex alignItems="center" gap={2}>
               <img
-                src={`./icons/${
+                src={`../icons/${
                   currentPage === "/transactions" ? "black" : "white"
                 }/receiptitem.svg`}
                 alt="receiptitem.svg"
@@ -125,12 +125,18 @@ function Sidebar() {
             ml="36px"
             pl={3}
             py={2}
-            bg={currentPage === "/stocks" ? "white" : null}
+            bg={
+              currentPage === "/stocks" || currentPage === "/stocks/add"
+                ? "white"
+                : null
+            }
           >
             <Flex alignItems="center" gap={2}>
               <img
-                src={`./icons/${
-                  currentPage === "/stocks" ? "black" : "white"
+                src={`../icons/${
+                  currentPage === "/stocks" || currentPage === "/stocks/add"
+                    ? "black"
+                    : "white"
                 }/moneys.svg`}
                 alt="people.svg"
                 width={26}
@@ -139,7 +145,11 @@ function Sidebar() {
                 <Text
                   ml={2}
                   fontWeight={700}
-                  color={currentPage === "/stocks" ? "black" : "purple.200"}
+                  color={
+                    currentPage === "/stocks" || currentPage === "/stocks/add"
+                      ? "black"
+                      : "purple.200"
+                  }
                   fontFamily="heading"
                   fontSize={20}
                 >
@@ -157,7 +167,7 @@ function Sidebar() {
           >
             <Flex alignItems="center" gap={2}>
               <img
-                src={`./icons/${
+                src={`../icons/${
                   currentPage === "/cashout" ? "black" : "white"
                 }/emptywallet.svg`}
                 alt="people.svg"
