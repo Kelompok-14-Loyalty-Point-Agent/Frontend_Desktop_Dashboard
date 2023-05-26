@@ -7,10 +7,13 @@ import {
   Spacer,
   Stack,
 } from "@chakra-ui/react";
+import { Link, useNavigate } from "react-router-dom";
 
 import { Link } from "react-router-dom";
 
 function Navbar() {
+  const navigate = useNavigate();
+  const handleClickSignIn = () => navigate("/signin");
   return (
     <Flex
       minWidth="max-content"
@@ -50,6 +53,7 @@ function Navbar() {
           fontSize={20}
           px={"25px"}
           py={"10px"}
+          onClick={handleClickSignIn}
         >
           Sign In
         </Button>
