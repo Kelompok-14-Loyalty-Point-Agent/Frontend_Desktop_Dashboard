@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Flex,
   Img,
   Tab,
@@ -21,6 +20,7 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import NavbarDashboard from "../components/NavbarDashboard";
 
 const DataCreditStock = () => {
   return (
@@ -28,27 +28,9 @@ const DataCreditStock = () => {
       {/* #SIDEBAR DASHBOARD START  */}
       <Sidebar />
       {/* #SIDEBAR DASHBOARD END  */}
-      <Box px={10} pt={10} flex={"1"}>
-        <Flex gap={5} justifyContent="end" mb={4}>
-          <Button
-            variant="outline"
-            colorScheme="blue.700"
-            color="blue.700"
-            fontFamily="heading"
-            width={133}
-          >
-            Profile
-          </Button>
-          <Button
-            variant="outline"
-            colorScheme="red.700"
-            color="red.700"
-            fontFamily="heading"
-            px={25}
-          >
-            Sign Out
-          </Button>
-        </Flex>
+      {/* #SIDEBAR DATA CREDIT AND STOCK START  */}
+      <Box px={10} flex={"1"}>
+        <NavbarDashboard />
         <Box mx={14} mt={7}>
           <Text fontSize={32} fontFamily="heading" fontWeight={700} mb={10}>
             Stock Pulsa / Data
@@ -288,6 +270,7 @@ const DataCreditStock = () => {
           </Tabs>
         </Box>
       </Box>
+      {/* #CONTENT DATA CREDIT AND STOCK END  */}
     </Flex>
   );
 };
