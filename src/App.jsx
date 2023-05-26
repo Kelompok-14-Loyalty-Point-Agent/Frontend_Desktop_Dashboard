@@ -9,7 +9,8 @@ import VerifyEmail from "./pages/VerifyEmail";
 import SignIn from "./pages/SignIn";
 import CustomerData from "./pages/CustomerData";
 import DashboardProfile from "./pages/DashboardProfile";
-import CashOut from "./pages/CashOut";
+import CashOutStock from "./pages/CashOutStock";
+
 
 function App() {
   return (
@@ -26,7 +27,7 @@ function App() {
           <Route path="/customers" element={<CustomerData />} />
           <Route path="/transactions" />
           <Route path="/stocks" element={<DataCreditStock />} />
-          <Route path="/cashout" element={<CashOut />} />
+          <Route path="/cashout" element={<CashOutStock />} />
         </Routes>
       </Router>
     </>
