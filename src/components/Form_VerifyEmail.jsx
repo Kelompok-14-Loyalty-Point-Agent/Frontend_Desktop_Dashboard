@@ -1,4 +1,3 @@
-// import React from 'react'
 import {
   Button,
   Center,
@@ -67,12 +66,12 @@ const Form_VerifyEmail = () => {
               <br />
               <br />
               <Center>
-                <HStack>
+                <HStack gap={2}>
                   <PinInput placeholder="">
-                    <PinInputField w="56px" h="65px" borderColor="#323643" />
-                    <PinInputField w="56px" h="65px" borderColor="#323643" />
-                    <PinInputField w="56px" h="65px" borderColor="#323643" />
-                    <PinInputField w="56px" h="65px" borderColor="#323643" />
+                    <PinInputField w="58px" h="65px" borderColor="#323643" />
+                    <PinInputField w="58px" h="65px" borderColor="#323643" />
+                    <PinInputField w="58px" h="65px" borderColor="#323643" />
+                    <PinInputField w="58px" h="65px" borderColor="#323643" />
                   </PinInput>
                 </HStack>
               </Center>
