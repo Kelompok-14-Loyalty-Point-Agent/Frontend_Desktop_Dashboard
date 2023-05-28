@@ -1,6 +1,7 @@
 // import  { useState } from 'react'
-import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Text } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
+import NavbarDashboard from "../components/NavbarDashboard";
 
 const DashboardHome = () => {
   return (
@@ -239,27 +240,8 @@ const DashboardHome = () => {
         </Box>
         {/* END COSTUMER LEADERBOARD */}
         {/* TOTAL USER & STATUS STOCK */}
-        <Box flex={"1"}>
-          <Flex gap={5} justifyContent="end" mb={4} px={10} pt={10}>
-            <Button
-              variant="outline"
-              colorScheme="blue.700"
-              color="blue.700"
-              fontFamily="heading"
-              width={133}
-            >
-              Profile
-            </Button>
-            <Button
-              variant="outline"
-              colorScheme="red.700"
-              color="red.700"
-              fontFamily="heading"
-              px={25}
-            >
-              Sign Out
-            </Button>
-          </Flex>
+        <Box flex={"1"} px={10}>
+          <NavbarDashboard />
           <Flex justifyContent={"center"} pt={10}>
             <Flex flexDirection={"column"}>
               <Text fontSize={24} as={"b"} fontFamily={"heading"}>
@@ -310,7 +292,7 @@ const DashboardHome = () => {
               >
                 <Box>
                   <Center>
-                    <img src="./public/icons/dashboard/succes.svg" alt="" />
+                    <img src="./icons/dashboard/succes.svg" alt="" />
                   </Center>
 
                   <Text fontSize={24} color={"#6AB044"}>
