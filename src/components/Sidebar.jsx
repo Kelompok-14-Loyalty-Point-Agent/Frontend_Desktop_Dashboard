@@ -12,7 +12,7 @@ function Sidebar() {
 
   return (
     <Flex>
-      <Box w={330} bg="#171717" h="full">
+      <Box w={330} bg="#171717" h="100%">
         <Center mt={"80px"} color="white">
           {" "}
           <img src="./Ellipse78.svg" alt="" />
