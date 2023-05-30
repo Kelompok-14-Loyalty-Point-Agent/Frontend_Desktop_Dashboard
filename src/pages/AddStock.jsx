@@ -14,10 +14,10 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
-import NavbarDashboard from "../components/NavbarDashboard";
 
 function AddStock() {
   const [selectedImage, setSelectedImage] = useState(null);
+
   const onDrop = useCallback((acceptedFiles) => {
     const previewImg = acceptedFiles[0];
     setSelectedImage(URL.createObjectURL(previewImg));
@@ -43,10 +43,10 @@ function AddStock() {
     <Flex height="100%">
       <Sidebar />
       <Box mx={14} flex={"1"}>
-        <NavbarDashboard />
-        <Heading mb={16} mx={10}>
-          Add Stock
-        </Heading>
+        <Box my={16} mx={10}>
+          <Heading>Add Stock</Heading>
+          <Text fontFamily="heading">Credit / Data</Text>
+        </Box>
         <SimpleGrid
           boxShadow="dark-lg"
           mx={10}
@@ -54,16 +54,17 @@ function AddStock() {
           px={24}
           pt={16}
           pb={24}
-          borderRadius="md"
+          borderRadius="xl"
         >
           <form>
             <Box mb={10}>
               <Flex flexDir="column" align="center" gap={5}>
-                <Box
-                  bgColor="gray.100"
+                <Flex
+                  bgColor="blackAlpha.200"
                   w={300}
                   height={300}
-                  alignContent="center"
+                  alignItems="center"
+                  borderRadius="2xl"
                 >
                   <FormControl {...getRootProps()}>
                     <Input {...getInputProps()} />
@@ -88,30 +89,18 @@ function AddStock() {
                             <p>Drop files here</p>
                           </Flex>
                         ) : (
-                          <Box
-                            position="relative"
-                            top={14}
-                            bottom={0}
-                            px={10}
-                            borderRadius="lg"
-                          >
-                            <Img
-                              src="../icons/black/addcircle.svg"
-                              alt="addcircle.svg"
-                              width={104}
-                              mx="auto"
-                              mb={5}
-                            />
-                            <Text textAlign="center">
-                              Drag and drop some files here, or click to select
-                              files
-                            </Text>
-                          </Box>
+                          <Img
+                            src="../icons/black/addcircle.svg"
+                            alt="addcircle.svg"
+                            width={104}
+                            mx="auto"
+                            mb={5}
+                          />
                         )}
                       </Box>
                     )}
                   </FormControl>
-                </Box>
+                </Flex>
                 {selectedImage ? (
                   <Button
                     colorScheme="teal"
@@ -130,34 +119,62 @@ function AddStock() {
                 borderColor="black"
                 borderRadius="lg"
                 size="lg"
-                placeholder="Input Provider Name"
+                placeholder="Input Provider"
                 _placeholder={{ fontSize: 20 }}
               />
             </FormControl>
             <FormControl mb={10}>
               <FormLabel fontSize={27} fontFamily="heading" mb={5}>
-                Stock Total
+                Stock
               </FormLabel>
-              <Input
-                borderColor="black"
-                borderRadius="lg"
-                size="lg"
-                placeholder="Input Stock Amount"
-                _placeholder={{ fontSize: 20 }}
-              />
+              <SimpleGrid columns={2} gap={5}>
+                <Input
+                  borderColor="black"
+                  borderRadius="lg"
+                  size="lg"
+                  placeholder="Min"
+                  _placeholder={{ fontSize: 20 }}
+                />
+                <Input
+                  borderColor="black"
+                  borderRadius="lg"
+                  size="lg"
+                  placeholder="Max  "
+                  _placeholder={{ fontSize: 20 }}
+                />
+              </SimpleGrid>
             </FormControl>
             <FormControl>
               <FormLabel fontSize={27} fontFamily="heading" mb={5}>
                 Price
               </FormLabel>
-              <Input
-                borderColor="black"
-                borderRadius="lg"
-                size="lg"
-                placeholder="Input Price Amount"
-                _placeholder={{ fontSize: 20 }}
-              />
+              <SimpleGrid columns={2} gap={5}>
+                <Input
+                  borderColor="black"
+                  borderRadius="lg"
+                  size="lg"
+                  placeholder="Min"
+                  _placeholder={{ fontSize: 20 }}
+                />
+                <Input
+                  borderColor="black"
+                  borderRadius="lg"
+                  size="lg"
+                  placeholder="Max"
+                  _placeholder={{ fontSize: 20 }}
+                />
+              </SimpleGrid>
             </FormControl>
+            <Button
+              mt={16}
+              w="100%"
+              h={50}
+              fontFamily="poppins"
+              colorScheme="facebook"
+              fontWeight={400}
+            >
+              Save Changes
+            </Button>
           </form>
         </SimpleGrid>
       </Box>
