@@ -1,19 +1,8 @@
 import { Flex, Button } from "@chakra-ui/react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function NavbarDashboard() {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const getCurrentLocation = () => {
-    return location.pathname;
-  };
-
-  const currentLocation = getCurrentLocation();
-
-  const handleClickStocks = () => {
-    navigate("/stocks");
-  };
 
   const handleClickProfile = () => {
     navigate("/profile");
@@ -23,41 +12,26 @@ function NavbarDashboard() {
   };
   return (
     <Flex gap={5} justifyContent="end" mb={4} mx={10} mt={10}>
-      {currentLocation === "/stocks/add" ? (
-        <Button
-          variant="outline"
-          colorScheme="blue.700"
-          color="blue.700"
-          fontFamily="heading"
-          width="max"
-          onClick={handleClickStocks}
-        >
-          Back to Manage Stocks
-        </Button>
-      ) : (
-        <>
-          <Button
-            variant="outline"
-            colorScheme="blue.700"
-            color="blue.700"
-            fontFamily="heading"
-            width={133}
-            onClick={handleClickProfile}
-          >
-            Profile
-          </Button>
-          <Button
-            variant="outline"
-            colorScheme="red.700"
-            color="red.700"
-            fontFamily="heading"
-            px={25}
-            onClick={handleClickLogout}
-          >
-            Sign Out
-          </Button>
-        </>
-      )}
+      <Button
+        variant="outline"
+        colorScheme="blue.700"
+        color="blue.700"
+        fontFamily="heading"
+        width={133}
+        onClick={handleClickProfile}
+      >
+        Profile
+      </Button>
+      <Button
+        variant="outline"
+        colorScheme="red.700"
+        color="red.700"
+        fontFamily="heading"
+        px={25}
+        onClick={handleClickLogout}
+      >
+        Sign Out
+      </Button>
     </Flex>
   );
 }
