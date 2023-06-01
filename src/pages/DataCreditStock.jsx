@@ -1,8 +1,14 @@
 import {
   Box,
   Button,
+  Center,
+  Editable,
+  EditableInput,
+  EditablePreview,
   Flex,
+  IconButton,
   Img,
+  Input,
   Tab,
   TabIndicator,
   TabList,
@@ -22,9 +28,77 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import NavbarDashboard from "../components/NavbarDashboard";
+import { useState } from "react";
 
 const DataCreditStock = () => {
   const navigate = useNavigate();
+  const [isAddCreditAmount, setIsAddCreditAmount] = useState(false);
+  const [DataTableCredit, setDataTableCredit] = useState([
+    {
+      no: 1,
+      credit: 20_000,
+      price: 21_000,
+      quantity: 50,
+    },
+    {
+      no: 2,
+      credit: 25_000,
+      price: 27_000,
+      quantity: 40,
+    },
+    {
+      no: 3,
+      credit: 50_000,
+      price: 52_000,
+      quantity: 40,
+    },
+  ]);
+
+  const handleAddCreditAmount = () => {
+    const newCreditAmountData = {
+      no: DataTableCredit.length + 1,
+      credit: 0,
+      price: 0,
+      quantity: 0,
+    };
+
+    setIsAddCreditAmount(true);
+    setDataTableCredit([...DataTableCredit, newCreditAmountData]);
+  };
+
+  const TableRowCredit = ({ row }) => {
+    return (
+      <Tr>
+        <Td textAlign="center">{row.no}</Td>
+        <Td textAlign="center">{row.credit}</Td>
+        <Td textAlign="center">{row.price}</Td>
+        <Td textAlign="center">{row.quantity}</Td>
+        <Td>
+          {row.no < DataTableCredit.length + 1 && isAddCreditAmount ? (
+            <Flex gap={5} justify="center">
+              <Button colorScheme="green">Save</Button>
+              <Button
+                onClick={() => setIsAddCreditAmount(false)}
+                colorScheme="red"
+              >
+                Cancel
+              </Button>
+            </Flex>
+          ) : (
+            <Flex gap={5} justify="center">
+              <Link to="#edit">
+                <Img src="./icons/stockPage/edit2.svg" width={22} />
+              </Link>
+              <Link to="#delete">
+                <Img src="./icons/stockPage/trash.svg" width={22} />
+              </Link>
+            </Flex>
+          )}
+        </Td>
+      </Tr>
+    );
+  };
+
   return (
     <Flex height="100vh">
       <Sidebar />
@@ -51,106 +125,43 @@ const DataCreditStock = () => {
             <TabPanels>
               <TabPanel bg="black" color="white" mt={5} borderRadius={12} p={6}>
                 <TableContainer>
-                  <Table>
-                    <Thead>
-                      <Tr bgColor="teal">
-                        <Th color="white">Provider</Th>
-                        <Th color="white">Stock Credit</Th>
-                        <Th color="white">Price</Th>
-                        <Th color="white">Action</Th>
+                  <Table variant="unstyled">
+                    <Thead bgColor="teal">
+                      <Tr>
+                        <Th textAlign="center" color="white">
+                          No
+                        </Th>
+                        <Th textAlign="center" color="white">
+                          Credit
+                        </Th>
+                        <Th textAlign="center" color="white">
+                          Price
+                        </Th>
+                        <Th textAlign="center" color="white">
+                          Quantity
+                        </Th>
+                        <Th textAlign="center" color="white">
+                          Action
+                        </Th>
                       </Tr>
                     </Thead>
                     <Tbody fontWeight={700} fontFamily="heading">
+                      {DataTableCredit.map((data) => (
+                        <TableRowCredit row={data} key={data.no} />
+                      ))}
                       <Tr>
-                        <Td>
-                          <Img src="./providerDummy/provider (2).png" />
-                        </Td>
-                        <Td>9.000.000</Td>
-                        <Td>15k - 250k</Td>
-                        <Td>
-                          <Flex gap={5}>
-                            <Link to="#edit">
+                        <Td textAlign="center">
+                          <IconButton
+                            onClick={handleAddCreditAmount}
+                            width="fit-content"
+                            colorScheme="blackAlpha"
+                            icon={
                               <Img
-                                src="./icons/stockPage/edit2.svg"
-                                width={22}
+                                src="../icons/white/addcircle.svg"
+                                width="30px"
                               />
-                            </Link>
-                            <Link to="#delete">
-                              <Img
-                                src="./icons/stockPage/trash.svg"
-                                width={22}
-                              />
-                            </Link>
-                          </Flex>
-                        </Td>
-                      </Tr>
-                      <Tr>
-                        <Td>
-                          <Img src="./providerDummy/provider (3).png" />
-                        </Td>
-                        <Td>11.000.000</Td>
-                        <Td>10k - 150k</Td>
-                        <Td>
-                          <Flex gap={5}>
-                            <Link to="#edit">
-                              <Img
-                                src="./icons/stockPage/edit2.svg"
-                                width={22}
-                              />
-                            </Link>
-                            <Link to="#delete">
-                              <Img
-                                src="./icons/stockPage/trash.svg"
-                                width={22}
-                              />
-                            </Link>
-                          </Flex>
-                        </Td>
-                      </Tr>
-                      <Tr>
-                        <Td>
-                          <Img src="./providerDummy/provider (4).png" />
-                        </Td>
-                        <Td>8.000.000</Td>
-                        <Td>10k - 150k</Td>
-                        <Td>
-                          <Flex gap={5}>
-                            <Link to="#edit">
-                              <Img
-                                src="./icons/stockPage/edit2.svg"
-                                width={22}
-                              />
-                            </Link>
-                            <Link to="#delete">
-                              <Img
-                                src="./icons/stockPage/trash.svg"
-                                width={22}
-                              />
-                            </Link>
-                          </Flex>
-                        </Td>
-                      </Tr>
-                      <Tr>
-                        <Td>
-                          <Img src="./providerDummy/provider (1).png" />
-                        </Td>
-                        <Td>5.000.000</Td>
-                        <Td>5k - 150k</Td>
-                        <Td>
-                          <Flex gap={5}>
-                            <Link to="#edit">
-                              <Img
-                                src="./icons/stockPage/edit2.svg"
-                                width={22}
-                              />
-                            </Link>
-                            <Link to="#delete">
-                              <Img
-                                src="./icons/stockPage/trash.svg"
-                                width={22}
-                              />
-                            </Link>
-                          </Flex>
+                            }
+                          />
                         </Td>
                       </Tr>
                     </Tbody>
@@ -159,7 +170,7 @@ const DataCreditStock = () => {
               </TabPanel>
               <TabPanel bg="black" color="white" mt={5} borderRadius={12} p={6}>
                 <TableContainer>
-                  <Table>
+                  <Table variant="unstyled">
                     <Thead>
                       <Tr bgColor="teal">
                         <Th color="white">Provider</Th>
