@@ -15,154 +15,165 @@ const CashOutStock = () => {
     <>
       <Flex height="full">
         <Sidebar />
-        <Box mx={"114px"} my={"80px"} w={570}>
-          {/* STOCK CASH OUT */}
-          <Text fontSize={32} as="b" fontFamily={"heading"}>
+        <Box mx={"114px"} my={"80px"} w={580}>
+          <Text fontSize={32} as="b" fontFamily={"heading"} ps={4}>
             Stock Cash Out
           </Text>
-          <Flex
-            w={"full"}
-            h={150}
-            boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-            mt={5}
+          {/* STOCK CASH OUT */}
+          <Box
+            maxHeight={820}
+            overflowY="auto"
+            css={{
+              "&::-webkit-scrollbar": {
+                display: "none",
+              },
+            }}
             p={4}
-            ps={12}
-            gap={20}
-            borderRadius={6}
-            bg={"#262626"}
-            color={"#ECECEC"}
           >
-            <img src="./cewe1.svg" alt="" />
-            <Box>
-              <Text fontSize={24} as="b" fontFamily={"heading"}>
-                Isabella
-              </Text>
-              <Text fontSize={16} fontFamily={"body"}>
-                Transaction totals
-              </Text>
-              <Text
-                fontSize={32}
-                as="b"
-                fontFamily={"heading"}
-                color={"#2DB5AB"}
-              >
-                76x
-              </Text>
-            </Box>
-          </Flex>
-          <Flex
-            w={"full"}
-            h={150}
-            boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-            mt={5}
-            p={4}
-            ps={12}
-            gap={20}
-            borderRadius={6}
-          >
-            <img src="./Jhon Felix.svg" alt="" />
-            <Box>
-              <Text fontSize={24} as="b" fontFamily={"heading"}>
-                Jhon Felix
-              </Text>
-              <Text fontSize={16} fontFamily={"body"}>
-                Transaction totals
-              </Text>
-              <Text
-                fontSize={32}
-                as="b"
-                fontFamily={"heading"}
-                color={"#2DB5AB"}
-              >
-                69x
-              </Text>
-            </Box>
-          </Flex>
-          <Flex
-            w={"full"}
-            h={150}
-            boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-            mt={5}
-            p={4}
-            ps={12}
-            gap={20}
-            borderRadius={6}
-          >
-            <img src="./Samuel Drian.svg" alt="" />
-            <Box>
-              <Text fontSize={24} as="b" fontFamily={"heading"}>
-                Samuel Drian
-              </Text>
-              <Text fontSize={16} fontFamily={"body"}>
-                Transaction totals
-              </Text>
-              <Text
-                fontSize={32}
-                as="b"
-                fontFamily={"heading"}
-                color={"#2DB5AB"}
-              >
-                65x
-              </Text>
-            </Box>
-          </Flex>
-          <Flex
-            w={"full"}
-            h={150}
-            boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-            mt={5}
-            p={4}
-            ps={12}
-            gap={20}
-            borderRadius={6}
-          >
-            <img src="./Elvina Lies.svg" alt="" />
-            <Box>
-              <Text fontSize={24} as="b" fontFamily={"heading"}>
-                Elvina Lies
-              </Text>
-              <Text fontSize={16} fontFamily={"body"}>
-                Transaction totals
-              </Text>
-              <Text
-                fontSize={32}
-                as="b"
-                fontFamily={"heading"}
-                color={"#2DB5AB"}
-              >
-                64x
-              </Text>
-            </Box>
-          </Flex>
-          <Flex
-            w={"full"}
-            h={150}
-            boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-            mt={5}
-            p={4}
-            ps={12}
-            gap={20}
-            borderRadius={6}
-          >
-            <img src="./maria belina.svg" alt="" />
-            <Box>
-              <Text fontSize={24} as="b" fontFamily={"heading"}>
-                Maria Belina
-              </Text>
-              <Text fontSize={16} fontFamily={"body"}>
-                Transaction totals
-              </Text>
-              <Text
-                fontSize={32}
-                as="b"
-                fontFamily={"heading"}
-                color={"#2DB5AB"}
-              >
-                49x
-              </Text>
-            </Box>
-          </Flex>
-          <Center mt={10}>
+            <Flex
+              w={"full"}
+              h={150}
+              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
+              mt={5}
+              p={4}
+              ps={12}
+              gap={20}
+              borderRadius={6}
+              bg={"#262626"}
+              color={"#ECECEC"}
+            >
+              <img src="./cewe1.svg" alt="" />
+              <Box>
+                <Text fontSize={24} as="b" fontFamily={"heading"}>
+                  Isabella
+                </Text>
+                <Text fontSize={16} fontFamily={"body"}>
+                  Transaction totals
+                </Text>
+                <Text
+                  fontSize={32}
+                  as="b"
+                  fontFamily={"heading"}
+                  color={"#2DB5AB"}
+                >
+                  76x
+                </Text>
+              </Box>
+            </Flex>
+            <Flex
+              w={"full"}
+              h={150}
+              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
+              mt={5}
+              p={4}
+              ps={12}
+              gap={20}
+              borderRadius={6}
+            >
+              <img src="./Jhon Felix.svg" alt="" />
+              <Box>
+                <Text fontSize={24} as="b" fontFamily={"heading"}>
+                  Jhon Felix
+                </Text>
+                <Text fontSize={16} fontFamily={"body"}>
+                  Transaction totals
+                </Text>
+                <Text
+                  fontSize={32}
+                  as="b"
+                  fontFamily={"heading"}
+                  color={"#2DB5AB"}
+                >
+                  69x
+                </Text>
+              </Box>
+            </Flex>
+            <Flex
+              w={"full"}
+              h={150}
+              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
+              mt={5}
+              p={4}
+              ps={12}
+              gap={20}
+              borderRadius={6}
+            >
+              <img src="./Samuel Drian.svg" alt="" />
+              <Box>
+                <Text fontSize={24} as="b" fontFamily={"heading"}>
+                  Samuel Drian
+                </Text>
+                <Text fontSize={16} fontFamily={"body"}>
+                  Transaction totals
+                </Text>
+                <Text
+                  fontSize={32}
+                  as="b"
+                  fontFamily={"heading"}
+                  color={"#2DB5AB"}
+                >
+                  65x
+                </Text>
+              </Box>
+            </Flex>
+            <Flex
+              w={"full"}
+              h={150}
+              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
+              mt={5}
+              p={4}
+              ps={12}
+              gap={20}
+              borderRadius={6}
+            >
+              <img src="./Elvina Lies.svg" alt="" />
+              <Box>
+                <Text fontSize={24} as="b" fontFamily={"heading"}>
+                  Elvina Lies
+                </Text>
+                <Text fontSize={16} fontFamily={"body"}>
+                  Transaction totals
+                </Text>
+                <Text
+                  fontSize={32}
+                  as="b"
+                  fontFamily={"heading"}
+                  color={"#2DB5AB"}
+                >
+                  64x
+                </Text>
+              </Box>
+            </Flex>
+            <Flex
+              w={"full"}
+              h={150}
+              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
+              mt={5}
+              p={4}
+              ps={12}
+              gap={20}
+              borderRadius={6}
+            >
+              <img src="./maria belina.svg" alt="" />
+              <Box>
+                <Text fontSize={24} as="b" fontFamily={"heading"}>
+                  Maria Belina
+                </Text>
+                <Text fontSize={16} fontFamily={"body"}>
+                  Transaction totals
+                </Text>
+                <Text
+                  fontSize={32}
+                  as="b"
+                  fontFamily={"heading"}
+                  color={"#2DB5AB"}
+                >
+                  49x
+                </Text>
+              </Box>
+            </Flex>
+          </Box>
+          <Center mt={5}>
             <img src="./icons/dashboard/panahbawah.svg" alt="" />
           </Center>
         </Box>
@@ -179,7 +190,8 @@ const CashOutStock = () => {
               bg={"#262626"}
               borderRadius={12}
               boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              ml={"auto"} mr={"auto"}
+              ml={"auto"}
+              mr={"auto"}
             >
               <Box pt={20}>
                 <Center gap={28}>
@@ -298,8 +310,8 @@ const CashOutStock = () => {
                   />
                 </NumberInput>
                 <Button
-                  backgroundColor="#030F51"
-                  _hover={{ backgroundColor: "#061C71" }}
+                  backgroundColor="#17590B"
+                  _hover={{ backgroundColor: "#457A3B" }}
                   fontSize={"16px"}
                   fontFamily={"heading"}
                   color="white"
