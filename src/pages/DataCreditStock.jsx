@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   Center,
   Editable,
   EditableInput,
@@ -33,6 +34,8 @@ import { useState } from "react";
 const DataCreditStock = () => {
   const navigate = useNavigate();
   const [isAddCreditAmount, setIsAddCreditAmount] = useState(false);
+  const [isAddInternetDatasAmount, setIsAddInternetDatasAmount] =
+    useState(false);
   const [DataTableCredit, setDataTableCredit] = useState([
     {
       no: 1,
@@ -53,18 +56,24 @@ const DataCreditStock = () => {
       quantity: 40,
     },
   ]);
+  const [DataTableInternet, setDataTableInternet] = useState([
+    {
+      no: 1,
+      data: "1 GB",
+      price: 20_000,
+      quantity: 500,
+    },
+    {
+      no: 2,
+      data: "2 GB",
+      price: 40_000,
+      quantity: 250,
+    },
+  ]);
 
-  const handleAddCreditAmount = () => {
-    const newCreditAmountData = {
-      no: DataTableCredit.length + 1,
-      credit: 0,
-      price: 0,
-      quantity: 0,
-    };
-
-    setIsAddCreditAmount(true);
-    setDataTableCredit([...DataTableCredit, newCreditAmountData]);
-  };
+  const handleStatusAddCredit = () => setIsAddCreditAmount(!isAddCreditAmount);
+  const handleStatusAddInternet = () =>
+    setIsAddInternetDatasAmount(!isAddInternetDatasAmount);
 
   const TableRowCredit = ({ row }) => {
     return (
@@ -74,26 +83,35 @@ const DataCreditStock = () => {
         <Td textAlign="center">{row.price}</Td>
         <Td textAlign="center">{row.quantity}</Td>
         <Td>
-          {row.no < DataTableCredit.length + 1 && isAddCreditAmount ? (
-            <Flex gap={5} justify="center">
-              <Button colorScheme="green">Save</Button>
-              <Button
-                onClick={() => setIsAddCreditAmount(false)}
-                colorScheme="red"
-              >
-                Cancel
-              </Button>
-            </Flex>
-          ) : (
-            <Flex gap={5} justify="center">
-              <Link to="#edit">
-                <Img src="./icons/stockPage/edit2.svg" width={22} />
-              </Link>
-              <Link to="#delete">
-                <Img src="./icons/stockPage/trash.svg" width={22} />
-              </Link>
-            </Flex>
-          )}
+          <Flex gap={5} justify="center">
+            <Link to="#edit">
+              <Img src="./icons/stockPage/edit2.svg" width={22} />
+            </Link>
+            <Link to="#delete">
+              <Img src="./icons/stockPage/trash.svg" width={22} />
+            </Link>
+          </Flex>
+        </Td>
+      </Tr>
+    );
+  };
+
+  const TableRowInternetDatas = ({ row }) => {
+    return (
+      <Tr>
+        <Td textAlign="center">{row.no}</Td>
+        <Td textAlign="center">{row.data}</Td>
+        <Td textAlign="center">{row.price}</Td>
+        <Td textAlign="center">{row.quantity}</Td>
+        <Td>
+          <Flex gap={5} justify="center">
+            <Link to="#edit">
+              <Img src="./icons/stockPage/edit2.svg" width={22} />
+            </Link>
+            <Link to="#delete">
+              <Img src="./icons/stockPage/trash.svg" width={22} />
+            </Link>
+          </Flex>
         </Td>
       </Tr>
     );
@@ -149,10 +167,58 @@ const DataCreditStock = () => {
                       {DataTableCredit.map((data) => (
                         <TableRowCredit row={data} key={data.no} />
                       ))}
+                      {isAddCreditAmount ? (
+                        <Tr>
+                          <Td>
+                            <Center>{DataTableCredit.length + 1}</Center>
+                          </Td>
+                          <Td>
+                            <Center>
+                              <Input
+                                placeholder="Input credit"
+                                width={120}
+                                bgColor="white"
+                                _placeholder={{ textAlign: "center" }}
+                              />
+                            </Center>
+                          </Td>
+                          <Td>
+                            <Center>
+                              <Input
+                                placeholder="Input price"
+                                width={120}
+                                bgColor="white"
+                                _placeholder={{ textAlign: "center" }}
+                              />
+                            </Center>
+                          </Td>
+                          <Td>
+                            <Center>
+                              <Input
+                                placeholder="Input quantity"
+                                width={140}
+                                bgColor="white"
+                                _placeholder={{ textAlign: "center" }}
+                              />
+                            </Center>
+                          </Td>
+                          <Td>
+                            <Flex justify="center" gap={5} flexDir="column">
+                              <Button colorScheme="green">Save</Button>
+                              <Button
+                                colorScheme="red"
+                                onClick={handleStatusAddCredit}
+                              >
+                                Cancel
+                              </Button>
+                            </Flex>
+                          </Td>
+                        </Tr>
+                      ) : null}
                       <Tr>
                         <Td textAlign="center">
                           <IconButton
-                            onClick={handleAddCreditAmount}
+                            onClick={handleStatusAddCredit}
                             width="fit-content"
                             colorScheme="blackAlpha"
                             icon={
@@ -173,103 +239,91 @@ const DataCreditStock = () => {
                   <Table variant="unstyled">
                     <Thead>
                       <Tr bgColor="teal">
-                        <Th color="white">Provider</Th>
-                        <Th color="white">Stock Data</Th>
-                        <Th color="white">Price</Th>
-                        <Th color="white">Action</Th>
+                        <Th color="white" textAlign="center">
+                          Provider
+                        </Th>
+                        <Th color="white" textAlign="center">
+                          Stock Data
+                        </Th>
+                        <Th color="white" textAlign="center">
+                          Price
+                        </Th>
+                        <Th color="white" textAlign="center">
+                          Quantity
+                        </Th>
+                        <Th color="white" textAlign="center">
+                          Action
+                        </Th>
                       </Tr>
                     </Thead>
                     <Tbody fontWeight={700} fontFamily="heading">
+                      {DataTableInternet.map((internetDatas) => (
+                        <TableRowInternetDatas
+                          key={internetDatas.no}
+                          row={internetDatas}
+                        />
+                      ))}
+                      {isAddInternetDatasAmount ? (
+                        <Tr>
+                          <Td>
+                            <Center>{DataTableInternet.length + 1}</Center>
+                          </Td>
+                          <Td>
+                            <Center>
+                              <Input
+                                placeholder="Input credit"
+                                width={120}
+                                bgColor="white"
+                                _placeholder={{ textAlign: "center" }}
+                              />
+                            </Center>
+                          </Td>
+                          <Td>
+                            <Center>
+                              <Input
+                                placeholder="Input price"
+                                width={120}
+                                bgColor="white"
+                                _placeholder={{ textAlign: "center" }}
+                              />
+                            </Center>
+                          </Td>
+                          <Td>
+                            <Center>
+                              <Input
+                                placeholder="Input quantity"
+                                width={140}
+                                bgColor="white"
+                                _placeholder={{ textAlign: "center" }}
+                              />
+                            </Center>
+                          </Td>
+                          <Td>
+                            <Flex justify="center" gap={5} flexDir="column">
+                              <Button colorScheme="green">Save</Button>
+                              <Button
+                                colorScheme="red"
+                                onClick={handleStatusAddInternet}
+                              >
+                                Cancel
+                              </Button>
+                            </Flex>
+                          </Td>
+                        </Tr>
+                      ) : null}
                       <Tr>
-                        <Td>
-                          <Img src="./providerDummy/provider (2).png" />
-                        </Td>
-                        <Td>1GB - 150GB</Td>
-                        <Td>25k - 250k</Td>
-                        <Td>
-                          <Flex gap={5}>
-                            <Link to="#edit">
+                        <Td textAlign="center">
+                          <IconButton
+                            onClick={handleStatusAddInternet}
+                            width="fit-content"
+                            colorScheme="blackAlpha"
+                            icon={
                               <Img
-                                src="./icons/stockPage/edit2.svg"
-                                width={22}
+                                src="../icons/white/addcircle.svg"
+                                width="30px"
                               />
-                            </Link>
-                            <Link to="#delete">
-                              <Img
-                                src="./icons/stockPage/trash.svg"
-                                width={22}
-                              />
-                            </Link>
-                          </Flex>
-                        </Td>
-                      </Tr>
-                      <Tr>
-                        <Td>
-                          <Img src="./providerDummy/provider (3).png" />
-                        </Td>
-                        <Td>1GB - 100GB</Td>
-                        <Td>10k - 90k</Td>
-                        <Td>
-                          <Flex gap={5}>
-                            <Link to="#edit">
-                              <Img
-                                src="./icons/stockPage/edit2.svg"
-                                width={22}
-                              />
-                            </Link>
-                            <Link to="#delete">
-                              <Img
-                                src="./icons/stockPage/trash.svg"
-                                width={22}
-                              />
-                            </Link>
-                          </Flex>
-                        </Td>
-                      </Tr>
-                      <Tr>
-                        <Td>
-                          <Img src="./providerDummy/provider (4).png" />
-                        </Td>
-                        <Td>1GB - 100GB</Td>
-                        <Td>15k - 120k</Td>
-                        <Td>
-                          <Flex gap={5}>
-                            <Link to="#edit">
-                              <Img
-                                src="./icons/stockPage/edit2.svg"
-                                width={22}
-                              />
-                            </Link>
-                            <Link to="#delete">
-                              <Img
-                                src="./icons/stockPage/trash.svg"
-                                width={22}
-                              />
-                            </Link>
-                          </Flex>
-                        </Td>
-                      </Tr>
-                      <Tr>
-                        <Td>
-                          <Img src="./providerDummy/provider (1).png" />
-                        </Td>
-                        <Td>1GB - 120GB</Td>
-                        <Td>5k - 150k</Td>
-                        <Td>
-                          <Flex gap={5}>
-                            <Link to="#edit">
-                              <Img
-                                src="./icons/stockPage/edit2.svg"
-                                width={22}
-                              />
-                            </Link>
-                            <Link to="#delete">
-                              <Img
-                                src="./icons/stockPage/trash.svg"
-                                width={22}
-                              />
-                            </Link>
-                          </Flex>
+                            }
+                          />
                         </Td>
                       </Tr>
                     </Tbody>
@@ -278,26 +332,41 @@ const DataCreditStock = () => {
               </TabPanel>
             </TabPanels>
           </Tabs>
-          <Button
-            onClick={() => navigate("/stocks/add")}
-            mt={10}
-            fontFamily="heading"
-            fontSize={24}
-            colorScheme="teal"
-            height="max"
-            pl={10}
-            pr={12}
-            gap={3}
-            py={4}
-            borderRadius="xl"
-          >
-            <img
-              src="./icons/white/addcircle.svg"
-              alt="addcircle.svg"
-              width={32}
-            />{" "}
-            Add Stock
-          </Button>
+          <Flex justify="space-between" alignItems="center">
+            <ButtonGroup>
+              <Button fontSize={24} colorScheme="teal" height={50}>
+                1
+              </Button>
+              <Button
+                fontSize={24}
+                colorScheme="teal"
+                height={50}
+                variant="outline"
+              >
+                2
+              </Button>
+            </ButtonGroup>
+            <Button
+              onClick={() => navigate("/stocks/add")}
+              mt={10}
+              fontFamily="heading"
+              fontSize={24}
+              colorScheme="teal"
+              height="max"
+              pl={10}
+              pr={12}
+              gap={3}
+              py={4}
+              borderRadius="xl"
+            >
+              <img
+                src="./icons/white/addcircle.svg"
+                alt="addcircle.svg"
+                width={32}
+              />{" "}
+              Add Stock
+            </Button>
+          </Flex>
         </Box>
       </Box>
       {/* #CONTENT DATA CREDIT AND STOCK END  */}
