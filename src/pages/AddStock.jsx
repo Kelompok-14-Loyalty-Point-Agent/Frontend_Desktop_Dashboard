@@ -1,182 +1,364 @@
-import { useCallback, useState } from "react";
-import { useDropzone } from "react-dropzone";
+import * as React from "react";
+import { useFormik } from "formik";
 import {
   Box,
   Button,
-  Center,
   Flex,
   FormControl,
   FormLabel,
   Heading,
-  Img,
   Input,
+  Img,
   SimpleGrid,
+  Tab,
+  TabIndicator,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Text,
+  Select,
+  RadioGroup,
+  Radio,
+  Stack,
 } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
+import CustomSelect from "../components/CustomSelect";
 
 function AddStock() {
-  const [selectedImage, setSelectedImage] = useState(null);
+  const formatDate = (date) => {
+    const options = { month: "2-digit", day: "2-digit", year: "numeric" };
+    return date.toLocaleDateString("en-US", options);
+  };
 
-  const onDrop = useCallback((acceptedFiles) => {
-    const previewImg = acceptedFiles[0];
-    setSelectedImage(URL.createObjectURL(previewImg));
+  const optionsCredit = [
+    {
+      value: "telkomsel",
+      label: "Telkomsel",
+      imageSrc: "../providerDummy/telkomsel.png",
+    },
+    {
+      value: "axis",
+      label: "Axis",
+      imageSrc: "../providerDummy/axis.png",
+    },
+    {
+      value: "smartfren",
+      label: "Smartfren",
+      imageSrc: "../providerDummy/smartfren.png",
+    },
+    {
+      value: "tri",
+      label: "3",
+      imageSrc: "../providerDummy/tri.png",
+    },
+    {
+      value: "xl",
+      label: "XL",
+      imageSrc: "../providerDummy/xl.png",
+    },
+  ];
 
-    acceptedFiles.forEach((file) => {
-      const reader = new FileReader();
+  const currentDate = formatDate(new Date());
 
-      reader.onabort = () => console.log("file reading was aborted");
-      reader.onerror = () => console.log("file reading was error");
-      reader.onload = () => {
-        const binaryStr = reader.result;
-        console.log(file);
-        console.log(binaryStr);
-      };
-
-      reader.readAsArrayBuffer(file);
-    });
-  }, []);
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
+  const formikCredit = useFormik({
+    initialValues: {
+      provider: null,
+      stockCredit: null,
+      paymentMethod: null,
+    },
+    onSubmit: (formData) => {
+      alert({ formData });
+    },
+  });
   return (
-    <Flex height="100%">
+    <Flex height="100vh">
       <Sidebar />
-      <Box mx={14} flex={"1"}>
-        <Box my={16} mx={10}>
+      <Box mx={36} flex={"1"}>
+        <Box my={16}>
           <Heading>Add Stock</Heading>
-          <Text fontFamily="heading">Credit / Data</Text>
-        </Box>
-        <SimpleGrid
-          boxShadow="dark-lg"
-          mx={10}
-          mb={32}
-          px={24}
-          pt={16}
-          pb={24}
-          borderRadius="xl"
-        >
-          <form>
-            <Box mb={10}>
-              <Flex flexDir="column" align="center" gap={5}>
-                <Flex
-                  bgColor="blackAlpha.200"
-                  w={300}
-                  height={300}
-                  alignItems="center"
-                  borderRadius="2xl"
-                >
-                  <FormControl {...getRootProps()}>
-                    <Input {...getInputProps()} />
-                    {selectedImage ? (
+          <Tabs variant="unstyled" mt={10}>
+            <TabList>
+              <Tab>Credit</Tab>
+              <Tab>Data</Tab>
+            </TabList>
+            <TabIndicator
+              height={1}
+              borderRadius={6}
+              backgroundColor="teal.400"
+            />
+            <TabPanels>
+              {/* # CREDIT TABPANEL REGION START */}
+              <TabPanel
+                bgColor="#262626"
+                borderRadius="3xl"
+                mt={8}
+                py={9}
+                px={12}
+              >
+                <form onSubmit={formikCredit.handleSubmit}>
+                  <SimpleGrid columns={2} spacing={40}>
+                    <Box>
+                      <FormControl mb={8}>
+                        <FormLabel color="white" fontSize={20}>
+                          Choose Provider
+                        </FormLabel>
+                        <CustomSelect
+                          options={optionsCredit}
+                          formik={formikCredit}
+                          name="provider"
+                        />
+                      </FormControl>
+                      <FormControl mb={8}>
+                        <FormLabel color="white" fontSize={20}>
+                          Input Stock Credit
+                        </FormLabel>
+                        <Input
+                          onChange={formikCredit.handleChange}
+                          value={formikCredit.values.stockCredit}
+                          name="stockCredit"
+                          placeholder="Input stock credit  e.g. 1.000.000"
+                          bgColor="white"
+                          h={14}
+                        />
+                      </FormControl>
+                      <Button
+                        type="submit"
+                        bgColor="#BE4057"
+                        fontFamily="poppins"
+                        color="white"
+                        _hover={{ bgColor: "#931136" }}
+                        fontWeight={400}
+                        px={16}
+                      >
+                        Pay
+                      </Button>
+                    </Box>
+                    <Box>
+                      <Heading
+                        color="white"
+                        fontFamily="body"
+                        fontWeight={400}
+                        fontSize={20}
+                        letterSpacing={1}
+                        mb={5}
+                      >
+                        Payment Method
+                      </Heading>
                       <Flex>
-                        <Center>
-                          <Img
-                            src={selectedImage}
-                            alt={selectedImage.name}
-                            w={200}
-                          />
-                        </Center>
+                        <FormControl color="white">
+                          <FormLabel mb={5}>Transfer Bank</FormLabel>
+                          <RadioGroup>
+                            <Stack
+                              alignItems="flex-start"
+                              direction="row"
+                              gap={14}
+                            >
+                              <Box bgColor="red.100">
+                                <Stack direction="column" gap={2}>
+                                  <Radio value="bri" colorScheme="facebook">
+                                    <Img
+                                      src="../paymentLogo/BRI.png"
+                                      alt="BRI.png"
+                                    />
+                                  </Radio>
+                                  <Radio value="bni" colorScheme="facebook">
+                                    <Img
+                                      src="../paymentLogo/BNI.png"
+                                      alt="BNI.png"
+                                    />
+                                  </Radio>
+                                </Stack>
+                              </Box>
+                            </Stack>
+                          </RadioGroup>
+                        </FormControl>
                       </Flex>
-                    ) : (
-                      <Box>
-                        {isDragActive ? (
-                          <Flex alignItems="center">
-                            <img
-                              src="../icons/black/addcircle.svg"
-                              alt="addcircle.svg"
-                            />
-                            <p>Drop files here</p>
-                          </Flex>
-                        ) : (
-                          <Img
-                            src="../icons/black/addcircle.svg"
-                            alt="addcircle.svg"
-                            width={104}
-                            mx="auto"
-                            mb={5}
-                          />
-                        )}
-                      </Box>
-                    )}
-                  </FormControl>
+                    </Box>
+                  </SimpleGrid>
+                </form>
+                <Flex gap={36} color="white" mt={72}>
+                  <Flex gap={7}>
+                    <Text
+                      fontFamily="heading"
+                      fontSize={22}
+                      color="teal.300"
+                      fontWeight={500}
+                    >
+                      Stock Credit :
+                    </Text>
+                    <Text
+                      fontFamily="heading"
+                      fontSize={22}
+                      color="white"
+                      fontWeight={500}
+                    >
+                      1.000.000
+                    </Text>
+                  </Flex>
+                  <Flex gap={7}>
+                    <Text
+                      fontFamily="heading"
+                      fontSize={22}
+                      color="teal.300"
+                      fontWeight={500}
+                    >
+                      Last Top Up :
+                    </Text>
+                    <Text
+                      fontFamily="heading"
+                      fontSize={22}
+                      color="white"
+                      fontWeight={500}
+                    >
+                      {currentDate}
+                    </Text>
+                  </Flex>
                 </Flex>
-                {selectedImage ? (
-                  <Button
-                    colorScheme="teal"
-                    onClick={() => setSelectedImage(null)}
-                  >
-                    Remove Image
-                  </Button>
-                ) : null}
-              </Flex>
-            </Box>
-            <FormControl mb={10}>
-              <FormLabel fontSize={27} fontFamily="heading" mb={5}>
-                Provider Name
-              </FormLabel>
-              <Input
-                borderColor="black"
-                borderRadius="lg"
-                size="lg"
-                placeholder="Input Provider"
-                _placeholder={{ fontSize: 20 }}
-              />
-            </FormControl>
-            <FormControl mb={10}>
-              <FormLabel fontSize={27} fontFamily="heading" mb={5}>
-                Stock
-              </FormLabel>
-              <SimpleGrid columns={2} gap={5}>
-                <Input
-                  borderColor="black"
-                  borderRadius="lg"
-                  size="lg"
-                  placeholder="Min"
-                  _placeholder={{ fontSize: 20 }}
-                />
-                <Input
-                  borderColor="black"
-                  borderRadius="lg"
-                  size="lg"
-                  placeholder="Max  "
-                  _placeholder={{ fontSize: 20 }}
-                />
-              </SimpleGrid>
-            </FormControl>
-            <FormControl>
-              <FormLabel fontSize={27} fontFamily="heading" mb={5}>
-                Price
-              </FormLabel>
-              <SimpleGrid columns={2} gap={5}>
-                <Input
-                  borderColor="black"
-                  borderRadius="lg"
-                  size="lg"
-                  placeholder="Min"
-                  _placeholder={{ fontSize: 20 }}
-                />
-                <Input
-                  borderColor="black"
-                  borderRadius="lg"
-                  size="lg"
-                  placeholder="Max"
-                  _placeholder={{ fontSize: 20 }}
-                />
-              </SimpleGrid>
-            </FormControl>
-            <Button
-              mt={16}
-              w="100%"
-              h={50}
-              fontFamily="poppins"
-              colorScheme="facebook"
-              fontWeight={400}
-            >
-              Save Changes
-            </Button>
-          </form>
-        </SimpleGrid>
+              </TabPanel>
+              {/* # CREDIT TABPANEL REGION END */}
+              {/* # DATA INTERNET TABPANEL REGION START */}
+              <TabPanel
+                bgColor="#262626"
+                borderRadius="3xl"
+                mt={8}
+                py={9}
+                px={12}
+              >
+                <form>
+                  <SimpleGrid columns={2} spacing={40}>
+                    <Box>
+                      <FormControl mb={8}>
+                        <FormLabel color="white" fontSize={20}>
+                          Choose Provider
+                        </FormLabel>
+                        <Select
+                          placeholder="Filling the options"
+                          bg="white"
+                          h={14}
+                        >
+                          <option value="telkomsel">Telkomsel</option>
+                          <option value="axis">Axis</option>
+                          <option value="smartfren">Smartfren</option>
+                          <option value="tri">Tri</option>
+                          <option value="xl">XL</option>
+                        </Select>
+                      </FormControl>
+                      <FormControl mb={8}>
+                        <FormLabel color="white" fontSize={20}>
+                          Input Stock Data
+                        </FormLabel>
+                        <Flex gap={5} alignItems="center" fontSize={24}>
+                          <Input
+                            placeholder="Input stock credit  e.g. 500"
+                            bgColor="white"
+                            h={14}
+                          />
+                          <Text color="white">GB</Text>
+                        </Flex>
+                      </FormControl>
+                      <Button
+                        bgColor="#BE4057"
+                        fontFamily="poppins"
+                        color="white"
+                        _hover={{ bgColor: "#931136" }}
+                        fontWeight={400}
+                        px={16}
+                      >
+                        Pay
+                      </Button>
+                    </Box>
+                    <Box>
+                      <Heading
+                        color="white"
+                        fontFamily="body"
+                        fontWeight={400}
+                        fontSize={20}
+                        letterSpacing={1}
+                        mb={5}
+                      >
+                        Payment Method
+                      </Heading>
+                      <Flex>
+                        <FormControl color="white">
+                          <FormLabel mb={5}>Transfer Bank</FormLabel>
+                          <RadioGroup>
+                            <Stack direction="column" gap={2}>
+                              <Radio value="bri" colorScheme="facebook">
+                                <Img
+                                  src="../paymentLogo/BRI.png"
+                                  alt="BRI.png"
+                                />
+                              </Radio>
+                              <Radio value="bni" colorScheme="facebook">
+                                <Img
+                                  src="../paymentLogo/BNI.png"
+                                  alt="BNI.png"
+                                />
+                              </Radio>
+                            </Stack>
+                          </RadioGroup>
+                        </FormControl>
+                        <FormControl color="white">
+                          <FormLabel mb={5}>E-Wallet</FormLabel>
+                          <RadioGroup>
+                            <Stack direction="column" gap={2}>
+                              <Radio value="bri" colorScheme="facebook">
+                                <Img
+                                  src="../paymentLogo/gopay.png"
+                                  alt="gopay.png"
+                                />
+                              </Radio>
+                            </Stack>
+                          </RadioGroup>
+                        </FormControl>
+                      </Flex>
+                    </Box>
+                  </SimpleGrid>
+                </form>
+                <Flex gap={36} color="white" mt={72}>
+                  <Flex gap={7}>
+                    <Text
+                      fontFamily="heading"
+                      fontSize={22}
+                      color="teal.300"
+                      fontWeight={500}
+                    >
+                      Stock Credit :
+                    </Text>
+                    <Text
+                      fontFamily="heading"
+                      fontSize={22}
+                      color="white"
+                      fontWeight={500}
+                    >
+                      500 GB
+                    </Text>
+                  </Flex>
+                  <Flex gap={7}>
+                    <Text
+                      fontFamily="heading"
+                      fontSize={22}
+                      color="teal.300"
+                      fontWeight={500}
+                    >
+                      Last Top Up :
+                    </Text>
+                    <Text
+                      fontFamily="heading"
+                      fontSize={22}
+                      color="white"
+                      fontWeight={500}
+                    >
+                      {currentDate}
+                    </Text>
+                  </Flex>
+                </Flex>
+              </TabPanel>
+              {/* # DATA INTERNET TABPANEL REGION END */}
+            </TabPanels>
+          </Tabs>
+        </Box>
       </Box>
     </Flex>
   );
