@@ -68,9 +68,25 @@ function AddStock() {
       paymentMethod: null,
     },
     onSubmit: (formData) => {
-      alert({ formData });
+      alert(JSON.stringify(formData));
+      console.log({ formData });
+      formikCredit.resetForm();
     },
   });
+
+  const formikInternetData = useFormik({
+    initialValues: {
+      provider: null,
+      stockData: null,
+      paymentMethod: null,
+    },
+    onSubmit: (formData) => {
+      alert(JSON.stringify(formData));
+      console.log({ formData });
+      formikInternetData.resetForm();
+    },
+  });
+
   return (
     <Flex height="100vh">
       <Sidebar />
@@ -146,29 +162,51 @@ function AddStock() {
                         Payment Method
                       </Heading>
                       <Flex>
-                        <FormControl color="white">
-                          <FormLabel mb={5}>Transfer Bank</FormLabel>
-                          <RadioGroup>
-                            <Stack
-                              alignItems="flex-start"
-                              direction="row"
-                              gap={14}
-                            >
-                              <Box bgColor="red.100">
+                        <FormControl color="white" width={240}>
+                          <RadioGroup
+                            onChange={(value) =>
+                              formikCredit.setFieldValue("paymentMethod", value)
+                            }
+                            value={formikCredit.values.paymentMethod}
+                            name="paymentMethod"
+                          >
+                            <Stack direction="row" gap={14}>
+                              <Box>
+                                <FormLabel mb={5}>Transfer Bank</FormLabel>
                                 <Stack direction="column" gap={2}>
-                                  <Radio value="bri" colorScheme="facebook">
+                                  <Radio
+                                    value="bri"
+                                    colorScheme="facebook"
+                                    bgColor="white"
+                                  >
                                     <Img
                                       src="../paymentLogo/BRI.png"
                                       alt="BRI.png"
                                     />
                                   </Radio>
-                                  <Radio value="bni" colorScheme="facebook">
+                                  <Radio
+                                    value="bni"
+                                    bgColor="white"
+                                    colorScheme="facebook"
+                                  >
                                     <Img
                                       src="../paymentLogo/BNI.png"
                                       alt="BNI.png"
                                     />
                                   </Radio>
                                 </Stack>
+                              </Box>
+                              <Box>
+                                <FormLabel color="white" mb={5}>
+                                  E-Wallet
+                                </FormLabel>
+                                <Radio
+                                  color="white"
+                                  bgColor="white"
+                                  value="gopay"
+                                >
+                                  <Img src="../paymentLogo/gopay.png" />
+                                </Radio>
                               </Box>
                             </Stack>
                           </RadioGroup>
@@ -225,24 +263,18 @@ function AddStock() {
                 py={9}
                 px={12}
               >
-                <form>
+                <form onSubmit={formikInternetData.handleSubmit}>
                   <SimpleGrid columns={2} spacing={40}>
                     <Box>
                       <FormControl mb={8}>
                         <FormLabel color="white" fontSize={20}>
                           Choose Provider
                         </FormLabel>
-                        <Select
-                          placeholder="Filling the options"
-                          bg="white"
-                          h={14}
-                        >
-                          <option value="telkomsel">Telkomsel</option>
-                          <option value="axis">Axis</option>
-                          <option value="smartfren">Smartfren</option>
-                          <option value="tri">Tri</option>
-                          <option value="xl">XL</option>
-                        </Select>
+                        <CustomSelect
+                          formik={formikInternetData}
+                          name="provider"
+                          options={optionsCredit}
+                        />
                       </FormControl>
                       <FormControl mb={8}>
                         <FormLabel color="white" fontSize={20}>
@@ -253,11 +285,15 @@ function AddStock() {
                             placeholder="Input stock credit  e.g. 500"
                             bgColor="white"
                             h={14}
+                            name="stockData"
+                            value={formikInternetData.values.stockData}
+                            onChange={formikInternetData.handleChange}
                           />
                           <Text color="white">GB</Text>
                         </Flex>
                       </FormControl>
                       <Button
+                        type="submit"
                         bgColor="#BE4057"
                         fontFamily="poppins"
                         color="white"
@@ -280,35 +316,55 @@ function AddStock() {
                         Payment Method
                       </Heading>
                       <Flex>
-                        <FormControl color="white">
-                          <FormLabel mb={5}>Transfer Bank</FormLabel>
-                          <RadioGroup>
-                            <Stack direction="column" gap={2}>
-                              <Radio value="bri" colorScheme="facebook">
-                                <Img
-                                  src="../paymentLogo/BRI.png"
-                                  alt="BRI.png"
-                                />
-                              </Radio>
-                              <Radio value="bni" colorScheme="facebook">
-                                <Img
-                                  src="../paymentLogo/BNI.png"
-                                  alt="BNI.png"
-                                />
-                              </Radio>
-                            </Stack>
-                          </RadioGroup>
-                        </FormControl>
-                        <FormControl color="white">
-                          <FormLabel mb={5}>E-Wallet</FormLabel>
-                          <RadioGroup>
-                            <Stack direction="column" gap={2}>
-                              <Radio value="bri" colorScheme="facebook">
-                                <Img
-                                  src="../paymentLogo/gopay.png"
-                                  alt="gopay.png"
-                                />
-                              </Radio>
+                        <FormControl color="white" width={240}>
+                          <RadioGroup
+                            onChange={(value) =>
+                              formikInternetData.setFieldValue(
+                                "paymentMethod",
+                                value
+                              )
+                            }
+                            value={formikInternetData.values.paymentMethod}
+                            name="paymentMethod"
+                          >
+                            <Stack direction="row" gap={14}>
+                              <Box>
+                                <FormLabel mb={5}>Transfer Bank</FormLabel>
+                                <Stack direction="column" gap={2}>
+                                  <Radio
+                                    value="bri"
+                                    colorScheme="facebook"
+                                    bgColor="white"
+                                  >
+                                    <Img
+                                      src="../paymentLogo/BRI.png"
+                                      alt="BRI.png"
+                                    />
+                                  </Radio>
+                                  <Radio
+                                    value="bni"
+                                    bgColor="white"
+                                    colorScheme="facebook"
+                                  >
+                                    <Img
+                                      src="../paymentLogo/BNI.png"
+                                      alt="BNI.png"
+                                    />
+                                  </Radio>
+                                </Stack>
+                              </Box>
+                              <Box>
+                                <FormLabel color="white" mb={5}>
+                                  E-Wallet
+                                </FormLabel>
+                                <Radio
+                                  color="white"
+                                  bgColor="white"
+                                  value="gopay"
+                                >
+                                  <Img src="../paymentLogo/gopay.png" />
+                                </Radio>
+                              </Box>
                             </Stack>
                           </RadioGroup>
                         </FormControl>
@@ -324,7 +380,7 @@ function AddStock() {
                       color="teal.300"
                       fontWeight={500}
                     >
-                      Stock Credit :
+                      Stock Data :
                     </Text>
                     <Text
                       fontFamily="heading"
