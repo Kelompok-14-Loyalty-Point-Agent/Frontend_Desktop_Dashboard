@@ -1,5 +1,8 @@
-// import React from 'react';
+import React from 'react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
 	Box,
@@ -10,14 +13,30 @@ import {
 	Input,
 	InputGroup,
 	InputRightElement,
-	Link,
 	Stack,
 	Text,
 	useColorModeValue,
 } from '@chakra-ui/react';
 
-const Form_SignIn = () => {
+const Form_SignIn = ({ onSubmit }) => {
 	const [showPassword, setShowPassword] = useState(false);
+
+	const formik = useFormik({
+		initialValues: {
+			email: '',
+			password: '',
+		},
+		validationSchema: Yup.object({
+			email: Yup.string().email('Invalid email address').required('Required'),
+			password: Yup.string().required('Required'),
+		}),
+		onSubmit,
+	});
+
+	const inputBorderColor = (fieldName) =>
+		formik.errors[fieldName] && formik.touched[fieldName]
+			? '#BE4057'
+			: '#DFE0EB';
 
 	return (
 		<Box
@@ -42,12 +61,24 @@ const Form_SignIn = () => {
 				</Text>
 			</Box>
 			<Box>
-				<form>
+				<form onSubmit={formik.handleSubmit}>
 					<FormControl id='email'>
 						<FormLabel fontWeight={700} fontSize={20}>
 							Email Address
 						</FormLabel>
-						<Input placeholder='Enter your email' type='email' />
+						<Input
+							type='email'
+							placeholder='Enter your email'
+							value={formik.values.email}
+							onChange={formik.handleChange}
+							onBlur={formik.handleBlur}
+							borderColor={inputBorderColor('email')}
+						/>
+						{formik.errors.email && formik.touched.email && (
+							<Text color='#BE4057' textAlign={'start'} mt={1}>
+								{formik.errors.email}
+							</Text>
+						)}
 					</FormControl>
 					<FormControl id='password' mt={3}>
 						<FormLabel fontWeight={700} fontSize={20}>
@@ -57,6 +88,10 @@ const Form_SignIn = () => {
 							<Input
 								placeholder='Please Enter Your Password'
 								type={showPassword ? 'text' : 'password'}
+								value={formik.values.password}
+								onChange={formik.handleChange}
+								onBlur={formik.handleBlur}
+								borderColor={inputBorderColor('password')}
 							/>
 							<InputRightElement>
 								<Button
@@ -68,13 +103,33 @@ const Form_SignIn = () => {
 								</Button>
 							</InputRightElement>
 						</InputGroup>
+						{formik.errors.password && formik.touched.password && (
+							<Text color='#BE4057' textAlign={'start'} mt={1}>
+								{formik.errors.password}
+							</Text>
+						)}
 					</FormControl>
 					<Stack isInline justifyContent='end' mt={8}>
-						<Link fontWeight={400} color={useColorModeValue('red.600')}>
-							Forgot Password?
+						<Link to='/forgot'>
+							<Text
+								fontWeight={400}
+								color='#BE4057'
+								_hover={{
+									textDecoration: 'underline',
+								}}>
+								Forgot Password?
+							</Text>
 						</Link>
 					</Stack>
-					<Button type='submit' w='full' colorScheme='facebook' mt={12}>
+					<Button
+						type='submit'
+						bg='#030F51'
+						color='white'
+						_hover={{
+							background: '#385898',
+						}}
+						w='full'
+						mt={12}>
 						Sign In
 					</Button>
 				</form>
