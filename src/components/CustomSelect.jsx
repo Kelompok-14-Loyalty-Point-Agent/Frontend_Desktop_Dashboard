@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Box, List, ListItem, Image } from "@chakra-ui/react";
+import { Box, List, ListItem, Image, Img, Flex } from "@chakra-ui/react";
 
 const CustomSelect = ({ options, name, formik }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,19 +26,28 @@ const CustomSelect = ({ options, name, formik }) => {
         borderColor="gray.300"
         bgColor="white"
         borderRadius="md"
-        p="2"
+        py="4"
+        px="5"
         display="flex"
+        justifyContent="space-between"
         alignItems="center"
       >
-        {selectedOption && (
-          <Image
-            src={selectedOption.imageSrc}
-            alt={selectedOption.label}
-            boxSize="40px"
-            mr="2"
-          />
-        )}
-        {selectedOption ? selectedOption.label : "Select an option"}
+        <Flex alignItems="center">
+          {selectedOption && (
+            <Image
+              src={selectedOption.imageSrc}
+              alt={selectedOption.label}
+              boxSize="40px"
+              mr="2"
+            />
+          )}
+          {selectedOption ? selectedOption.label : "Select an option"}
+        </Flex>
+        <Img
+          src={`../icons/addStock/${
+            isOpen ? "arrow_up.svg" : "arrow_down.svg"
+          }`}
+        />
       </Box>
       {isOpen && (
         <List
