@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
@@ -17,9 +18,11 @@ import {
 	Text,
 	useColorModeValue,
 } from '@chakra-ui/react';
+import { signin } from '../config/redux/signin/SignInThunk';
 
-const Form_SignIn = ({ onSubmit }) => {
+const Form_SignIn = () => {
 	const [showPassword, setShowPassword] = useState(false);
+	const dispatch = useDispatch();
 
 	const formik = useFormik({
 		initialValues: {
@@ -30,7 +33,9 @@ const Form_SignIn = ({ onSubmit }) => {
 			email: Yup.string().email('Invalid email address').required('Required'),
 			password: Yup.string().required('Required'),
 		}),
-		onSubmit,
+		onSubmit: (values) => {
+			dispatch(signin(values));
+		},
 	});
 
 	const inputBorderColor = (fieldName) =>
