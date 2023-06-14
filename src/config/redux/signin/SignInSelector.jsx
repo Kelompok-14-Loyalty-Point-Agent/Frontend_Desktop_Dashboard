@@ -1,3 +1,3 @@
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
-export const useToken = () => useSelector((state) => state.signIn.token);
+export const useToken = () => useSelector((state) => state.session.token);
