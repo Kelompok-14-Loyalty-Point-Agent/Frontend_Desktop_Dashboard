@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useTokenSelector } from '../redux/signin/SignInSelector';
 import ForgotPassword from '../../pages/ForgotPassword';
 import DataCreditStock from '../../pages/DataCreditStock';
 import CreateNewPassword from '../../pages/CreateNewPassword';
@@ -10,20 +13,25 @@ import DashboardProfile from '../../pages/DashboardProfile';
 import CashOutStock from '../../pages/CashOutStock';
 import AddStock from '../../pages/AddStock';
 import CustomerTransaction from '../../pages/CustomerTransaction';
-import { useTokenSelector } from '../redux/signin/SignInSelector';
-import { useNavigate, Navigate } from 'react-router-dom';
 
 const PrivateRouter = ({ children }) => {
 	const token = useTokenSelector();
-	// const navigate = useNavigate();
+	const navigate = useNavigate();
 
 	console.log(token);
 
-	if (token) {
-		return children;
-	} else {
-		<Navigate to='/signin' replace={true} />;
+	useEffect(() => {
+		if (!token) {
+			console.log('coba ', token);
+			navigate('/signin');
+		}
+	}, [token]);
+
+	if (!token) {
+		return null;
 	}
+
+	return children;
 };
 
 const routers = [
@@ -56,32 +64,52 @@ const routers = [
 		element: <CreateNewPassword />,
 	},
 	{
-		path: '/forgot',
-		element: <ForgotPassword />,
-	},
-	{
 		path: '/profile',
-		element: <DashboardProfile />,
+		element: (
+			<PrivateRouter>
+				<DashboardProfile />,
+			</PrivateRouter>
+		),
 	},
 	{
 		path: '/customers',
-		element: <CustomerData />,
+		element: (
+			<PrivateRouter>
+				<CustomerData />,
+			</PrivateRouter>
+		),
 	},
 	{
 		path: '/transactions',
-		element: <CustomerTransaction />,
+		element: (
+			<PrivateRouter>
+				<CustomerTransaction />,
+			</PrivateRouter>
+		),
 	},
 	{
 		path: '/stocks',
-		element: <DataCreditStock />,
+		element: (
+			<PrivateRouter>
+				<DataCreditStock />,
+			</PrivateRouter>
+		),
 	},
 	{
 		path: '/stocks/add',
-		element: <AddStock />,
+		element: (
+			<PrivateRouter>
+				<AddStock />,
+			</PrivateRouter>
+		),
 	},
 	{
 		path: '/cashout',
-		element: <CashOutStock />,
+		element: (
+			<PrivateRouter>
+				<CashOutStock />,
+			</PrivateRouter>
+		),
 	},
 ];
 
