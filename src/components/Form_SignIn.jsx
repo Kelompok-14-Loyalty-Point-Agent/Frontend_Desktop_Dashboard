@@ -20,10 +20,14 @@ import {
 } from "@chakra-ui/react";
 import { signin } from "../config/redux/signin/SignInThunk";
 import axios from "axios";
+import { useTokenSelector } from "../config/redux/signin/SignInSelector";
 
 const Form_SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
+  const token = useTokenSelector();
+
+  console.log(token);
 
   const formik = useFormik({
     initialValues: {
