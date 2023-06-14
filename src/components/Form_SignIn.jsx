@@ -43,11 +43,11 @@ const Form_SignIn = () => {
     },
   });
 
-  useEffect(() => {
-    if (token) {
-      navigate("/dashboard");
-    }
-  }, [token]);
+	useEffect(() => {
+		if (token) {
+			navigate('/dashboard');
+		}
+	}, [token]);
 
   const inputBorderColor = (fieldName) =>
     formik.errors[fieldName] && formik.touched[fieldName]
