@@ -3,7 +3,7 @@ import { signInReducer } from "./signin/SignInSlice";
 import { addStockReducer } from "./addStocks/addStocksSlice";
 
 const reducer = combineReducers({
-  signIn: signInReducer,
+  session: signInReducer,
   addStock: addStockReducer,
 });
 
