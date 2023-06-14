@@ -6,6 +6,30 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
+<<<<<<< HEAD
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Stack,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { signin } from "../config/redux/signin/SignInThunk";
+import axios from "axios";
+import { useTokenSelector } from "../config/redux/signin/SignInSelector";
+
+const Form_SignIn = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useDispatch();
+  const token = useTokenSelector();
+
+  console.log(token);
+=======
 	Box,
 	Button,
 	FormControl,
@@ -25,6 +49,7 @@ import axios from 'axios';
 const Form_SignIn = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const dispatch = useDispatch();
+>>>>>>> 6267f071125c50dd4cbcf63f8b94cc5ef205fdf0
 
 	const formik = useFormik({
 		initialValues: {
