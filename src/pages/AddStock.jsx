@@ -17,15 +17,41 @@ import {
   TabPanels,
   Tabs,
   Text,
-  Select,
   RadioGroup,
   Radio,
   Stack,
 } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
 import CustomSelect from "../components/CustomSelect";
+import {
+  add_stock,
+  add_stock_axios,
+} from "../config/redux/addStocks/addStocksThunk";
+import { useDispatch } from "react-redux";
+import axios from "axios";
 
 function AddStock() {
+  const dispatch = useDispatch();
+
+  const fetchStockCredit = async () => {
+    try {
+      const res = await axios.get("http://13.229.84.45/stocks/2", {
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjg2NTc4NDE4fQ.V9hwFOwOIae92WzxeBJcyn7Oz1oEvysYeMMxtDaa_XA",
+        },
+      });
+      const data = res.data;
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const stockCredit = fetchStockCredit();
+
+  console.log(stockCredit.then((res) => console.log(res)));
+
   const formatDate = (date) => {
     const options = { month: "2-digit", day: "2-digit", year: "numeric" };
     return date.toLocaleDateString("en-US", options);
@@ -33,7 +59,7 @@ function AddStock() {
 
   const optionsCredit = [
     {
-      value: "telkomsel",
+      value: 1,
       label: "Telkomsel",
       imageSrc: "../providerDummy/telkomsel.png",
     },
@@ -53,7 +79,7 @@ function AddStock() {
       imageSrc: "../providerDummy/tri.png",
     },
     {
-      value: "xl",
+      value: 2,
       label: "XL",
       imageSrc: "../providerDummy/xl.png",
     },
@@ -63,13 +89,16 @@ function AddStock() {
 
   const formikCredit = useFormik({
     initialValues: {
+      type: "credit",
       provider: null,
       stockCredit: null,
-      paymentMethod: null,
+      // paymentMethod: null,
     },
     onSubmit: (formData) => {
-      alert(JSON.stringify(formData));
+      // alert(JSON.stringify(formData));
+      // dispatch(add_stock(formData));
       console.log({ formData });
+      add_stock_axios(formData);
       formikCredit.resetForm();
     },
   });
