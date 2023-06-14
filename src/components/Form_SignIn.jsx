@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -24,6 +24,7 @@ import { useTokenSelector } from "../config/redux/signin/SignInSelector";
 const Form_SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const token = useTokenSelector();
 
   console.log(token);
@@ -41,6 +42,12 @@ const Form_SignIn = () => {
       dispatch(signin(values));
     },
   });
+
+  useEffect(() => {
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, [token]);
 
   const inputBorderColor = (fieldName) =>
     formik.errors[fieldName] && formik.touched[fieldName]
