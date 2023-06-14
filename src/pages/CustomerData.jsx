@@ -1,6 +1,15 @@
 // import React from 'react'
 
-import { Box, Button, Center, Flex, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  Flex,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Text,
+} from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
 import NavbarDashboard from "../components/NavbarDashboard";
 import { useState } from "react";
@@ -326,11 +335,11 @@ const CustomerData = () => {
                     </Flex>
                     <Flex gap={3} mt={5}>
                       <img src="./icons/customer/email.svg" alt="" />
-                      <Text>itsabella@gmail.com</Text>
+                      <Input defaultValue={"itsabella@gmail.com"} />
                     </Flex>
                     <Flex gap={3} mt={5}>
                       <img src="./icons/customer/phone.svg" alt="" />
-                      <Text>08212212121</Text>
+                      <Input defaultValue={"082188216081"} />
                     </Flex>
                   </Box>
                   <Box opacity={"30%"}>
@@ -449,7 +458,6 @@ const CustomerData = () => {
       ) : (
         <Flex h={"full"}>
           <Sidebar />
-
           {/* COSTUMER DATA */}
           <Box mx={"114px"} my={"80px"} w={570}>
             <Text fontSize={32} as="b" fontFamily={"heading"}>
@@ -688,8 +696,20 @@ const CustomerData = () => {
           {/* END COSTUMER DATA */}
 
           {/* DETAIL CUSTOMER */}
-          <Box flex={"1"} px={10}>
-            <NavbarDashboard />
+          <Box flex={"1"} pr={10}>
+            <Flex>
+              <InputGroup mt={10}>
+                <InputLeftElement>
+                  <img src="./icons/black/search.svg" alt="" />
+                </InputLeftElement>
+                <Input
+                  boxShadow={"2px 3px 8px 2px rgba(0, 0, 0, 0.25)"}
+                  borderRadius={"6px"}
+                  placeholder="Search"
+                />
+              </InputGroup>
+              <NavbarDashboard />
+            </Flex>
 
             <Flex justifyContent={"center"}>
               <Flex
