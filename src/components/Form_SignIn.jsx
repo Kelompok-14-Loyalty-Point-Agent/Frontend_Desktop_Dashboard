@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
-<<<<<<< HEAD
   Box,
   Button,
   FormControl,
@@ -29,7 +28,6 @@ const Form_SignIn = () => {
   const token = useTokenSelector();
 
   console.log(token);
-=======
 	Box,
 	Button,
 	FormControl,
@@ -41,15 +39,21 @@ const Form_SignIn = () => {
 	Stack,
 	Text,
 	useColorModeValue,
-	useToken,
 } from '@chakra-ui/react';
 import { signin } from '../config/redux/signin/SignInThunk';
-import axios from 'axios';
+import { useTokenSelector } from '../config/redux/signin/SignInSelector';
 
 const Form_SignIn = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const dispatch = useDispatch();
->>>>>>> 6267f071125c50dd4cbcf63f8b94cc5ef205fdf0
+	const navigate = useNavigate();
+	const token = useTokenSelector();
+
+	useEffect(() => {
+		if (token) {
+			navigate('/dashboard');
+		}
+	}, [token]);
 
 	const formik = useFormik({
 		initialValues: {
