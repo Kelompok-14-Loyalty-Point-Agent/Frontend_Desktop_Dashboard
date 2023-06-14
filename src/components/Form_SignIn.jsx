@@ -19,29 +19,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { signin } from "../config/redux/signin/SignInThunk";
-import axios from "axios";
 import { useTokenSelector } from "../config/redux/signin/SignInSelector";
-
-const Form_SignIn = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const dispatch = useDispatch();
-  const token = useTokenSelector();
-
-  console.log(token);
-	Box,
-	Button,
-	FormControl,
-	FormLabel,
-	Heading,
-	Input,
-	InputGroup,
-	InputRightElement,
-	Stack,
-	Text,
-	useColorModeValue,
-} from '@chakra-ui/react';
-import { signin } from '../config/redux/signin/SignInThunk';
-import { useTokenSelector } from '../config/redux/signin/SignInSelector';
 
 const Form_SignIn = () => {
 	const [showPassword, setShowPassword] = useState(false);
