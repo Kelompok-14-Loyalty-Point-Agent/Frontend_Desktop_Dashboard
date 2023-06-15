@@ -1,14 +1,19 @@
 import { Flex, Button } from "@chakra-ui/react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useTokenSelector } from "../config/redux/signin/SignInSelector";
+import { useDispatch } from "react-redux";
+import { signInAction } from "../config/redux/signin/SignInSlice";
 
 function NavbarDashboard() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleClickProfile = () => {
     navigate("/profile");
   };
   const handleClickLogout = () => {
-    navigate("/logout");
+    dispatch(signInAction.setToken(""));
   };
   return (
     <Flex gap={5} justifyContent="end" mb={4} mx={10} mt={10}>

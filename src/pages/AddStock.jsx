@@ -1,5 +1,8 @@
 import * as React from "react";
 import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+
 import {
   Box,
   Button,
@@ -20,37 +23,51 @@ import {
   RadioGroup,
   Radio,
   Stack,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
 import CustomSelect from "../components/CustomSelect";
+
 import {
   add_stock,
-  add_stock_axios,
+  getStockProvider,
 } from "../config/redux/addStocks/addStocksThunk";
-import { useDispatch } from "react-redux";
-import axios from "axios";
+import { useTokenSelector } from "../../src/config/redux/signin/SignInSelector";
+import { getStockCredit } from "../config/redux/getStocks/getStocksThunk";
+import { useStockCreditSelector } from "../config/redux/getStocks/getStocksSelector";
+import { useGetProvidersStock } from "../config/redux/addStocks/addStocksSelector";
 
 function AddStock() {
   const dispatch = useDispatch();
+  const token = useTokenSelector();
+  const stockCredit = useStockCreditSelector();
+  const providers = useGetProvidersStock();
 
-  const fetchStockCredit = async () => {
-    try {
-      const res = await axios.get("http://13.229.84.45/stocks/2", {
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjg2NTc4NDE4fQ.V9hwFOwOIae92WzxeBJcyn7Oz1oEvysYeMMxtDaa_XA",
-        },
-      });
-      const data = res.data;
-      return data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  console.log(token);
 
-  const stockCredit = fetchStockCredit();
+  React.useEffect(() => {
+    dispatch(getStockProvider(token));
+  }, [token]);
 
-  console.log(stockCredit.then((res) => console.log(res)));
+  React.useEffect(() => {
+    dispatch(getStockCredit(token));
+  }, [token]);
+
+  const totalStockCredit = stockCredit?.data
+    .filter((data) => data.type === "credit")
+    .map((data) => data.stock)
+    .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+    .toLocaleString("id-ID");
+
+  const totalStockInternetData = stockCredit?.data
+    .filter((data) => data.type === "data")
+    .map((data) => data.stock)
+    .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+    .toLocaleString("id-ID");
 
   const formatDate = (date) => {
     const options = { month: "2-digit", day: "2-digit", year: "numeric" };
@@ -59,29 +76,34 @@ function AddStock() {
 
   const optionsCredit = [
     {
-      value: 1,
+      value: "Telkomsel",
       label: "Telkomsel",
       imageSrc: "../providerDummy/telkomsel.png",
     },
     {
-      value: "axis",
-      label: "Axis",
-      imageSrc: "../providerDummy/axis.png",
+      value: "XL",
+      label: "XL",
+      imageSrc: "../providerDummy/xl.png",
     },
     {
-      value: "smartfren",
+      value: "Smartfren",
       label: "Smartfren",
       imageSrc: "../providerDummy/smartfren.png",
     },
     {
-      value: "tri",
-      label: "3",
-      imageSrc: "../providerDummy/tri.png",
+      value: "Indosat",
+      label: "Indosat",
+      imageSrc: "../providerDummy/indosat.jpg",
     },
     {
-      value: 2,
-      label: "XL",
-      imageSrc: "../providerDummy/xl.png",
+      value: "Axis",
+      label: "Axis",
+      imageSrc: "../providerDummy/axis.png",
+    },
+    {
+      value: "Tri / 3",
+      label: "Tri / 3",
+      imageSrc: "../providerDummy/tri.png",
     },
   ];
 
@@ -89,22 +111,22 @@ function AddStock() {
 
   const formikCredit = useFormik({
     initialValues: {
-      type: "credit",
-      provider: null,
-      stockCredit: null,
-      // paymentMethod: null,
+      user_id: 1,
+      stock_id: 2,
+      provider_name: "",
+      input_stock: 0,
+      payment_method: "",
     },
     onSubmit: (formData) => {
-      // alert(JSON.stringify(formData));
-      // dispatch(add_stock(formData));
-      console.log({ formData });
-      add_stock_axios(formData);
+      alert(JSON.stringify(formData));
+      dispatch(add_stock(formData));
       formikCredit.resetForm();
     },
   });
 
   const formikInternetData = useFormik({
     initialValues: {
+      type: "credit",
       provider: null,
       stockData: null,
       paymentMethod: null,
@@ -151,21 +173,31 @@ function AddStock() {
                         <CustomSelect
                           options={optionsCredit}
                           formik={formikCredit}
-                          name="provider"
+                          name="provider_name"
                         />
                       </FormControl>
                       <FormControl mb={8}>
                         <FormLabel color="white" fontSize={20}>
                           Input Stock Credit
                         </FormLabel>
-                        <Input
-                          onChange={formikCredit.handleChange}
-                          value={formikCredit.values.stockCredit}
-                          name="stockCredit"
-                          placeholder="Input stock credit  e.g. 1.000.000"
-                          bgColor="white"
-                          h={14}
-                        />
+                        <NumberInput>
+                          <NumberInputField
+                            onChange={(e) => {
+                              formikCredit.setFieldValue(
+                                "input_stock",
+                                parseInt(e.target.value)
+                              );
+                            }}
+                            value={formikCredit.values.input_stock}
+                            name="input_stock"
+                            placeholder="Input stock credit  e.g. 1.000.000"
+                            bgColor="white"
+                          />
+                          <NumberInputStepper>
+                            <NumberIncrementStepper />
+                            <NumberDecrementStepper />
+                          </NumberInputStepper>
+                        </NumberInput>
                       </FormControl>
                       <Button
                         type="submit"
@@ -194,10 +226,13 @@ function AddStock() {
                         <FormControl color="white" width={240}>
                           <RadioGroup
                             onChange={(value) =>
-                              formikCredit.setFieldValue("paymentMethod", value)
+                              formikCredit.setFieldValue(
+                                "payment_method",
+                                value
+                              )
                             }
-                            value={formikCredit.values.paymentMethod}
-                            name="paymentMethod"
+                            value={formikCredit.values.payment_method}
+                            name="payment_method"
                           >
                             <Stack direction="row" gap={14}>
                               <Box>
@@ -232,7 +267,7 @@ function AddStock() {
                                 <Radio
                                   color="white"
                                   bgColor="white"
-                                  value="gopay"
+                                  value="GoPay"
                                 >
                                   <Img src="../paymentLogo/gopay.png" />
                                 </Radio>
@@ -260,7 +295,7 @@ function AddStock() {
                       color="white"
                       fontWeight={500}
                     >
-                      1.000.000
+                      {totalStockCredit}
                     </Text>
                   </Flex>
                   <Flex gap={7}>
@@ -417,7 +452,7 @@ function AddStock() {
                       color="white"
                       fontWeight={500}
                     >
-                      500 GB
+                      {totalStockInternetData}
                     </Text>
                   </Flex>
                   <Flex gap={7}>
