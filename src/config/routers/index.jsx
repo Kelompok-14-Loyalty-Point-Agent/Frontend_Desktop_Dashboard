@@ -18,7 +18,6 @@ const PrivateRouter = ({ children }) => {
   const token = useTokenSelector();
   const navigate = useNavigate();
 
-<<<<<<< HEAD
   useEffect(() => {
     if (!token) {
       navigate("/signin");
@@ -29,21 +28,6 @@ const PrivateRouter = ({ children }) => {
     return null;
   }
 
-=======
-  console.log(token);
-
-  useEffect(() => {
-    if (!token) {
-      console.log("coba ", token);
-      navigate("/signin");
-    }
-  }, [token]);
-
-  if (!token) {
-    return null;
-  }
-
->>>>>>> fba2bdcd7b76f7fa2299edece07142c6a41929eb
   return children;
 };
 
