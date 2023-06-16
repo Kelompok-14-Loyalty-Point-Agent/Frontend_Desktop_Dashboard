@@ -27,8 +27,6 @@ const Form_SignIn = () => {
   const navigate = useNavigate();
   const token = useTokenSelector();
 
-  console.log(token);
-
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -43,11 +41,11 @@ const Form_SignIn = () => {
     },
   });
 
-	useEffect(() => {
-		if (token) {
-			navigate('/dashboard');
-		}
-	}, [token]);
+  useEffect(() => {
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, [token]);
 
   const inputBorderColor = (fieldName) =>
     formik.errors[fieldName] && formik.touched[fieldName]

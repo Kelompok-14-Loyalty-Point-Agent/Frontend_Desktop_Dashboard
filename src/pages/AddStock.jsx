@@ -1,5 +1,8 @@
 import * as React from "react";
-import { useFormik } from "formik";
+import { isNaN, useFormik } from "formik";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+
 import {
   Box,
   Button,
@@ -20,101 +23,172 @@ import {
   RadioGroup,
   Radio,
   Stack,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
 } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
 import CustomSelect from "../components/CustomSelect";
+
 import {
   add_stock,
-  add_stock_axios,
+  getStockProvider,
 } from "../config/redux/addStocks/addStocksThunk";
-import { useDispatch } from "react-redux";
-import axios from "axios";
+import { getStockCredit } from "../config/redux/getStockCredit/getStockCreditThunk";
+import { useStockCreditSelector } from "../config/redux/getStockCredit/getStockCreditSelector";
+import { useAddStockCreditType } from "../config/redux/addStocks/addStocksSelector";
+import { getStockInternetData } from "../config/redux/getStockInternetData/getStockInternetDataThunk";
+import { useStockInternetDataSelector } from "../config/redux/getStockInternetData/getStockInternetDataSelector";
+import { addStockInternetData } from "../config/redux/addStockInternetData/addStockInternetDataThunk";
+import { useAddStockType } from "../config/redux/addStockInternetData/addStockInternetDataSelector";
 
 function AddStock() {
   const dispatch = useDispatch();
-
-  const fetchStockCredit = async () => {
-    try {
-      const res = await axios.get("http://13.229.84.45/stocks/2", {
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjg2NTc4NDE4fQ.V9hwFOwOIae92WzxeBJcyn7Oz1oEvysYeMMxtDaa_XA",
-        },
-      });
-      const data = res.data;
-      return data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const stockCredit = fetchStockCredit();
-
-  console.log(stockCredit.then((res) => console.log(res)));
+  const addStockType = useAddStockType();
+  const addStockCreditType = useAddStockCreditType();
+  const stockCredit = useStockCreditSelector();
+  const stockInternetData = useStockInternetDataSelector();
 
   const formatDate = (date) => {
     const options = { month: "2-digit", day: "2-digit", year: "numeric" };
-    return date.toLocaleDateString("en-US", options);
+    return date.toLocaleDateString("id-ID", options);
   };
 
-  const optionsCredit = [
+  const formatNumber = (number) => number.toLocaleString("en-US");
+
+  React.useEffect(() => {
+    dispatch(getStockProvider());
+  }, []);
+
+  React.useEffect(() => {
+    dispatch(getStockCredit());
+  }, []);
+
+  React.useEffect(() => {
+    dispatch(getStockInternetData());
+  }, []);
+
+  React.useEffect(() => {
+    if (addStockType) {
+      dispatch(getStockInternetData());
+    }
+  }, [addStockType]);
+
+  React.useEffect(() => {
+    if (addStockCreditType === "addStock/add/fulfilled") {
+      dispatch(getStockCredit());
+    }
+  }, [addStockCreditType]);
+
+  const totalStockCredit = stockCredit?.data
+    .filter((data) => data.type === "credit")
+    .map((data) => parseInt(data.stock))
+    .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+  const lastUpdateStockCredit = stockCredit?.data
+    .map((data) => new Date(data.last_top_up))
+    .sort((a, b) => b - a)[0];
+
+  const totalStockInternetData = stockInternetData?.data
+    .filter((data) => data.type === "data")
+    .map((data) => parseInt(data.stock))
+    .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+  const stockInternetLastTopup = stockInternetData?.data
+    .filter((data) => data.type === "data")
+    .map((data) => new Date(data.last_top_up))
+    .sort((a, b) => b - a)[0];
+
+  const optionsProvider = [
     {
-      value: 1,
+      value: "Telkomsel",
       label: "Telkomsel",
       imageSrc: "../providerDummy/telkomsel.png",
     },
     {
-      value: "axis",
-      label: "Axis",
-      imageSrc: "../providerDummy/axis.png",
+      value: "XL",
+      label: "XL",
+      imageSrc: "../providerDummy/xl.png",
     },
     {
-      value: "smartfren",
+      value: "Smartfren",
       label: "Smartfren",
       imageSrc: "../providerDummy/smartfren.png",
     },
     {
-      value: "tri",
-      label: "3",
-      imageSrc: "../providerDummy/tri.png",
+      value: "Indosat",
+      label: "Indosat",
+      imageSrc: "../providerDummy/indosat.jpg",
     },
     {
-      value: 2,
-      label: "XL",
-      imageSrc: "../providerDummy/xl.png",
+      value: "Axis",
+      label: "Axis",
+      imageSrc: "../providerDummy/axis.png",
+    },
+    {
+      value: "Tri / 3",
+      label: "Tri / 3",
+      imageSrc: "../providerDummy/tri.png",
     },
   ];
 
-  const currentDate = formatDate(new Date());
-
   const formikCredit = useFormik({
     initialValues: {
-      type: "credit",
-      provider: null,
-      stockCredit: null,
-      // paymentMethod: null,
+      user_id: 1,
+      stock_id: 2,
+      provider_name: "",
+      input_stock: 0,
+      payment_method: "",
+      pay_amount: 0,
     },
     onSubmit: (formData) => {
-      // alert(JSON.stringify(formData));
-      // dispatch(add_stock(formData));
-      console.log({ formData });
-      add_stock_axios(formData);
+      dispatch(add_stock(formData));
       formikCredit.resetForm();
     },
   });
 
   const formikInternetData = useFormik({
     initialValues: {
-      provider: null,
-      stockData: null,
-      paymentMethod: null,
+      user_id: 1,
+      stock_id: 1,
+      provider_name: "",
+      input_stock: 0,
+      payment_method: "",
+      pay_amount: 0,
     },
     onSubmit: (formData) => {
-      alert(JSON.stringify(formData));
-      console.log({ formData });
+      dispatch(addStockInternetData(formData));
       formikInternetData.resetForm();
     },
   });
+
+  const handleChangeStockCredit = (e) => {
+    const formattedValue = parseInt(e.target.value);
+
+    formikCredit.setFieldValue("input_stock", formattedValue);
+
+    const payAmountValue = parseFloat(formikCredit.values.pay_amount);
+
+    const result = isNaN(payAmountValue)
+      ? 0
+      : formattedValue + formattedValue * 0.2;
+
+    formikCredit.setFieldValue("pay_amount", result);
+  };
+
+  const handleChangeStockInternetData = (e) => {
+    const formattedValue = parseFloat(e.target.value);
+
+    formikInternetData.setFieldValue("input_stock", formattedValue);
+
+    const payAmountValue = parseFloat(formikInternetData.values.pay_amount);
+
+    const result = isNaN(payAmountValue) ? 0 : formattedValue * 10000;
+
+    formikInternetData.setFieldValue("pay_amount", result);
+  };
 
   return (
     <Flex height="100vh">
@@ -149,23 +223,55 @@ function AddStock() {
                           Choose Provider
                         </FormLabel>
                         <CustomSelect
-                          options={optionsCredit}
+                          options={optionsProvider}
                           formik={formikCredit}
-                          name="provider"
+                          name="provider_name"
                         />
                       </FormControl>
                       <FormControl mb={8}>
                         <FormLabel color="white" fontSize={20}>
                           Input Stock Credit
                         </FormLabel>
-                        <Input
-                          onChange={formikCredit.handleChange}
-                          value={formikCredit.values.stockCredit}
-                          name="stockCredit"
-                          placeholder="Input stock credit  e.g. 1.000.000"
-                          bgColor="white"
-                          h={14}
-                        />
+                        <NumberInput>
+                          <NumberInputField
+                            onChange={handleChangeStockCredit}
+                            value={formikCredit.values.input_stock}
+                            name="input_stock"
+                            placeholder="Input stock credit  e.g. 1.000.000"
+                            bgColor="white"
+                            height="54px"
+                          />
+                          <NumberInputStepper>
+                            <NumberIncrementStepper />
+                            <NumberDecrementStepper />
+                          </NumberInputStepper>
+                        </NumberInput>
+                      </FormControl>
+                      <FormControl mt={24} mb={8}>
+                        <Flex alignItems="center" justify="space-between">
+                          <Heading fontSize={22} fontWeight={500} color="white">
+                            Pay Amount :
+                          </Heading>
+                          <Flex alignItems="center">
+                            <Heading
+                              fontSize={22}
+                              color="teal.300"
+                              fontWeight={500}
+                            >
+                              Rp.
+                            </Heading>
+                            <Input
+                              onChange={formikCredit.handleChange}
+                              value={formikCredit.values.pay_amount}
+                              name="pay_amount"
+                              borderColor="transparent"
+                              color="white"
+                              maxWidth="360px"
+                              fontSize={22}
+                              _hover={{ borderColor: "transparent" }}
+                            />
+                          </Flex>
+                        </Flex>
                       </FormControl>
                       <Button
                         type="submit"
@@ -194,10 +300,13 @@ function AddStock() {
                         <FormControl color="white" width={240}>
                           <RadioGroup
                             onChange={(value) =>
-                              formikCredit.setFieldValue("paymentMethod", value)
+                              formikCredit.setFieldValue(
+                                "payment_method",
+                                value
+                              )
                             }
-                            value={formikCredit.values.paymentMethod}
-                            name="paymentMethod"
+                            value={formikCredit.values.payment_method}
+                            name="payment_method"
                           >
                             <Stack direction="row" gap={14}>
                               <Box>
@@ -232,7 +341,7 @@ function AddStock() {
                                 <Radio
                                   color="white"
                                   bgColor="white"
-                                  value="gopay"
+                                  value="GoPay"
                                 >
                                   <Img src="../paymentLogo/gopay.png" />
                                 </Radio>
@@ -244,7 +353,7 @@ function AddStock() {
                     </Box>
                   </SimpleGrid>
                 </form>
-                <Flex gap={36} color="white" mt={72}>
+                <Flex gap={36} color="white" mt={48}>
                   <Flex gap={7}>
                     <Text
                       fontFamily="heading"
@@ -260,7 +369,7 @@ function AddStock() {
                       color="white"
                       fontWeight={500}
                     >
-                      1.000.000
+                      {formatNumber(totalStockCredit)}
                     </Text>
                   </Flex>
                   <Flex gap={7}>
@@ -278,7 +387,7 @@ function AddStock() {
                       color="white"
                       fontWeight={500}
                     >
-                      {currentDate}
+                      {formatDate(lastUpdateStockCredit)}
                     </Text>
                   </Flex>
                 </Flex>
@@ -301,24 +410,62 @@ function AddStock() {
                         </FormLabel>
                         <CustomSelect
                           formik={formikInternetData}
-                          name="provider"
-                          options={optionsCredit}
+                          name="provider_name"
+                          options={optionsProvider}
                         />
                       </FormControl>
                       <FormControl mb={8}>
                         <FormLabel color="white" fontSize={20}>
                           Input Stock Data
                         </FormLabel>
-                        <Flex gap={5} alignItems="center" fontSize={24}>
-                          <Input
-                            placeholder="Input stock credit  e.g. 500"
-                            bgColor="white"
-                            h={14}
-                            name="stockData"
-                            value={formikInternetData.values.stockData}
-                            onChange={formikInternetData.handleChange}
-                          />
+                        <Flex
+                          gap={5}
+                          alignItems="center"
+                          justify="space-between"
+                          fontSize={24}
+                        >
+                          <NumberInput>
+                            <NumberInputField
+                              onChange={handleChangeStockInternetData}
+                              value={formikInternetData.values.input_stock}
+                              name="input_stock"
+                              placeholder="Input stock credit  e.g. 1.000.000"
+                              bgColor="white"
+                              width={470}
+                              height="54px"
+                            />
+                            <NumberInputStepper>
+                              <NumberIncrementStepper />
+                              <NumberDecrementStepper />
+                            </NumberInputStepper>
+                          </NumberInput>
                           <Text color="white">GB</Text>
+                        </Flex>
+                      </FormControl>
+                      <FormControl mt={24} mb={8}>
+                        <Flex alignItems="center" justify="space-between">
+                          <Heading fontSize={22} fontWeight={500} color="white">
+                            Pay Amount :
+                          </Heading>
+                          <Flex alignItems="center">
+                            <Heading
+                              fontSize={22}
+                              color="teal.300"
+                              fontWeight={500}
+                            >
+                              Rp.
+                            </Heading>
+                            <Input
+                              onChange={formikInternetData.handleChange}
+                              value={formikInternetData.values.pay_amount}
+                              name="pay_amount"
+                              borderColor="transparent"
+                              color="white"
+                              maxWidth="360px"
+                              fontSize={22}
+                              _hover={{ borderColor: "transparent" }}
+                            />
+                          </Flex>
                         </Flex>
                       </FormControl>
                       <Button
@@ -349,12 +496,12 @@ function AddStock() {
                           <RadioGroup
                             onChange={(value) =>
                               formikInternetData.setFieldValue(
-                                "paymentMethod",
+                                "payment_method",
                                 value
                               )
                             }
-                            value={formikInternetData.values.paymentMethod}
-                            name="paymentMethod"
+                            value={formikInternetData.values.payment_method}
+                            name="payment_method"
                           >
                             <Stack direction="row" gap={14}>
                               <Box>
@@ -401,7 +548,7 @@ function AddStock() {
                     </Box>
                   </SimpleGrid>
                 </form>
-                <Flex gap={36} color="white" mt={72}>
+                <Flex gap={36} color="white" mt={48}>
                   <Flex gap={7}>
                     <Text
                       fontFamily="heading"
@@ -417,7 +564,7 @@ function AddStock() {
                       color="white"
                       fontWeight={500}
                     >
-                      500 GB
+                      {formatNumber(totalStockInternetData)} GB
                     </Text>
                   </Flex>
                   <Flex gap={7}>
@@ -435,7 +582,7 @@ function AddStock() {
                       color="white"
                       fontWeight={500}
                     >
-                      {currentDate}
+                      {formatDate(stockInternetLastTopup)}
                     </Text>
                   </Flex>
                 </Flex>

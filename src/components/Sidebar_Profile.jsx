@@ -11,7 +11,6 @@ function Sidebar_Profile() {
         </Text>
       </Center>
       <Center mt={5} color="white">
-        {" "}
         <img src="./Ellipse78.svg" alt="profile" />
         <img
           src="./icons/dashboard/editprofile.svg"
