@@ -106,6 +106,22 @@ function Form_EditProfile() {
                   />
                 </FormControl>
                 <br />
+                <Stack spacing={4}>
+                  <Button
+                    bg="#030F51"
+                    color="white"
+                    _hover={{
+                      background: "#385898",
+                    }}
+                    fontWeight={400}
+                    fontSize={16}
+                  >
+                    Save Changes
+                  </Button>
+                </Stack>
+                <br />
+                <hr />
+                <br />
                 <FormControl id="password" isRequired>
                   <FormLabel
                     fontFamily="heading"
@@ -136,8 +152,6 @@ function Form_EditProfile() {
                   </InputGroup>
                 </FormControl>
                 <br />
-                <br />
-                <br />
                 <Stack spacing={4}>
                   <Button
                     bg="#030F51"
@@ -150,17 +164,7 @@ function Form_EditProfile() {
                   >
                     Change Password
                   </Button>
-                  <Button
-                    bg="#030F51"
-                    color="white"
-                    _hover={{
-                      background: "#385898",
-                    }}
-                    fontWeight={400}
-                    fontSize={16}
-                  >
-                    Save Changes
-                  </Button>
+
                   <Button
                     bg="#690837"
                     color="white"
