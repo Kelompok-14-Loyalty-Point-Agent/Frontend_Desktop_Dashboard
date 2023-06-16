@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getStockCredit } from "./getStocksThunk";
+import { getStockCredit } from "./getStockCreditThunk";
 
-const getStocksInitState = {
+const getStockCreditInitState = {
   stockCreditValue: null,
 };
 
-const getStocksSlice = createSlice({
-  name: "getStocks",
-  initialState: getStocksInitState,
+const getStockCreditSlice = createSlice({
+  name: "getStockCredit",
+  initialState: getStockCreditInitState,
   reducers: {
     setGetStockCredit: (state, action) => {
       return {
@@ -46,5 +46,5 @@ const getStocksSlice = createSlice({
   },
 });
 
-export const { actions: getStocksAction, reducer: getStocksReducer } =
-  getStocksSlice;
+export const { actions: getStockCreditAction, reducer: getStockCreditReducer } =
+  getStockCreditSlice;

@@ -7,7 +7,13 @@ import reducer from "./reducer";
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["session", "addStock", "getStocks"],
+  whitelist: [
+    "session",
+    "addStock",
+    "getStockCredit",
+    "getStockInternetData",
+    "addStockInternetData",
+  ],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);
