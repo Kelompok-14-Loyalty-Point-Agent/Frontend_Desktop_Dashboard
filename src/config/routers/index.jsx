@@ -18,8 +18,6 @@ const PrivateRouter = ({ children }) => {
   const token = useTokenSelector();
   const navigate = useNavigate();
 
-  console.log(token);
-
   useEffect(() => {
     if (!token) {
       console.log("coba ", token);

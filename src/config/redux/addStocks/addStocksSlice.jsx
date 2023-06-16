@@ -1,10 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { add_stock } from "./addStocksThunk";
+import { add_stock, getStockProvider } from "./addStocksThunk";
 
 const addStocksInitState = {
-  type: null,
-  total_stock: 0,
-  provider_id: 0,
+  responseObj: {},
+  providers: [],
 };
 
 const addStocksSlice = createSlice({
@@ -14,7 +13,7 @@ const addStocksSlice = createSlice({
     setAddStock: (state, action) => {
       return {
         ...state,
-        addStocksInitState: action.payload,
+        responseObj: action.payload,
       };
     },
   },
@@ -31,7 +30,7 @@ const addStocksSlice = createSlice({
       .addCase(add_stock.fulfilled, (state, action) => {
         return {
           ...state,
-          addStock: action.payload,
+          responseObj: action.payload,
           addStockLoading: false,
           addStockError: undefined,
           type: action.type,
@@ -42,6 +41,31 @@ const addStocksSlice = createSlice({
           ...state,
           addStockLoading: false,
           addStockError: action.payload,
+          type: action.type,
+        };
+      })
+      .addCase(getStockProvider.pending, (state, action) => {
+        return {
+          ...state,
+          getStockProviderLoading: true,
+          getStockProviderError: undefined,
+          type: action.type,
+        };
+      })
+      .addCase(getStockProvider.fulfilled, (state, action) => {
+        return {
+          ...state,
+          providers: action.payload,
+          getStockProviderLoading: false,
+          getStockProviderError: undefined,
+          type: action.type,
+        };
+      })
+      .addCase(getStockProvider.rejected, (state, action) => {
+        return {
+          ...state,
+          getStockProviderLoading: false,
+          getStockProviderError: action.payload,
           type: action.type,
         };
       });
