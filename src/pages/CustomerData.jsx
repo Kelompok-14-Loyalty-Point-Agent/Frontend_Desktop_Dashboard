@@ -5,6 +5,7 @@ import {
   Button,
   Center,
   Flex,
+  Image,
   Input,
   InputGroup,
   InputLeftElement,
@@ -13,6 +14,10 @@ import {
 import Sidebar from "../components/Sidebar";
 import NavbarDashboard from "../components/NavbarDashboard";
 import { useState } from "react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { get_customer } from "../config/redux/customer/customerThunk";
+import { useCustomerSelector } from "../config/redux/customer/customerSelector";
 
 const CustomerData = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -26,6 +31,25 @@ const CustomerData = () => {
   };
   console.log(isEditing);
 
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(get_customer());
+  }, []);
+
+  const customers = useCustomerSelector();
+  const [selectedCustomer, setSelectedCustomer] = useState(customers);
+
+  const handleBoxClick = (customer) => {
+    setSelectedCustomer(customer);
+  };
+
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleSearch = (event) => {
+    setSearchValue(event.target.value);
+  };
+
+  console.log(selectedCustomer);
   return (
     <div>
       {isEditing ? (
@@ -33,236 +57,112 @@ const CustomerData = () => {
           <Sidebar />
 
           {/* COSTUMER DATA */}
-          <Box mx={"114px"} my={"80px"} w={570} opacity={"30%"}>
+          <Box
+            mx={"114px"}
+            my={"80px"}
+            w={570}
+            opacity={"30%"}
+            style={{ pointerEvents: "none" }}
+          >
             <Text fontSize={32} as="b" fontFamily={"heading"}>
               Customer Data
             </Text>
-            <Flex
-              w={"full"}
-              h={150}
-              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              mt={5}
-              borderRadius={6}
-              justifyContent={"center"}
-              p={4}
-              bg={"#262626"}
-            >
-              <Flex gap={20}>
-                <img src="./cewe1.svg" alt="" />
-                <Flex flexDirection={"column"}>
-                  <Text
-                    fontSize={26}
-                    as="b"
-                    fontFamily={"heading"}
-                    color={"#ECECEC"}
-                  >
-                    Isabella
-                  </Text>
-                  <Text color={"#ECECEC"}>Transation Made</Text>
-                  <Text
-                    fontSize={32}
-                    as="b"
-                    color={"#2DB5AB"}
-                    fontFamily={"heading"}
-                  >
-                    76x
-                  </Text>
-                </Flex>
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={24} as="b" color={"#262626"}>
-                    .
-                  </Text>
-                  <Text color={"#ECECEC"}>Total tPoint</Text>
-                  <Flex gap={2}>
-                    <img src="./icons/dashboard/coin1.svg" alt="" />
-                    <Text
-                      fontSize={24}
-                      as={"b"}
-                      color={"#2DB5AB"}
-                      fontFamily={"heading"}
-                    >
-                      600
-                    </Text>
-                  </Flex>
-                </Flex>
-              </Flex>
-            </Flex>
-            <Flex
-              w={"full"}
-              h={150}
-              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              mt={5}
-              borderRadius={6}
-              justifyContent={"center"}
+            <Box
+              maxHeight={820}
+              overflowY="auto"
+              css={{
+                "&::-webkit-scrollbar": {
+                  display: "none",
+                },
+              }}
               p={4}
             >
-              <Flex gap={20}>
-                <img src="./cewe1.svg" alt="" />
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={26} as="b" fontFamily={"heading"}>
-                    Isabella
-                  </Text>
-                  <Text>Transation Made</Text>
-                  <Text
-                    fontSize={32}
-                    as="b"
-                    color={"#2DB5AB"}
-                    fontFamily={"heading"}
+              {customers
+                .filter((customer) =>
+                  customer.name
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())
+                )
+                .map((customer, index) => (
+                  <Flex
+                    w={"full"}
+                    h={"fit-content"}
+                    boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
+                    mt={5}
+                    borderRadius={6}
+                    justifyContent={"center"}
+                    p={4}
+                    bg={selectedCustomer === customer ? "#262626" : "white"}
+                    onClick={() => handleBoxClick(customer)}
+                    key={index}
                   >
-                    76x
-                  </Text>
-                </Flex>
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={24} as="b" color={"white"}>
-                    .
-                  </Text>
-                  <Text>Total tPoint</Text>
-                  <Flex gap={2}>
-                    <img src="./icons/dashboard/coin1.svg" alt="" />
-                    <Text
-                      fontSize={24}
-                      as={"b"}
-                      color={"#2DB5AB"}
-                      fontFamily={"heading"}
-                    >
-                      600
-                    </Text>
+                    <Flex gap={10}>
+                      <Image
+                        src={customer.image}
+                        alt=""
+                        borderRadius="full"
+                        boxSize="100px"
+                      />
+                      <Flex flexDirection={"column"} w={200}>
+                        <Text
+                          fontSize={26}
+                          as="b"
+                          fontFamily={"heading"}
+                          color={
+                            selectedCustomer === customer ? "#ECECEC" : "black"
+                          }
+                        >
+                          {customer.name}
+                        </Text>
+                        <Text
+                          color={
+                            selectedCustomer === customer ? "#ECECEC" : "black"
+                          }
+                        >
+                          Transation Made
+                        </Text>
+                        <Text
+                          fontSize={32}
+                          as="b"
+                          color={"#2DB5AB"}
+                          fontFamily={"heading"}
+                        >
+                          {customer.transaction_made}x
+                        </Text>
+                      </Flex>
+                      <Flex flexDirection={"column"}>
+                        <Text
+                          fontSize={24}
+                          as="b"
+                          color={
+                            selectedCustomer === customer ? "#262626" : "white"
+                          }
+                        >
+                          .
+                        </Text>
+                        <Text
+                          color={
+                            selectedCustomer === customer ? "#ECECEC" : "black"
+                          }
+                        >
+                          Total tPoint
+                        </Text>
+                        <Flex gap={2}>
+                          <img src="./icons/dashboard/coin1.svg" alt="" />
+                          <Text
+                            fontSize={24}
+                            as={"b"}
+                            color={"#2DB5AB"}
+                            fontFamily={"heading"}
+                          >
+                            {customer.total_ttpoint}
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    </Flex>
                   </Flex>
-                </Flex>
-              </Flex>
-            </Flex>
-            <Flex
-              w={"full"}
-              h={150}
-              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              mt={5}
-              borderRadius={6}
-              justifyContent={"center"}
-              p={4}
-            >
-              <Flex gap={20}>
-                <img src="./cewe1.svg" alt="" />
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={26} as="b" fontFamily={"heading"}>
-                    Isabella
-                  </Text>
-                  <Text>Transation Made</Text>
-                  <Text
-                    fontSize={32}
-                    as="b"
-                    color={"#2DB5AB"}
-                    fontFamily={"heading"}
-                  >
-                    76x
-                  </Text>
-                </Flex>
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={24} as="b" color={"white"}>
-                    .
-                  </Text>
-                  <Text>Total tPoint</Text>
-                  <Flex gap={2}>
-                    <img src="./icons/dashboard/coin1.svg" alt="" />
-                    <Text
-                      fontSize={24}
-                      as={"b"}
-                      color={"#2DB5AB"}
-                      fontFamily={"heading"}
-                    >
-                      600
-                    </Text>
-                  </Flex>
-                </Flex>
-              </Flex>
-            </Flex>
-            <Flex
-              w={"full"}
-              h={150}
-              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              mt={5}
-              borderRadius={6}
-              justifyContent={"center"}
-              p={4}
-            >
-              <Flex gap={20}>
-                <img src="./cewe1.svg" alt="" />
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={26} as="b" fontFamily={"heading"}>
-                    Isabella
-                  </Text>
-                  <Text>Transation Made</Text>
-                  <Text
-                    fontSize={32}
-                    as="b"
-                    color={"#2DB5AB"}
-                    fontFamily={"heading"}
-                  >
-                    76x
-                  </Text>
-                </Flex>
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={24} as="b" color={"white"}>
-                    .
-                  </Text>
-                  <Text>Total tPoint</Text>
-                  <Flex gap={2}>
-                    <img src="./icons/dashboard/coin1.svg" alt="" />
-                    <Text
-                      fontSize={24}
-                      as={"b"}
-                      color={"#2DB5AB"}
-                      fontFamily={"heading"}
-                    >
-                      600
-                    </Text>
-                  </Flex>
-                </Flex>
-              </Flex>
-            </Flex>
-            <Flex
-              w={"full"}
-              h={150}
-              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              mt={5}
-              borderRadius={6}
-              justifyContent={"center"}
-              p={4}
-            >
-              <Flex gap={20}>
-                <img src="./cewe1.svg" alt="" />
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={26} as="b" fontFamily={"heading"}>
-                    Isabella
-                  </Text>
-                  <Text>Transation Made</Text>
-                  <Text
-                    fontSize={32}
-                    as="b"
-                    color={"#2DB5AB"}
-                    fontFamily={"heading"}
-                  >
-                    76x
-                  </Text>
-                </Flex>
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={24} as="b" color={"white"}>
-                    .
-                  </Text>
-                  <Text>Total tPoint</Text>
-                  <Flex gap={2}>
-                    <img src="./icons/dashboard/coin1.svg" alt="" />
-                    <Text
-                      fontSize={24}
-                      as={"b"}
-                      color={"#2DB5AB"}
-                      fontFamily={"heading"}
-                    >
-                      600
-                    </Text>
-                  </Flex>
-                </Flex>
-              </Flex>
-            </Flex>
+                ))}
+            </Box>
             <Center mt={10}>
               <img src="./icons/dashboard/panahbawah.svg" alt="" />
             </Center>
@@ -271,9 +171,19 @@ const CustomerData = () => {
 
           {/* DETAIL CUSTOMER */}
           <Box flex={"1"} px={10}>
-            <Box opacity={"30%"}>
+            <Flex opacity={"30%"} style={{ pointerEvents: "none" }}>
+              <InputGroup mt={10}>
+                <InputLeftElement>
+                  <img src="./icons/black/search.svg" alt="" />
+                </InputLeftElement>
+                <Input
+                  boxShadow={"2px 3px 8px 2px rgba(0, 0, 0, 0.25)"}
+                  borderRadius={"6px"}
+                  placeholder="Search"
+                />
+              </InputGroup>
               <NavbarDashboard />
-            </Box>
+            </Flex>
 
             <Flex justifyContent={"center"}>
               <Flex
@@ -296,7 +206,12 @@ const CustomerData = () => {
                   <Center>
                     <Box>
                       <Center mt={2}>
-                        <img src="./cewe1.svg" alt="" />
+                        <Image
+                          src={selectedCustomer.image}
+                          alt=""
+                          borderRadius={"full"}
+                          boxSize={"120px"}
+                        />
                       </Center>
                       <Center mt={5}>
                         <Text
@@ -306,7 +221,7 @@ const CustomerData = () => {
                           fontFamily={"heading"}
                           opacity={"30%"}
                         >
-                          Isabella
+                          {selectedCustomer.name}
                         </Text>
                       </Center>
                       <Center>
@@ -321,25 +236,25 @@ const CustomerData = () => {
                   <Box color={"#ECECEC"}>
                     <Flex gap={3} opacity={"30%"}>
                       <img src="./icons/customer/calender.svg" alt="" />
-                      <Text>25 years old</Text>
+                      <Text>{selectedCustomer.age} years old</Text>
                     </Flex>
                     <Flex gap={4} mt={5} opacity={"30%"}>
                       <Center>
                         <img src="./icons/customer/women-gen.svg" alt="" />
                       </Center>
-                      <Text>Woman</Text>
+                      <Text>{selectedCustomer.gender}</Text>
                     </Flex>
                     <Flex gap={3} mt={5} opacity={"30%"}>
                       <img src="./icons/customer/location.svg" alt="" />
-                      <Text>Jakarta, Indonesia</Text>
+                      <Text>{selectedCustomer.address}</Text>
                     </Flex>
                     <Flex gap={3} mt={5}>
                       <img src="./icons/customer/email.svg" alt="" />
-                      <Input defaultValue={"itsabella@gmail.com"} />
+                      <Input defaultValue={selectedCustomer.email} />
                     </Flex>
                     <Flex gap={3} mt={5}>
                       <img src="./icons/customer/phone.svg" alt="" />
-                      <Input defaultValue={"082188216081"} />
+                      <Input defaultValue={selectedCustomer.phone} />
                     </Flex>
                   </Box>
                   <Box opacity={"30%"}>
@@ -463,232 +378,103 @@ const CustomerData = () => {
             <Text fontSize={32} as="b" fontFamily={"heading"}>
               Customer Data
             </Text>
-            <Flex
-              w={"full"}
-              h={150}
-              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              mt={5}
-              borderRadius={6}
-              justifyContent={"center"}
-              p={4}
-              bg={"#262626"}
-            >
-              <Flex gap={20}>
-                <img src="./cewe1.svg" alt="" />
-                <Flex flexDirection={"column"}>
-                  <Text
-                    fontSize={26}
-                    as="b"
-                    fontFamily={"heading"}
-                    color={"#ECECEC"}
-                  >
-                    Isabella
-                  </Text>
-                  <Text color={"#ECECEC"}>Transation Made</Text>
-                  <Text
-                    fontSize={32}
-                    as="b"
-                    color={"#2DB5AB"}
-                    fontFamily={"heading"}
-                  >
-                    76x
-                  </Text>
-                </Flex>
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={24} as="b" color={"#262626"}>
-                    .
-                  </Text>
-                  <Text color={"#ECECEC"}>Total tPoint</Text>
-                  <Flex gap={2}>
-                    <img src="./icons/dashboard/coin1.svg" alt="" />
-                    <Text
-                      fontSize={24}
-                      as={"b"}
-                      color={"#2DB5AB"}
-                      fontFamily={"heading"}
-                    >
-                      600
-                    </Text>
-                  </Flex>
-                </Flex>
-              </Flex>
-            </Flex>
-            <Flex
-              w={"full"}
-              h={150}
-              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              mt={5}
-              borderRadius={6}
-              justifyContent={"center"}
+            <Box
+              maxHeight={820}
+              overflowY="auto"
+              css={{
+                "&::-webkit-scrollbar": {
+                  display: "none",
+                },
+              }}
               p={4}
             >
-              <Flex gap={20}>
-                <img src="./cewe1.svg" alt="" />
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={26} as="b" fontFamily={"heading"}>
-                    Isabella
-                  </Text>
-                  <Text>Transation Made</Text>
-                  <Text
-                    fontSize={32}
-                    as="b"
-                    color={"#2DB5AB"}
-                    fontFamily={"heading"}
+              {customers
+                .filter((customer) =>
+                  customer.name
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())
+                )
+                .map((customer, index) => (
+                  <Flex
+                    w={"full"}
+                    h={"fit-content"}
+                    boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
+                    mt={5}
+                    borderRadius={6}
+                    justifyContent={"center"}
+                    p={4}
+                    bg={selectedCustomer === customer ? "#262626" : "white"}
+                    onClick={() => handleBoxClick(customer)}
+                    key={index}
+                    style={{ cursor: "pointer" }}
                   >
-                    76x
-                  </Text>
-                </Flex>
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={24} as="b" color={"white"}>
-                    .
-                  </Text>
-                  <Text>Total tPoint</Text>
-                  <Flex gap={2}>
-                    <img src="./icons/dashboard/coin1.svg" alt="" />
-                    <Text
-                      fontSize={24}
-                      as={"b"}
-                      color={"#2DB5AB"}
-                      fontFamily={"heading"}
-                    >
-                      600
-                    </Text>
+                    <Flex gap={10}>
+                      <Image
+                        src={customer.image}
+                        alt=""
+                        borderRadius="full"
+                        boxSize="100px"
+                      />
+                      <Flex flexDirection={"column"} w={200}>
+                        <Text
+                          fontSize={26}
+                          as="b"
+                          fontFamily={"heading"}
+                          color={
+                            selectedCustomer === customer ? "#ECECEC" : "black"
+                          }
+                        >
+                          {customer.name}
+                        </Text>
+                        <Text
+                          color={
+                            selectedCustomer === customer ? "#ECECEC" : "black"
+                          }
+                        >
+                          Transation Made
+                        </Text>
+                        <Text
+                          fontSize={32}
+                          as="b"
+                          color={"#2DB5AB"}
+                          fontFamily={"heading"}
+                        >
+                          {customer.transaction_made}x
+                        </Text>
+                      </Flex>
+                      <Flex flexDirection={"column"}>
+                        <Text
+                          fontSize={24}
+                          as="b"
+                          color={
+                            selectedCustomer === customer ? "#262626" : "white"
+                          }
+                        >
+                          .
+                        </Text>
+                        <Text
+                          color={
+                            selectedCustomer === customer ? "#ECECEC" : "black"
+                          }
+                        >
+                          Total tPoint
+                        </Text>
+                        <Flex gap={2}>
+                          <img src="./icons/dashboard/coin1.svg" alt="" />
+                          <Text
+                            fontSize={24}
+                            as={"b"}
+                            color={"#2DB5AB"}
+                            fontFamily={"heading"}
+                          >
+                            {customer.total_ttpoint}
+                          </Text>
+                        </Flex>
+                      </Flex>
+                    </Flex>
                   </Flex>
-                </Flex>
-              </Flex>
-            </Flex>
-            <Flex
-              w={"full"}
-              h={150}
-              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              mt={5}
-              borderRadius={6}
-              justifyContent={"center"}
-              p={4}
-            >
-              <Flex gap={20}>
-                <img src="./cewe1.svg" alt="" />
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={26} as="b" fontFamily={"heading"}>
-                    Isabella
-                  </Text>
-                  <Text>Transation Made</Text>
-                  <Text
-                    fontSize={32}
-                    as="b"
-                    color={"#2DB5AB"}
-                    fontFamily={"heading"}
-                  >
-                    76x
-                  </Text>
-                </Flex>
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={24} as="b" color={"white"}>
-                    .
-                  </Text>
-                  <Text>Total tPoint</Text>
-                  <Flex gap={2}>
-                    <img src="./icons/dashboard/coin1.svg" alt="" />
-                    <Text
-                      fontSize={24}
-                      as={"b"}
-                      color={"#2DB5AB"}
-                      fontFamily={"heading"}
-                    >
-                      600
-                    </Text>
-                  </Flex>
-                </Flex>
-              </Flex>
-            </Flex>
-            <Flex
-              w={"full"}
-              h={150}
-              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              mt={5}
-              borderRadius={6}
-              justifyContent={"center"}
-              p={4}
-            >
-              <Flex gap={20}>
-                <img src="./cewe1.svg" alt="" />
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={26} as="b" fontFamily={"heading"}>
-                    Isabella
-                  </Text>
-                  <Text>Transation Made</Text>
-                  <Text
-                    fontSize={32}
-                    as="b"
-                    color={"#2DB5AB"}
-                    fontFamily={"heading"}
-                  >
-                    76x
-                  </Text>
-                </Flex>
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={24} as="b" color={"white"}>
-                    .
-                  </Text>
-                  <Text>Total tPoint</Text>
-                  <Flex gap={2}>
-                    <img src="./icons/dashboard/coin1.svg" alt="" />
-                    <Text
-                      fontSize={24}
-                      as={"b"}
-                      color={"#2DB5AB"}
-                      fontFamily={"heading"}
-                    >
-                      600
-                    </Text>
-                  </Flex>
-                </Flex>
-              </Flex>
-            </Flex>
-            <Flex
-              w={"full"}
-              h={150}
-              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              mt={5}
-              borderRadius={6}
-              justifyContent={"center"}
-              p={4}
-            >
-              <Flex gap={20}>
-                <img src="./cewe1.svg" alt="" />
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={26} as="b" fontFamily={"heading"}>
-                    Isabella
-                  </Text>
-                  <Text>Transation Made</Text>
-                  <Text
-                    fontSize={32}
-                    as="b"
-                    color={"#2DB5AB"}
-                    fontFamily={"heading"}
-                  >
-                    76x
-                  </Text>
-                </Flex>
-                <Flex flexDirection={"column"}>
-                  <Text fontSize={24} as="b" color={"white"}>
-                    .
-                  </Text>
-                  <Text>Total tPoint</Text>
-                  <Flex gap={2}>
-                    <img src="./icons/dashboard/coin1.svg" alt="" />
-                    <Text
-                      fontSize={24}
-                      as={"b"}
-                      color={"#2DB5AB"}
-                      fontFamily={"heading"}
-                    >
-                      600
-                    </Text>
-                  </Flex>
-                </Flex>
-              </Flex>
-            </Flex>
+                ))}
+            </Box>
             <Center mt={10}>
               <img src="./icons/dashboard/panahbawah.svg" alt="" />
             </Center>
@@ -703,6 +489,8 @@ const CustomerData = () => {
                   <img src="./icons/black/search.svg" alt="" />
                 </InputLeftElement>
                 <Input
+                  value={searchValue}
+                  onChange={handleSearch}
                   boxShadow={"2px 3px 8px 2px rgba(0, 0, 0, 0.25)"}
                   borderRadius={"6px"}
                   placeholder="Search"
@@ -732,7 +520,12 @@ const CustomerData = () => {
                   <Center>
                     <Box>
                       <Center mt={2}>
-                        <img src="./cewe1.svg" alt="" />
+                        <Image
+                          src={selectedCustomer.image}
+                          alt=""
+                          borderRadius="full"
+                          boxSize="100px"
+                        />
                       </Center>
                       <Center mt={5}>
                         <Text
@@ -741,7 +534,7 @@ const CustomerData = () => {
                           color={"#ECECEC"}
                           fontFamily={"heading"}
                         >
-                          Isabella
+                          {selectedCustomer.name}
                         </Text>
                       </Center>
                       <Center>
@@ -756,25 +549,25 @@ const CustomerData = () => {
                   <Box color={"#ECECEC"}>
                     <Flex gap={3}>
                       <img src="./icons/customer/calender.svg" alt="" />
-                      <Text>25 years old</Text>
+                      <Text>{selectedCustomer.age} years old</Text>
                     </Flex>
                     <Flex gap={4} mt={5}>
                       <Center>
                         <img src="./icons/customer/women-gen.svg" alt="" />
                       </Center>
-                      <Text>Woman</Text>
+                      <Text>{selectedCustomer.gender}</Text>
                     </Flex>
                     <Flex gap={3} mt={5}>
                       <img src="./icons/customer/location.svg" alt="" />
-                      <Text>Jakarta, Indonesia</Text>
+                      <Text> {selectedCustomer.address} </Text>
                     </Flex>
                     <Flex gap={3} mt={5}>
                       <img src="./icons/customer/email.svg" alt="" />
-                      <Text>itsabella@gmail.com</Text>
+                      <Text>{selectedCustomer.email}</Text>
                     </Flex>
                     <Flex gap={3} mt={5}>
                       <img src="./icons/customer/phone.svg" alt="" />
-                      <Text>08212212121</Text>
+                      <Text>{selectedCustomer.phone}</Text>
                     </Flex>
                   </Box>
                   <Box>
@@ -821,7 +614,7 @@ const CustomerData = () => {
                         color={"#2DB5AB"}
                         fontFamily={"heading"}
                       >
-                        76x
+                        {selectedCustomer.transaction_made}
                       </Text>
                     </Center>
                     <Center>
@@ -836,7 +629,7 @@ const CustomerData = () => {
                         color={"#2DB5AB"}
                         fontFamily={"heading"}
                       >
-                        600
+                        {selectedCustomer.total_ttpoint}
                       </Text>
                     </Center>
                   </Box>
@@ -853,7 +646,7 @@ const CustomerData = () => {
                         color={"#2DB5AB"}
                         fontFamily={"heading"}
                       >
-                        8x
+                        {selectedCustomer.transaction_made}x
                       </Text>
                     </Center>
                     <Center>
@@ -868,7 +661,7 @@ const CustomerData = () => {
                         color={"#2DB5AB"}
                         fontFamily={"heading"}
                       >
-                        9x
+                        {selectedCustomer.voucher}x
                       </Text>
                     </Center>
                   </Box>
