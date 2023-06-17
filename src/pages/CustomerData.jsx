@@ -16,8 +16,14 @@ import NavbarDashboard from "../components/NavbarDashboard";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { get_customer } from "../config/redux/customer/customerThunk";
+import {
+  delete_customer,
+  get_customer,
+  update_customer,
+} from "../config/redux/customer/customerThunk";
 import { useCustomerSelector } from "../config/redux/customer/customerSelector";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 const CustomerData = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -26,18 +32,12 @@ const CustomerData = () => {
     setIsEditing((prevIsEditing) => (prevIsEditing === true ? false : true));
   };
 
-  const handleDoneEdit = () => {
-    setIsEditing(false);
-  };
   console.log(isEditing);
 
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(get_customer());
-  }, []);
-
-  const customers = useCustomerSelector();
-  const [selectedCustomer, setSelectedCustomer] = useState(customers);
+  }, [dispatch]);
 
   const handleBoxClick = (customer) => {
     setSelectedCustomer(customer);
@@ -49,7 +49,48 @@ const CustomerData = () => {
     setSearchValue(event.target.value);
   };
 
+  const customers = useCustomerSelector();
+  const [selectedCustomer, setSelectedCustomer] = useState(customers);
   console.log(selectedCustomer);
+
+  const formik = useFormik({
+    initialValues: {
+      email: selectedCustomer.email,
+      phone: selectedCustomer.phone,
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email("Invalid email address").required("Required"),
+      phone: Yup.string().required("Required"),
+    }),
+    onSubmit: (values) => {
+      dispatch(
+        update_customer({
+          no: selectedCustomer.no,
+          email: values.email,
+          phone: values.phone,
+        })
+      );
+
+      setSelectedCustomer((prevSelectedCustomer) => ({
+        ...prevSelectedCustomer,
+        email: values.email,
+        phone: values.phone,
+      }));
+
+      formik.resetForm();
+      setIsEditing(false);
+      alert("Update Success");
+      dispatch(get_customer());
+    },
+  });
+
+  const handleDelete = (customerId) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      dispatch(delete_customer(customerId));
+      setSelectedCustomer(customers);
+    }
+  };
+
   return (
     <div>
       {isEditing ? (
@@ -202,169 +243,190 @@ const CustomerData = () => {
                   </button>
                   <img src="./icons/customer/trash.svg" alt="" />
                 </Flex>
-                <Box>
-                  <Center>
-                    <Box>
-                      <Center mt={2}>
-                        <Image
-                          src={selectedCustomer.image}
-                          alt=""
-                          borderRadius={"full"}
-                          boxSize={"120px"}
+                <form onSubmit={formik.handleSubmit}>
+                  <Box>
+                    <Center>
+                      <Box>
+                        <Center mt={2}>
+                          <Image
+                            src={selectedCustomer.image}
+                            alt=""
+                            borderRadius={"full"}
+                            boxSize={"120px"}
+                          />
+                        </Center>
+                        <Center mt={5}>
+                          <Text
+                            fontSize={24}
+                            as={"b"}
+                            color={"#ECECEC"}
+                            fontFamily={"heading"}
+                            opacity={"30%"}
+                          >
+                            {selectedCustomer.name}
+                          </Text>
+                        </Center>
+                        <Center>
+                          <Text fontSize={16} color={"#D09635"}>
+                            Gold Member
+                          </Text>
+                        </Center>
+                      </Box>
+                    </Center>
+                  </Box>
+                  <Flex justifyContent={"center"} gap={10} mt={10}>
+                    <Box color={"#ECECEC"}>
+                      <Flex gap={3} opacity={"30%"}>
+                        <img src="./icons/customer/calender.svg" alt="" />
+                        <Text>{selectedCustomer.age} years old</Text>
+                      </Flex>
+                      <Flex gap={4} mt={5} opacity={"30%"}>
+                        <Center>
+                          <img src="./icons/customer/women-gen.svg" alt="" />
+                        </Center>
+                        <Text>{selectedCustomer.gender}</Text>
+                      </Flex>
+                      <Flex gap={3} mt={5} opacity={"30%"}>
+                        <img src="./icons/customer/location.svg" alt="" />
+                        <Text>{selectedCustomer.address}</Text>
+                      </Flex>
+                      <Flex gap={3} mt={5}>
+                        <img src="./icons/customer/email.svg" alt="" />
+                        <Input
+                          name="email"
+                          defaultValue={selectedCustomer.email}
+                          value={formik.values.email}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
                         />
-                      </Center>
-                      <Center mt={5}>
+                      </Flex>
+                      {formik.touched.email && formik.errors.email && (
+                        <Text color="red">{formik.errors.email}</Text>
+                      )}
+                      <Flex gap={3} mt={5}>
+                        <img src="./icons/customer/phone.svg" alt="" />
+                        <Input
+                          name="phone"
+                          defaultValue={selectedCustomer.phone}
+                          value={formik.values.phone}
+                          onChange={formik.handleChange}
+                          onBlur={formik.handleBlur}
+                        />
+                      </Flex>
+                      {formik.touched.phone && formik.errors.phone && (
+                        <Text color="red">{formik.errors.phone}</Text>
+                      )}
+                    </Box>
+                    <Box opacity={"30%"}>
+                      <Center>
                         <Text
-                          fontSize={24}
+                          fontSize={14}
                           as={"b"}
-                          color={"#ECECEC"}
+                          color={"#D09635"}
                           fontFamily={"heading"}
-                          opacity={"30%"}
                         >
-                          {selectedCustomer.name}
+                          Recent Activities
                         </Text>
                       </Center>
-                      <Center>
-                        <Text fontSize={16} color={"#D09635"}>
-                          Gold Member
+                      <Flex color={"#ECECEC"} mt={5} gap={5}>
+                        <Text>23/04/23</Text>
+                        <Text>Transfer</Text>
+                      </Flex>
+                      <Flex color={"#ECECEC"} mt={5} gap={5}>
+                        <Text>23/04/23</Text>
+                        <Text>Transfer</Text>
+                      </Flex>
+                      <Flex color={"#ECECEC"} mt={5} gap={5}>
+                        <Text>23/04/23</Text>
+                        <Text>Transfer</Text>
+                      </Flex>
+                      <Center mt={5}>
+                        <Text fontSize={12} color={"#57DAC5"}>
+                          See More
                         </Text>
                       </Center>
                     </Box>
-                  </Center>
-                </Box>
-                <Flex justifyContent={"center"} gap={10} mt={10}>
-                  <Box color={"#ECECEC"}>
-                    <Flex gap={3} opacity={"30%"}>
-                      <img src="./icons/customer/calender.svg" alt="" />
-                      <Text>{selectedCustomer.age} years old</Text>
-                    </Flex>
-                    <Flex gap={4} mt={5} opacity={"30%"}>
+                  </Flex>
+                  <Flex justifyContent={"center"} gap={10} mt={20}>
+                    <Box>
                       <Center>
-                        <img src="./icons/customer/women-gen.svg" alt="" />
+                        <Text color={"#ECECEC"} fontSize={16}>
+                          Total Transaction Made
+                        </Text>
                       </Center>
-                      <Text>{selectedCustomer.gender}</Text>
-                    </Flex>
-                    <Flex gap={3} mt={5} opacity={"30%"}>
-                      <img src="./icons/customer/location.svg" alt="" />
-                      <Text>{selectedCustomer.address}</Text>
-                    </Flex>
-                    <Flex gap={3} mt={5}>
-                      <img src="./icons/customer/email.svg" alt="" />
-                      <Input defaultValue={selectedCustomer.email} />
-                    </Flex>
-                    <Flex gap={3} mt={5}>
-                      <img src="./icons/customer/phone.svg" alt="" />
-                      <Input defaultValue={selectedCustomer.phone} />
-                    </Flex>
-                  </Box>
-                  <Box opacity={"30%"}>
-                    <Center>
-                      <Text
-                        fontSize={14}
-                        as={"b"}
-                        color={"#D09635"}
-                        fontFamily={"heading"}
-                      >
-                        Recent Activities
-                      </Text>
-                    </Center>
-                    <Flex color={"#ECECEC"} mt={5} gap={5}>
-                      <Text>23/04/23</Text>
-                      <Text>Transfer</Text>
-                    </Flex>
-                    <Flex color={"#ECECEC"} mt={5} gap={5}>
-                      <Text>23/04/23</Text>
-                      <Text>Transfer</Text>
-                    </Flex>
-                    <Flex color={"#ECECEC"} mt={5} gap={5}>
-                      <Text>23/04/23</Text>
-                      <Text>Transfer</Text>
-                    </Flex>
-                    <Center mt={5}>
-                      <Text fontSize={12} color={"#57DAC5"}>
-                        See More
-                      </Text>
-                    </Center>
-                  </Box>
-                </Flex>
-                <Flex justifyContent={"center"} gap={10} mt={20}>
-                  <Box>
-                    <Center>
-                      <Text color={"#ECECEC"} fontSize={16}>
-                        Total Transaction Made
-                      </Text>
-                    </Center>
-                    <Center>
-                      <Text
-                        fontSize={32}
-                        as={"b"}
-                        color={"#2DB5AB"}
-                        fontFamily={"heading"}
-                      >
-                        76x
-                      </Text>
-                    </Center>
-                    <Center>
-                      <Text color={"#ECECEC"} fontSize={16}>
-                        Total tPoint
-                      </Text>
-                    </Center>
-                    <Center>
-                      <Text
-                        fontSize={32}
-                        as={"b"}
-                        color={"#2DB5AB"}
-                        fontFamily={"heading"}
-                      >
-                        600
-                      </Text>
-                    </Center>
-                  </Box>
-                  <Box>
-                    <Center>
-                      <Text color={"#ECECEC"} fontSize={16}>
-                        Transaction This Month
-                      </Text>
-                    </Center>
-                    <Center>
-                      <Text
-                        fontSize={32}
-                        as={"b"}
-                        color={"#2DB5AB"}
-                        fontFamily={"heading"}
-                      >
-                        8x
-                      </Text>
-                    </Center>
-                    <Center>
-                      <Text color={"#ECECEC"} fontSize={16}>
-                        Total Redeem Voucher
-                      </Text>
-                    </Center>
-                    <Center>
-                      <Text
-                        fontSize={32}
-                        as={"b"}
-                        color={"#2DB5AB"}
-                        fontFamily={"heading"}
-                      >
-                        9x
-                      </Text>
-                    </Center>
-                  </Box>
-                </Flex>
-                <Flex justifyContent={"center"} pt={10}>
-                  <Button
-                    variant="outline"
-                    color={"white"}
-                    w={400}
-                    justifyContent={"center"}
-                    colorScheme="white"
-                    onClick={handleDoneEdit}
-                  >
-                    Done
-                  </Button>
-                </Flex>
+                      <Center>
+                        <Text
+                          fontSize={32}
+                          as={"b"}
+                          color={"#2DB5AB"}
+                          fontFamily={"heading"}
+                        >
+                          76x
+                        </Text>
+                      </Center>
+                      <Center>
+                        <Text color={"#ECECEC"} fontSize={16}>
+                          Total tPoint
+                        </Text>
+                      </Center>
+                      <Center>
+                        <Text
+                          fontSize={32}
+                          as={"b"}
+                          color={"#2DB5AB"}
+                          fontFamily={"heading"}
+                        >
+                          600
+                        </Text>
+                      </Center>
+                    </Box>
+                    <Box>
+                      <Center>
+                        <Text color={"#ECECEC"} fontSize={16}>
+                          Transaction This Month
+                        </Text>
+                      </Center>
+                      <Center>
+                        <Text
+                          fontSize={32}
+                          as={"b"}
+                          color={"#2DB5AB"}
+                          fontFamily={"heading"}
+                        >
+                          8x
+                        </Text>
+                      </Center>
+                      <Center>
+                        <Text color={"#ECECEC"} fontSize={16}>
+                          Total Redeem Voucher
+                        </Text>
+                      </Center>
+                      <Center>
+                        <Text
+                          fontSize={32}
+                          as={"b"}
+                          color={"#2DB5AB"}
+                          fontFamily={"heading"}
+                        >
+                          9x
+                        </Text>
+                      </Center>
+                    </Box>
+                  </Flex>
+                  <Flex justifyContent={"center"} pt={10}>
+                    <Button
+                      type="submit"
+                      variant="outline"
+                      color={"white"}
+                      w={400}
+                      justifyContent={"center"}
+                      colorScheme="white"
+                      // onClick={handleDoneEdit}
+                    >
+                      Done
+                    </Button>
+                  </Flex>
+                </form>
               </Flex>
             </Flex>
           </Box>
@@ -514,7 +576,9 @@ const CustomerData = () => {
                   <button onClick={handleEditClick}>
                     <img src="./icons/customer/edit.svg" alt="" />
                   </button>
-                  <img src="./icons/customer/trash.svg" alt="" />
+                  <button onClick={() => handleDelete(selectedCustomer.no)}>
+                    <img src="./icons/customer/trash.svg" alt="" />
+                  </button>
                 </Flex>
                 <Box>
                   <Center>
