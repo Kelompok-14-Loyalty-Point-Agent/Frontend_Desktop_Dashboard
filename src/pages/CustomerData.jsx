@@ -91,6 +91,17 @@ const CustomerData = () => {
     }
   };
 
+  const getMembershipStatus = (transactionCount) => {
+    if (transactionCount >= 50) {
+      return "Gold Member";
+    } else if (transactionCount >= 20) {
+      return "Silver Member";
+    } else if (transactionCount >= 10) {
+      return "Bronze Member";
+    }
+    return "Bronze Member";
+  };
+
   return (
     <div>
       {isEditing ? (
@@ -268,7 +279,7 @@ const CustomerData = () => {
                         </Center>
                         <Center>
                           <Text fontSize={16} color={"#D09635"}>
-                            Gold Member
+                            {getMembershipStatus(selectedCustomer.this_month)}
                           </Text>
                         </Center>
                       </Box>
@@ -329,16 +340,16 @@ const CustomerData = () => {
                         </Text>
                       </Center>
                       <Flex color={"#ECECEC"} mt={5} gap={5}>
-                        <Text>23/04/23</Text>
-                        <Text>Transfer</Text>
+                        <Text>{selectedCustomer.date1}</Text>
+                        <Text>{selectedCustomer.activity1}</Text>
                       </Flex>
                       <Flex color={"#ECECEC"} mt={5} gap={5}>
-                        <Text>23/04/23</Text>
-                        <Text>Transfer</Text>
+                        <Text>{selectedCustomer.date2}</Text>
+                        <Text>{selectedCustomer.activity2}</Text>
                       </Flex>
                       <Flex color={"#ECECEC"} mt={5} gap={5}>
-                        <Text>23/04/23</Text>
-                        <Text>Transfer</Text>
+                        <Text>{selectedCustomer.date3}</Text>
+                        <Text>{selectedCustomer.activity3}</Text>
                       </Flex>
                       <Center mt={5}>
                         <Text fontSize={12} color={"#57DAC5"}>
@@ -393,7 +404,7 @@ const CustomerData = () => {
                           color={"#2DB5AB"}
                           fontFamily={"heading"}
                         >
-                          8x
+                          {selectedCustomer.this_month}x
                         </Text>
                       </Center>
                       <Center>
@@ -603,7 +614,7 @@ const CustomerData = () => {
                       </Center>
                       <Center>
                         <Text fontSize={16} color={"#D09635"}>
-                          Gold Member
+                          {getMembershipStatus(selectedCustomer.this_month)}
                         </Text>
                       </Center>
                     </Box>
@@ -646,16 +657,16 @@ const CustomerData = () => {
                       </Text>
                     </Center>
                     <Flex color={"#ECECEC"} mt={5} gap={5}>
-                      <Text>23/04/23</Text>
-                      <Text>Transfer</Text>
+                      <Text>{selectedCustomer.date1}</Text>
+                      <Text>{selectedCustomer.activity1}</Text>
                     </Flex>
                     <Flex color={"#ECECEC"} mt={5} gap={5}>
-                      <Text>23/04/23</Text>
-                      <Text>Transfer</Text>
+                      <Text>{selectedCustomer.date2}</Text>
+                      <Text>{selectedCustomer.activity2}</Text>
                     </Flex>
                     <Flex color={"#ECECEC"} mt={5} gap={5}>
-                      <Text>23/04/23</Text>
-                      <Text>Transfer</Text>
+                      <Text>{selectedCustomer.date3}</Text>
+                      <Text>{selectedCustomer.activity3}</Text>
                     </Flex>
                     <Center mt={5}>
                       <Text fontSize={12} color={"#57DAC5"}>
@@ -710,7 +721,7 @@ const CustomerData = () => {
                         color={"#2DB5AB"}
                         fontFamily={"heading"}
                       >
-                        {selectedCustomer.transaction_made}x
+                        {selectedCustomer.this_month}x
                       </Text>
                     </Center>
                     <Center>
