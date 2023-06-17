@@ -1,16 +1,38 @@
 // import React from 'react'
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  NumberInput,
-  NumberInputField,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Center, Flex, Image, Text } from "@chakra-ui/react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import NavbarDashboard from "../components/NavbarDashboard";
 import Sidebar from "../components/Sidebar";
+
+const getMembershipStatus = (transactionCount) => {
+  if (transactionCount >= 50) {
+    return "Gold Member";
+  } else if (transactionCount >= 20) {
+    return "Silver Member";
+  } else if (transactionCount >= 10) {
+    return "Bronze Member";
+  }
+  return "Bronze Member";
+};
+
 const CashOutStock = () => {
+  const [customerData, setCustomerData] = useState([]);
+  const [activeCard, setActiveCard] = useState(0);
+  const activeCustomer = customerData[activeCard];
+  const [showActivities, setShowActivities] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get("https://645cd09be01ac6105893f80f.mockapi.io/Customers")
+      .then((response) => {
+        setCustomerData(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   return (
     <>
       <Flex height="full">
@@ -20,162 +42,47 @@ const CashOutStock = () => {
             Stock Cash Out
           </Text>
           {/* STOCK CASH OUT */}
-          <Box
-            maxHeight={820}
-            overflowY="auto"
-            css={{
-              "&::-webkit-scrollbar": {
-                display: "none",
-              },
-            }}
-            p={4}
-          >
-            <Flex
-              w={"full"}
-              h={150}
-              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              mt={5}
-              p={4}
-              ps={12}
-              gap={20}
-              borderRadius={6}
-              bg={"#262626"}
-              color={"#ECECEC"}
-            >
-              <img src="./cewe1.svg" alt="" />
-              <Box>
-                <Text fontSize={24} as="b" fontFamily={"heading"}>
-                  Isabella
-                </Text>
-                <Text fontSize={16} fontFamily={"body"}>
-                  Transaction totals
-                </Text>
-                <Text
-                  fontSize={32}
-                  as="b"
-                  fontFamily={"heading"}
-                  color={"#2DB5AB"}
-                >
-                  76x
-                </Text>
-              </Box>
-            </Flex>
-            <Flex
-              w={"full"}
-              h={150}
-              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              mt={5}
-              p={4}
-              ps={12}
-              gap={20}
-              borderRadius={6}
-            >
-              <img src="./Jhon Felix.svg" alt="" />
-              <Box>
-                <Text fontSize={24} as="b" fontFamily={"heading"}>
-                  Jhon Felix
-                </Text>
-                <Text fontSize={16} fontFamily={"body"}>
-                  Transaction totals
-                </Text>
-                <Text
-                  fontSize={32}
-                  as="b"
-                  fontFamily={"heading"}
-                  color={"#2DB5AB"}
-                >
-                  69x
-                </Text>
-              </Box>
-            </Flex>
-            <Flex
-              w={"full"}
-              h={150}
-              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              mt={5}
-              p={4}
-              ps={12}
-              gap={20}
-              borderRadius={6}
-            >
-              <img src="./Samuel Drian.svg" alt="" />
-              <Box>
-                <Text fontSize={24} as="b" fontFamily={"heading"}>
-                  Samuel Drian
-                </Text>
-                <Text fontSize={16} fontFamily={"body"}>
-                  Transaction totals
-                </Text>
-                <Text
-                  fontSize={32}
-                  as="b"
-                  fontFamily={"heading"}
-                  color={"#2DB5AB"}
-                >
-                  65x
-                </Text>
-              </Box>
-            </Flex>
-            <Flex
-              w={"full"}
-              h={150}
-              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              mt={5}
-              p={4}
-              ps={12}
-              gap={20}
-              borderRadius={6}
-            >
-              <img src="./Elvina Lies.svg" alt="" />
-              <Box>
-                <Text fontSize={24} as="b" fontFamily={"heading"}>
-                  Elvina Lies
-                </Text>
-                <Text fontSize={16} fontFamily={"body"}>
-                  Transaction totals
-                </Text>
-                <Text
-                  fontSize={32}
-                  as="b"
-                  fontFamily={"heading"}
-                  color={"#2DB5AB"}
-                >
-                  64x
-                </Text>
-              </Box>
-            </Flex>
-            <Flex
-              w={"full"}
-              h={150}
-              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              mt={5}
-              p={4}
-              ps={12}
-              gap={20}
-              borderRadius={6}
-            >
-              <img src="./maria belina.svg" alt="" />
-              <Box>
-                <Text fontSize={24} as="b" fontFamily={"heading"}>
-                  Maria Belina
-                </Text>
-                <Text fontSize={16} fontFamily={"body"}>
-                  Transaction totals
-                </Text>
-                <Text
-                  fontSize={32}
-                  as="b"
-                  fontFamily={"heading"}
-                  color={"#2DB5AB"}
-                >
-                  49x
-                </Text>
-              </Box>
-            </Flex>
+          <Box maxHeight={820} overflowY="auto" p={4}>
+            {customerData.map((customer, index) => (
+              <Flex
+                key={customer.id}
+                w="full"
+                h={150}
+                boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
+                mt={5}
+                p={4}
+                ps={12}
+                gap={20}
+                borderRadius={6}
+                bg={activeCard === index ? "#262626" : "#FFFFFF"}
+                color={activeCard === index ? "#ECECEC" : "#000000"}
+                onClick={() => setActiveCard(index)}
+                cursor="pointer"
+              >
+                <Image
+                  src={customer.customer_image}
+                  alt=""
+                  borderRadius="50%"
+                />
+                <Box>
+                  <Text fontSize={24} as="b" fontFamily="heading">
+                    {customer.customer_name}
+                  </Text>
+                  <Text fontSize={16} fontFamily="body">
+                    Transaction totals
+                  </Text>
+                  <Text
+                    fontSize={32}
+                    as="b"
+                    fontFamily="heading"
+                    color="#2DB5AB"
+                  >
+                    {customer.total_transaction}x
+                  </Text>
+                </Box>
+              </Flex>
+            ))}
           </Box>
-          <Center mt={5}>
-            <img src="./icons/dashboard/panahbawah.svg" alt="" />
-          </Center>
         </Box>
         <Flex flex={1} flexDirection="column">
           <NavbarDashboard />
@@ -183,147 +90,168 @@ const CashOutStock = () => {
             {/* END STOCK CASH OUT */}
 
             {/* DETAIL STOCK CASH OUT */}
-            <Box
-              w={500}
-              h={830}
-              mt={"52px"}
-              bg={"#262626"}
-              borderRadius={12}
-              boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-              ml={"auto"}
-              mr={"auto"}
-            >
-              <Box pt={20}>
-                <Center gap={28}>
+            {activeCustomer && (
+              <Box
+                w={500}
+                h={830}
+                mt={"52px"}
+                bg={"#262626"}
+                borderRadius={12}
+                boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
+                ml={"auto"}
+                mr={"auto"}
+              >
+                <Box pt={20}>
+                  <Center gap={28}>
+                    <Box>
+                      <Center mt={2}>
+                        <Image
+                          src={activeCustomer.customer_image}
+                          alt=""
+                          borderRadius="50%"
+                        />
+                      </Center>
+                      <Center mt={5}>
+                        <Text
+                          fontSize={24}
+                          fontFamily={"heading"}
+                          as={"b"}
+                          color={"#FFFFFF"}
+                        >
+                          {activeCustomer.customer_name}
+                        </Text>
+                      </Center>
+                      <Center>
+                        <Center mt={5}>
+                          <Text
+                            fontSize={16}
+                            fontFamily={"body"}
+                            color={"#D09635"}
+                          >
+                            {getMembershipStatus(
+                              activeCustomer.total_transaction_month
+                            )}
+                          </Text>
+                        </Center>
+                      </Center>
+                    </Box>
+                    <Box>
+                      <Center>
+                        <Text
+                          fontSize={14}
+                          fontFamily={"heading"}
+                          as={"b"}
+                          color={"#D09635"}
+                        >
+                          Recent Activities
+                        </Text>
+                      </Center>
+                      <Flex color={"#ECECEC"} mt={5} gap={5}>
+                        <Text fontFamily={"body"}>
+                          {activeCustomer.recent_activity_date}
+                        </Text>
+                        <Text fontFamily={"body"}>
+                          {activeCustomer.recent_activity_act}
+                        </Text>
+                      </Flex>
+                      <Flex color={"#ECECEC"} mt={1} gap={5}>
+                        <Text fontFamily={"body"}>
+                          {activeCustomer.recent_activity_date_2}
+                        </Text>
+                        <Text fontFamily={"body"}>
+                          {activeCustomer.recent_activity_act_2}
+                        </Text>
+                      </Flex>
+                      <Flex color={"#ECECEC"} mt={1} gap={5}>
+                        <Text fontFamily={"body"}>
+                          {activeCustomer.recent_activity_date_3}
+                        </Text>
+                        <Text fontFamily={"body"}>
+                          {activeCustomer.recent_activity_act_3}
+                        </Text>
+                      </Flex>
+                      {showActivities && (
+                        <>
+                          <Flex color={"#ECECEC"} mt={1} gap={5}>
+                            <Text fontFamily={"body"}>
+                              {activeCustomer.recent_activity_date_4}
+                            </Text>
+                            <Text fontFamily={"body"}>
+                              {activeCustomer.recent_activity_act_4}
+                            </Text>
+                          </Flex>
+                          <Flex color={"#ECECEC"} mt={1} gap={5}>
+                            <Text fontFamily={"body"}>
+                              {activeCustomer.recent_activity_date_5}
+                            </Text>
+                            <Text fontFamily={"body"}>
+                              {activeCustomer.recent_activity_act_5}
+                            </Text>
+                          </Flex>
+                        </>
+                      )}
+                      <Center mt={5}>
+                        <Text
+                          fontSize={12}
+                          fontFamily={"body"}
+                          color={"#57DAC5"}
+                          cursor="pointer"
+                          onClick={() => setShowActivities(!showActivities)}
+                        >
+                          {showActivities ? "See Less" : "See More"}
+                        </Text>
+                      </Center>
+                    </Box>
+                  </Center>
+                </Box>
+                <Flex justifyContent={"center"} gap={10} mt={20}>
                   <Box>
-                    <Center mt={2}>
-                      <img src="./cewe1.svg" alt="" />
-                    </Center>
-                    <Center mt={5}>
-                      <Text
-                        fontSize={24}
-                        fontFamily={"heading"}
-                        as={"b"}
-                        color={"#ECECEC"}
-                      >
-                        Isabella
+                    <Center>
+                      <Text color={"#ECECEC"} fontSize={16} fontFamily={"body"}>
+                        Total Transaction Made
                       </Text>
                     </Center>
                     <Center>
-                      <Text fontSize={16} fontFamily={"body"} color={"#D09635"}>
-                        Gold Member
+                      <Text
+                        fontSize={32}
+                        fontFamily={"heading"}
+                        as={"b"}
+                        color={"#2DB5AB"}
+                      >
+                        {activeCustomer.total_transaction}x
                       </Text>
                     </Center>
                   </Box>
                   <Box>
                     <Center>
+                      <Text color={"#ECECEC"} fontSize={16} fontFamily={"body"}>
+                        Transaction This Month
+                      </Text>
+                    </Center>
+                    <Center>
                       <Text
-                        fontSize={14}
+                        fontSize={32}
                         fontFamily={"heading"}
                         as={"b"}
-                        color={"#D09635"}
+                        color={"#2DB5AB"}
                       >
-                        Recent Activities
+                        {activeCustomer.total_transaction_month}x
                       </Text>
                     </Center>
-                    <Flex color={"#ECECEC"} mt={5} gap={5}>
-                      <Text fontFamily={"body"}>25/04/23 </Text>
-                      <Text fontFamily={"body"}>Top up</Text>
-                    </Flex>
-                    <Flex color={"#ECECEC"} mt={5} gap={5}>
-                      <Text fontFamily={"body"}>23/04/23</Text>
-                      <Text fontFamily={"body"}>Transfer</Text>
-                    </Flex>
-                    <Flex color={"#ECECEC"} mt={5} gap={5}>
-                      <Text fontFamily={"body"}>25/04/23</Text>
-                      <Text fontFamily={"body"}>Transfer</Text>
-                    </Flex>
-                    <Center mt={5}>
-                      <Text fontSize={12} fontFamily={"body"} color={"#57DAC5"}>
-                        See More
-                      </Text>
-                    </Center>
+                  </Box>
+                </Flex>
+                <Center>
+                  <Box w={364} h={62} mt={10}>
+                    <Text color={"#F7DA94"} fontSize={16} fontFamily={"body"}>
+                      The customer has made{" "}
+                      {activeCustomer.total_transaction_month}x transactions
+                      this month, you as an admin can give 25 points to users
+                      from a multiple of 5x transactions made!
+                    </Text>
                   </Box>
                 </Center>
               </Box>
-              <Flex justifyContent={"center"} gap={10} mt={20}>
-                <Box>
-                  <Center>
-                    <Text color={"#ECECEC"} fontSize={16} fontFamily={"body"}>
-                      Total Transaction Made
-                    </Text>
-                  </Center>
-                  <Center>
-                    <Text
-                      fontSize={32}
-                      fontFamily={"heading"}
-                      as={"b"}
-                      color={"#2DB5AB"}
-                    >
-                      76x
-                    </Text>
-                  </Center>
-                </Box>
-                <Box>
-                  <Center>
-                    <Text color={"#ECECEC"} fontSize={16} fontFamily={"body"}>
-                      Transaction This Month
-                    </Text>
-                  </Center>
-                  <Center>
-                    <Text
-                      fontSize={32}
-                      fontFamily={"heading"}
-                      as={"b"}
-                      color={"#2DB5AB"}
-                    >
-                      10x
-                    </Text>
-                  </Center>
-                </Box>
-              </Flex>
-              <Center>
-                <Box w={364} h={62} mt={10}>
-                  <Text color={"#F7DA94"} fontSize={16} fontFamily={"body"}>
-                    The customer has made 10x transactions this month, you as an
-                    admin can give 25 points to users from a multiple of 5x
-                    transactions made!
-                  </Text>
-                </Box>
-              </Center>
-              <Box ms={16}>
-                <Text
-                  fontSize={"16px"}
-                  color={"#2DB5AB"}
-                  fontFamily={"body"}
-                  mt={10}
-                  mb={2}
-                >
-                  Input point
-                </Text>
-                <NumberInput min={0} max={25} borderRadius="10px">
-                  <NumberInputField
-                    w={"89px"}
-                    h={"52px"}
-                    bg="#FFFFFF"
-                    textAlign="center"
-                  />
-                </NumberInput>
-                <Button
-                  backgroundColor="#17590B"
-                  _hover={{ backgroundColor: "#457A3B" }}
-                  fontSize={"16px"}
-                  fontFamily={"heading"}
-                  color="white"
-                  w={"228px"}
-                  h={"33px"}
-                  mt={5}
-                  borderRadius={"5px"}
-                >
-                  Send
-                </Button>
-              </Box>
-            </Box>
+            )}
             {/* END DETAIL STOCK CASH OUT */}
           </Flex>
         </Flex>
