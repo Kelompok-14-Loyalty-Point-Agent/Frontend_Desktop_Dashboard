@@ -6,7 +6,7 @@ export const getStockInternetData = createAsyncThunk(
   async (_, { getState }) => {
     const state = getState();
     try {
-      const res = await axios.get("http://13.229.84.45/stocks", {
+      const res = await axios.get("https://3.0.59.152.nip.io/stocks", {
         headers: { Authorization: `Bearer ${state.session.token}` },
       });
       return res.data;

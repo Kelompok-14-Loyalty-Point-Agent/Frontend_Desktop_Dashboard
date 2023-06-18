@@ -43,6 +43,7 @@ import { getStockInternetData } from "../config/redux/getStockInternetData/getSt
 import { useStockInternetDataSelector } from "../config/redux/getStockInternetData/getStockInternetDataSelector";
 import { addStockInternetData } from "../config/redux/addStockInternetData/addStockInternetDataThunk";
 import { useAddStockType } from "../config/redux/addStockInternetData/addStockInternetDataSelector";
+import { formatDate, formatNumber } from "../utils/HelperMethod";
 
 function AddStock() {
   const dispatch = useDispatch();
@@ -50,13 +51,6 @@ function AddStock() {
   const addStockCreditType = useAddStockCreditType();
   const stockCredit = useStockCreditSelector();
   const stockInternetData = useStockInternetDataSelector();
-
-  const formatDate = (date) => {
-    const options = { month: "2-digit", day: "2-digit", year: "numeric" };
-    return date.toLocaleDateString("id-ID", options);
-  };
-
-  const formatNumber = (number) => number.toLocaleString("en-US");
 
   React.useEffect(() => {
     dispatch(getStockProvider());
@@ -83,22 +77,23 @@ function AddStock() {
   }, [addStockCreditType]);
 
   const totalStockCredit = stockCredit?.data
-    .filter((data) => data.type === "credit")
-    .map((data) => parseInt(data.stock))
+    ?.filter((data) => data.type === "credit")
+    .map((data) => data.stock)
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
   const lastUpdateStockCredit = stockCredit?.data
-    .map((data) => new Date(data.last_top_up))
+    ?.filter((data) => data.type === "credit")
+    .map((data) => formatDate(new Date(data.last_top_up)))
     .sort((a, b) => b - a)[0];
 
   const totalStockInternetData = stockInternetData?.data
-    .filter((data) => data.type === "data")
-    .map((data) => parseInt(data.stock))
+    ?.filter((data) => data.type === "data")
+    .map((data) => data.stock)
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
   const stockInternetLastTopup = stockInternetData?.data
-    .filter((data) => data.type === "data")
-    .map((data) => new Date(data.last_top_up))
+    ?.filter((data) => data.type === "data")
+    .map((data) => formatDate(new Date(data.last_top_up)))
     .sort((a, b) => b - a)[0];
 
   const optionsProvider = [
@@ -369,7 +364,7 @@ function AddStock() {
                       color="white"
                       fontWeight={500}
                     >
-                      {formatNumber(totalStockCredit)}
+                      {totalStockCredit}
                     </Text>
                   </Flex>
                   <Flex gap={7}>
@@ -387,7 +382,7 @@ function AddStock() {
                       color="white"
                       fontWeight={500}
                     >
-                      {formatDate(lastUpdateStockCredit)}
+                      {lastUpdateStockCredit}
                     </Text>
                   </Flex>
                 </Flex>
@@ -564,7 +559,7 @@ function AddStock() {
                       color="white"
                       fontWeight={500}
                     >
-                      {formatNumber(totalStockInternetData)} GB
+                      {totalStockInternetData} GB
                     </Text>
                   </Flex>
                   <Flex gap={7}>
@@ -582,7 +577,7 @@ function AddStock() {
                       color="white"
                       fontWeight={500}
                     >
-                      {formatDate(stockInternetLastTopup)}
+                      {stockInternetLastTopup}
                     </Text>
                   </Flex>
                 </Flex>
