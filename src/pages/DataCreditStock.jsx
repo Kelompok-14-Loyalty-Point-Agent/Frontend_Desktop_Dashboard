@@ -27,11 +27,11 @@ import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import NavbarDashboard from "../components/NavbarDashboard";
 import { useEffect, useState } from "react";
-import CustomSelect from "../components/CustomSelect";
 import { useFormik } from "formik";
 import { useStockDetailSelector } from "../config/redux/getStockDetail/getStockDetailSelector";
 import { useDispatch } from "react-redux";
 import { getStockDetail } from "../config/redux/getStockDetail/getStockDetailThunk";
+import CustomSelectEvenOdd from "../components/CustomSelectEvenOdd";
 
 const DataCreditStock = () => {
   const navigate = useNavigate();
@@ -46,67 +46,46 @@ const DataCreditStock = () => {
     dispatch(getStockDetail());
   }, []);
 
-  const optionsProviderCredit = [
+  const optionsProvider = [
     {
-      value: 2,
+      id: 1,
+      stock_id_credit: 2,
+      stock_id_data: 1,
       label: "Telkomsel",
       imageSrc: "../providerDummy/telkomsel.png",
     },
     {
-      value: 4,
+      id: 2,
+      stock_id_credit: 4,
+      stock_id_data: 3,
       label: "XL",
       imageSrc: "../providerDummy/xl.png",
     },
     {
-      value: 6,
+      id: 3,
+      stock_id_credit: 6,
+      stock_id_data: 5,
       label: "Smartfren",
       imageSrc: "../providerDummy/smartfren.png",
     },
     {
-      value: 8,
+      id: 4,
+      stock_id_credit: 8,
+      stock_id_data: 7,
       label: "Indosat",
       imageSrc: "../providerDummy/indosat.jpg",
     },
     {
-      value: 10,
+      id: 5,
+      stock_id_credit: 10,
+      stock_id_data: 9,
       label: "Axis",
       imageSrc: "../providerDummy/axis.png",
     },
     {
-      value: 12,
-      label: "Tri / 3",
-      imageSrc: "../providerDummy/tri.png",
-    },
-  ];
-
-  const optionsProviderInternetData = [
-    {
-      value: 1,
-      label: "Telkomsel",
-      imageSrc: "../providerDummy/telkomsel.png",
-    },
-    {
-      value: 3,
-      label: "XL",
-      imageSrc: "../providerDummy/xl.png",
-    },
-    {
-      value: 5,
-      label: "Smartfren",
-      imageSrc: "../providerDummy/smartfren.png",
-    },
-    {
-      value: 7,
-      label: "Indosat",
-      imageSrc: "../providerDummy/indosat.jpg",
-    },
-    {
-      value: 9,
-      label: "Axis",
-      imageSrc: "../providerDummy/axis.png",
-    },
-    {
-      value: 11,
+      id: 6,
+      stock_id_credit: 12,
+      stock_id_data: 11,
       label: "Tri / 3",
       imageSrc: "../providerDummy/tri.png",
     },
@@ -115,6 +94,8 @@ const DataCreditStock = () => {
   const formikAddStockCredit = useFormik({
     initialValues: {
       stock_id: 0,
+      id_data: 0,
+      id_credit: 0,
     },
     onSubmit: (values) => {
       console.log({ values });
@@ -124,6 +105,14 @@ const DataCreditStock = () => {
   const handleStatusAddCredit = () => setIsAddCreditAmount(!isAddCreditAmount);
   const handleStatusAddInternet = () =>
     setIsAddInternetDatasAmount(!isAddInternetDatasAmount);
+
+  const filteredData = stockDetailDatas.filter(
+    (data) => data.stock_id === formikAddStockCredit.values.id_data
+  );
+
+  const filteredCredit = stockDetailDatas.filter(
+    (data) => data.stock_id === formikAddStockCredit.values.id_credit
+  );
 
   return (
     <Flex height="100vh">
@@ -135,8 +124,8 @@ const DataCreditStock = () => {
             <Text fontSize={32} fontFamily="heading" fontWeight={700} mb={10}>
               Stock Pulsa / Data
             </Text>
-            <CustomSelect
-              options={optionsProviderCredit}
+            <CustomSelectEvenOdd
+              options={optionsProvider}
               formik={formikAddStockCredit}
               name="stock_id"
             />
@@ -179,9 +168,9 @@ const DataCreditStock = () => {
                       </Tr>
                     </Thead>
                     <Tbody fontWeight={700} fontFamily="heading">
-                      {stockDetailDatas?.map((data) => (
+                      {filteredCredit?.map((data, idx) => (
                         <Tr key={data.id}>
-                          <Td textAlign="center">{data.id}</Td>
+                          <Td textAlign="center">{idx + 1}</Td>
                           <Td textAlign="center">{data.stock}</Td>
                           <Td textAlign="center">{data.price}</Td>
                           <Td textAlign="center">{data.quantity}</Td>
@@ -277,52 +266,62 @@ const DataCreditStock = () => {
                       </Tr>
                     </Thead>
                     <Tbody fontWeight={700} fontFamily="heading">
+                      {filteredData?.map((data, idx) => (
+                        <Tr key={data.id}>
+                          <Td textAlign="center">{idx + 1}</Td>
+                          <Td textAlign="center">{data.stock}</Td>
+                          <Td textAlign="center">{data.price}</Td>
+                          <Td textAlign="center">{data.quantity}</Td>
+                        </Tr>
+                      ))}
                       {isAddInternetDatasAmount ? (
                         <Tr>
                           <Td>
                             <Center>{stockDetailDatas.length + 1}</Center>
                           </Td>
-                          <Td>
-                            <Center>
-                              <Input
-                                placeholder="Input credit"
-                                width={120}
-                                bgColor="white"
-                                _placeholder={{ textAlign: "center" }}
-                              />
-                            </Center>
-                          </Td>
-                          <Td>
-                            <Center>
-                              <Input
-                                placeholder="Input price"
-                                width={120}
-                                bgColor="white"
-                                _placeholder={{ textAlign: "center" }}
-                              />
-                            </Center>
-                          </Td>
-                          <Td>
-                            <Center>
-                              <Input
-                                placeholder="Input quantity"
-                                width={140}
-                                bgColor="white"
-                                _placeholder={{ textAlign: "center" }}
-                              />
-                            </Center>
-                          </Td>
-                          <Td>
-                            <Flex justify="center" gap={5} flexDir="column">
-                              <Button colorScheme="green">Save</Button>
-                              <Button
-                                colorScheme="red"
-                                onClick={handleStatusAddInternet}
-                              >
-                                Cancel
-                              </Button>
-                            </Flex>
-                          </Td>
+                          <form>
+                            <Td>
+                              <Center>
+                                <Input
+                                  placeholder="Input credit"
+                                  width={120}
+                                  bgColor="white"
+                                  _placeholder={{ textAlign: "center" }}
+                                />
+                              </Center>
+                            </Td>
+                            <Td>
+                              <Center>
+                                <Input
+                                  placeholder="Input price"
+                                  width={120}
+                                  bgColor="white"
+                                  _placeholder={{ textAlign: "center" }}
+                                />
+                              </Center>
+                            </Td>
+                            <Td>
+                              <Center>
+                                <Input
+                                  placeholder="Input quantity"
+                                  width={140}
+                                  bgColor="white"
+                                  _placeholder={{ textAlign: "center" }}
+                                />
+                              </Center>
+                            </Td>
+                            <Td>
+                              <Flex justify="center" gap={5} flexDir="column">
+                                <Button colorScheme="green">Save</Button>
+                                <Button
+                                  colorScheme="red"
+                                  onClick={handleStatusAddInternet}
+                                >
+                                  Cancel
+                                </Button>
+                              </Flex>
+                            </Td>
+                          </form>
                         </Tr>
                       ) : null}
                       <Tr>
