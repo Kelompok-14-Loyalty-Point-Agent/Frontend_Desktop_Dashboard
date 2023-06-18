@@ -29,6 +29,7 @@ const CustomSelect = ({ options, name, formik }) => {
         py="4"
         px="5"
         display="flex"
+        width={300}
         justifyContent="space-between"
         alignItems="center"
       >
@@ -56,6 +57,8 @@ const CustomSelect = ({ options, name, formik }) => {
           borderRadius="md"
           mt="2"
           bgColor="white"
+          position="absolute"
+          width={300}
         >
           {options.map((option) => (
             <ListItem

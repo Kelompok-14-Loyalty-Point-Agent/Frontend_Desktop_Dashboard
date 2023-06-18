@@ -1,12 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-export const getStockInternetData = createAsyncThunk(
-  "getStockInternetData/getStocks",
-  async (_, { getState }) => {
+export const getStockDetail = createAsyncThunk(
+  "getStockDetail/getStock",
+  async (id, { getState }) => {
     const state = getState();
     try {
-      const res = await axios.get("https://3.0.59.152.nip.io/stocks", {
+      const res = await axios.get("https://3.0.59.152.nip.io/stocks/details", {
         headers: { Authorization: `Bearer ${state.session.token}` },
       });
       return res.data;

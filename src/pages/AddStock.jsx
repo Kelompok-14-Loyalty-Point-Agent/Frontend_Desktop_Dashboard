@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { isNaN, useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import axios from "axios";
@@ -37,41 +37,37 @@ import {
   getStockProvider,
 } from "../config/redux/addStocks/addStocksThunk";
 import { getStockCredit } from "../config/redux/getStockCredit/getStockCreditThunk";
-import { useStockCreditSelector } from "../config/redux/getStockCredit/getStockCreditSelector";
+import {
+  useStockCreditSelector,
+  useStockCreditType,
+} from "../config/redux/getStockCredit/getStockCreditSelector";
 import { useAddStockCreditType } from "../config/redux/addStocks/addStocksSelector";
 import { getStockInternetData } from "../config/redux/getStockInternetData/getStockInternetDataThunk";
-import { useStockInternetDataSelector } from "../config/redux/getStockInternetData/getStockInternetDataSelector";
+import {
+  useStockInternetDataSelector,
+  useStockInternetDataType,
+} from "../config/redux/getStockInternetData/getStockInternetDataSelector";
 import { addStockInternetData } from "../config/redux/addStockInternetData/addStockInternetDataThunk";
 import { useAddStockType } from "../config/redux/addStockInternetData/addStockInternetDataSelector";
+import { formatDate } from "../utils/HelperMethod";
 
 function AddStock() {
   const dispatch = useDispatch();
   const addStockType = useAddStockType();
   const addStockCreditType = useAddStockCreditType();
+  const getStockCreditType = useStockCreditType();
+  const getStockInternetDataType = useStockInternetDataType();
   const stockCredit = useStockCreditSelector();
   const stockInternetData = useStockInternetDataSelector();
 
-  const formatDate = (date) => {
-    const options = { month: "2-digit", day: "2-digit", year: "numeric" };
-    return date.toLocaleDateString("id-ID", options);
-  };
-
-  const formatNumber = (number) => number.toLocaleString("en-US");
-
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(getStockProvider());
-  }, []);
-
-  React.useEffect(() => {
     dispatch(getStockCredit());
-  }, []);
-
-  React.useEffect(() => {
     dispatch(getStockInternetData());
   }, []);
 
   React.useEffect(() => {
-    if (addStockType) {
+    if (addStockType === "addStock/add/fulfilled") {
       dispatch(getStockInternetData());
     }
   }, [addStockType]);
@@ -83,22 +79,23 @@ function AddStock() {
   }, [addStockCreditType]);
 
   const totalStockCredit = stockCredit?.data
-    .filter((data) => data.type === "credit")
-    .map((data) => parseInt(data.stock))
+    ?.filter((data) => data.type === "credit")
+    .map((data) => data.stock)
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
   const lastUpdateStockCredit = stockCredit?.data
-    .map((data) => new Date(data.last_top_up))
+    ?.filter((data) => data.type === "credit")
+    .map((data) => formatDate(new Date(data.last_top_up)))
     .sort((a, b) => b - a)[0];
 
   const totalStockInternetData = stockInternetData?.data
-    .filter((data) => data.type === "data")
-    .map((data) => parseInt(data.stock))
+    ?.filter((data) => data.type === "data")
+    .map((data) => data.stock)
     .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 
   const stockInternetLastTopup = stockInternetData?.data
-    .filter((data) => data.type === "data")
-    .map((data) => new Date(data.last_top_up))
+    ?.filter((data) => data.type === "data")
+    .map((data) => formatDate(new Date(data.last_top_up)))
     .sort((a, b) => b - a)[0];
 
   const optionsProvider = [
@@ -369,7 +366,7 @@ function AddStock() {
                       color="white"
                       fontWeight={500}
                     >
-                      {formatNumber(totalStockCredit)}
+                      {totalStockCredit}
                     </Text>
                   </Flex>
                   <Flex gap={7}>
@@ -387,7 +384,7 @@ function AddStock() {
                       color="white"
                       fontWeight={500}
                     >
-                      {formatDate(lastUpdateStockCredit)}
+                      {lastUpdateStockCredit}
                     </Text>
                   </Flex>
                 </Flex>
@@ -564,7 +561,7 @@ function AddStock() {
                       color="white"
                       fontWeight={500}
                     >
-                      {formatNumber(totalStockInternetData)} GB
+                      {totalStockInternetData} GB
                     </Text>
                   </Flex>
                   <Flex gap={7}>
@@ -582,7 +579,7 @@ function AddStock() {
                       color="white"
                       fontWeight={500}
                     >
-                      {formatDate(stockInternetLastTopup)}
+                      {stockInternetLastTopup}
                     </Text>
                   </Flex>
                 </Flex>
