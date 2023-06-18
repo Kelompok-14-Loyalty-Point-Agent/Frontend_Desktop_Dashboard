@@ -26,93 +26,104 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import NavbarDashboard from "../components/NavbarDashboard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import CustomSelect from "../components/CustomSelect";
+import { useFormik } from "formik";
+import { useStockDetailSelector } from "../config/redux/getStockDetail/getStockDetailSelector";
+import { useDispatch } from "react-redux";
+import { getStockDetail } from "../config/redux/getStockDetail/getStockDetailThunk";
 
 const DataCreditStock = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const stockDetail = useStockDetailSelector();
   const [isAddCreditAmount, setIsAddCreditAmount] = useState(false);
   const [isAddInternetDatasAmount, setIsAddInternetDatasAmount] =
     useState(false);
-  const [DataTableCredit, setDataTableCredit] = useState([
+  const stockDetailDatas = stockDetail?.data;
+
+  useEffect(() => {
+    dispatch(getStockDetail());
+  }, []);
+
+  const optionsProviderCredit = [
     {
-      no: 1,
-      credit: 20_000,
-      price: 21_000,
-      quantity: 50,
+      value: 2,
+      label: "Telkomsel",
+      imageSrc: "../providerDummy/telkomsel.png",
     },
     {
-      no: 2,
-      credit: 25_000,
-      price: 27_000,
-      quantity: 40,
+      value: 4,
+      label: "XL",
+      imageSrc: "../providerDummy/xl.png",
     },
     {
-      no: 3,
-      credit: 50_000,
-      price: 52_000,
-      quantity: 40,
-    },
-  ]);
-  const [DataTableInternet, setDataTableInternet] = useState([
-    {
-      no: 1,
-      data: "1 GB",
-      price: 20_000,
-      quantity: 500,
+      value: 6,
+      label: "Smartfren",
+      imageSrc: "../providerDummy/smartfren.png",
     },
     {
-      no: 2,
-      data: "2 GB",
-      price: 40_000,
-      quantity: 250,
+      value: 8,
+      label: "Indosat",
+      imageSrc: "../providerDummy/indosat.jpg",
     },
-  ]);
+    {
+      value: 10,
+      label: "Axis",
+      imageSrc: "../providerDummy/axis.png",
+    },
+    {
+      value: 12,
+      label: "Tri / 3",
+      imageSrc: "../providerDummy/tri.png",
+    },
+  ];
+
+  const optionsProviderInternetData = [
+    {
+      value: 1,
+      label: "Telkomsel",
+      imageSrc: "../providerDummy/telkomsel.png",
+    },
+    {
+      value: 3,
+      label: "XL",
+      imageSrc: "../providerDummy/xl.png",
+    },
+    {
+      value: 5,
+      label: "Smartfren",
+      imageSrc: "../providerDummy/smartfren.png",
+    },
+    {
+      value: 7,
+      label: "Indosat",
+      imageSrc: "../providerDummy/indosat.jpg",
+    },
+    {
+      value: 9,
+      label: "Axis",
+      imageSrc: "../providerDummy/axis.png",
+    },
+    {
+      value: 11,
+      label: "Tri / 3",
+      imageSrc: "../providerDummy/tri.png",
+    },
+  ];
+
+  const formikAddStockCredit = useFormik({
+    initialValues: {
+      stock_id: 0,
+    },
+    onSubmit: (values) => {
+      console.log({ values });
+    },
+  });
 
   const handleStatusAddCredit = () => setIsAddCreditAmount(!isAddCreditAmount);
   const handleStatusAddInternet = () =>
     setIsAddInternetDatasAmount(!isAddInternetDatasAmount);
-
-  const TableRowCredit = ({ row }) => {
-    return (
-      <Tr>
-        <Td textAlign="center">{row.no}</Td>
-        <Td textAlign="center">{row.credit}</Td>
-        <Td textAlign="center">{row.price}</Td>
-        <Td textAlign="center">{row.quantity}</Td>
-        <Td>
-          <Flex gap={5} justify="center">
-            <Link to="#edit">
-              <Img src="./icons/stockPage/edit2.svg" width={22} />
-            </Link>
-            <Link to="#delete">
-              <Img src="./icons/stockPage/trash.svg" width={22} />
-            </Link>
-          </Flex>
-        </Td>
-      </Tr>
-    );
-  };
-
-  const TableRowInternetDatas = ({ row }) => {
-    return (
-      <Tr>
-        <Td textAlign="center">{row.no}</Td>
-        <Td textAlign="center">{row.data}</Td>
-        <Td textAlign="center">{row.price}</Td>
-        <Td textAlign="center">{row.quantity}</Td>
-        <Td>
-          <Flex gap={5} justify="center">
-            <Link to="#edit">
-              <Img src="./icons/stockPage/edit2.svg" width={22} />
-            </Link>
-            <Link to="#delete">
-              <Img src="./icons/stockPage/trash.svg" width={22} />
-            </Link>
-          </Flex>
-        </Td>
-      </Tr>
-    );
-  };
 
   return (
     <Flex height="100vh">
@@ -120,9 +131,16 @@ const DataCreditStock = () => {
       <Box px={10} flex={"1"}>
         <NavbarDashboard />
         <Box mx={14} mt={7}>
-          <Text fontSize={32} fontFamily="heading" fontWeight={700} mb={10}>
-            Stock Pulsa / Data
-          </Text>
+          <Flex gap={10}>
+            <Text fontSize={32} fontFamily="heading" fontWeight={700} mb={10}>
+              Stock Pulsa / Data
+            </Text>
+            <CustomSelect
+              options={optionsProviderCredit}
+              formik={formikAddStockCredit}
+              name="stock_id"
+            />
+          </Flex>
           <Tabs variant="unstyled">
             <TabList>
               <Tab fontWeight={700} fontFamily="heading">
@@ -161,13 +179,18 @@ const DataCreditStock = () => {
                       </Tr>
                     </Thead>
                     <Tbody fontWeight={700} fontFamily="heading">
-                      {DataTableCredit.map((data) => (
-                        <TableRowCredit row={data} key={data.no} />
+                      {stockDetailDatas?.map((data) => (
+                        <Tr key={data.id}>
+                          <Td textAlign="center">{data.id}</Td>
+                          <Td textAlign="center">{data.stock}</Td>
+                          <Td textAlign="center">{data.price}</Td>
+                          <Td textAlign="center">{data.quantity}</Td>
+                        </Tr>
                       ))}
                       {isAddCreditAmount ? (
                         <Tr>
                           <Td>
-                            <Center>{DataTableCredit.length + 1}</Center>
+                            <Center>{stockDetailDatas.length + 1}</Center>
                           </Td>
                           <Td>
                             <Center>
@@ -254,16 +277,10 @@ const DataCreditStock = () => {
                       </Tr>
                     </Thead>
                     <Tbody fontWeight={700} fontFamily="heading">
-                      {DataTableInternet.map((internetDatas) => (
-                        <TableRowInternetDatas
-                          key={internetDatas.no}
-                          row={internetDatas}
-                        />
-                      ))}
                       {isAddInternetDatasAmount ? (
                         <Tr>
                           <Td>
-                            <Center>{DataTableInternet.length + 1}</Center>
+                            <Center>{stockDetailDatas.length + 1}</Center>
                           </Td>
                           <Td>
                             <Center>
