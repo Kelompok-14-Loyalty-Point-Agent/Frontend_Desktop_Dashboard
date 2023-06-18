@@ -6,7 +6,7 @@ export const addStockInternetData = createAsyncThunk(
   async (param, { getState }) => {
     const state = getState();
     const res = await axios.post(
-      "hthttps://3.0.59.152.nip.io/stocks/add",
+      "https://3.0.59.152.nip.io/stocks/add",
       param,
       {
         headers: {

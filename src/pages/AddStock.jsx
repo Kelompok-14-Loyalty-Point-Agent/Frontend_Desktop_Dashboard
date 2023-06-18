@@ -49,7 +49,7 @@ import {
 } from "../config/redux/getStockInternetData/getStockInternetDataSelector";
 import { addStockInternetData } from "../config/redux/addStockInternetData/addStockInternetDataThunk";
 import { useAddStockType } from "../config/redux/addStockInternetData/addStockInternetDataSelector";
-import { formatDate } from "../utils/HelperMethod";
+import { formatDate, formatNumber } from "../utils/HelperMethod";
 
 function AddStock() {
   const dispatch = useDispatch();
