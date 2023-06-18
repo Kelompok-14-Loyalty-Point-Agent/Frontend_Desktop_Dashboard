@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Box, List, ListItem, Image, Img, Flex } from "@chakra-ui/react";
 
-const CustomSelect = ({ options, name, formik }) => {
+const CustomSelectEvenOdd = ({ options, name, formik }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -9,12 +9,15 @@ const CustomSelect = ({ options, name, formik }) => {
   };
 
   const selectOption = (option) => {
-    formik.setFieldValue(name, option.value);
+    console.log(option);
+    formik.setFieldValue(name, option.label);
+    formik.setFieldValue("id_data", option.stock_id_data);
+    formik.setFieldValue("id_credit", option.stock_id_credit);
     setIsOpen(false);
   };
 
   const selectedOption = options.find(
-    (option) => option.value === formik.values[name]
+    (data) => data.label === formik.values.stock_id
   );
 
   return (
@@ -88,4 +91,4 @@ const CustomSelect = ({ options, name, formik }) => {
   );
 };
 
-export default CustomSelect;
+export default CustomSelectEvenOdd;
