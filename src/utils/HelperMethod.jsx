@@ -3,4 +3,7 @@ export const formatDate = (date) => {
   return date.toLocaleDateString("id-ID", options);
 };
 
-export const formatNumber = (number) => number.toLocaleString("en-US");
+export const formatNumber = (number) => {
+  const formatted = number.toLocaleString("en-US");
+  return formatted;
+};

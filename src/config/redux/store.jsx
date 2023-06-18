@@ -13,6 +13,7 @@ const persistConfig = {
     "getStockCredit",
     "getStockInternetData",
     "addStockInternetData",
+    "getStockDetail",
   ],
 };
 
