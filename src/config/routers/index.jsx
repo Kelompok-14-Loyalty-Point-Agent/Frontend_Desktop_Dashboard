@@ -20,7 +20,6 @@ const PrivateRouter = ({ children }) => {
 
   useEffect(() => {
     if (!token) {
-      console.log("coba ", token);
       navigate("/signin");
     }
   }, [token]);
