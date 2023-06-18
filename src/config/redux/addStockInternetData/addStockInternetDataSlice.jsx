@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { addStockInternetData } from "./addStockInternetDataThunk";
 
 const addInternetDataStockInitState = {
-  responseObjectMsg: {},
+  datas: [],
 };
 
 const addStockInternetDataSlice = createSlice({
@@ -21,7 +21,7 @@ const addStockInternetDataSlice = createSlice({
       .addCase(addStockInternetData.fulfilled, (state, action) => {
         return {
           ...state,
-          responseObjectMsg: action.payload,
+          datas: action.payload,
           addStockInternetLoading: false,
           addStockInternetError: undefined,
           type: action.type,

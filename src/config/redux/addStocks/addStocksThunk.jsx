@@ -5,12 +5,16 @@ export const add_stock = createAsyncThunk(
   "addStock/add",
   async (param, { getState }) => {
     const state = getState();
-    const res = await axios.post("http://13.229.84.45/stocks/add", param, {
-      headers: {
-        Authorization: `Bearer ${state.session.token}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await axios.post(
+      "https://3.0.59.152.nip.io/stocks/add",
+      param,
+      {
+        headers: {
+          Authorization: `Bearer ${state.session.token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
     return res.data;
   }
 );
