@@ -364,7 +364,7 @@ function AddStock() {
                       color="white"
                       fontWeight={500}
                     >
-                      {totalStockCredit}
+                      {formatNumber(totalStockCredit)}
                     </Text>
                   </Flex>
                   <Flex gap={7}>
