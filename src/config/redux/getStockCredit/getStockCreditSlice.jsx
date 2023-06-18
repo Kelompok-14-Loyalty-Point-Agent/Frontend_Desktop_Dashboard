@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { getStockCredit } from "./getStockCreditThunk";
 
 const getStockCreditInitState = {
-  stockCreditValue: null,
+  stockCreditValue: [],
 };
 
 const getStockCreditSlice = createSlice({
