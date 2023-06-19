@@ -9,7 +9,6 @@ const CustomSelectEvenOdd = ({ options, name, formik }) => {
   };
 
   const selectOption = (option) => {
-    console.log(option);
     formik.setFieldValue(name, option.label);
     formik.setFieldValue("id_data", option.stock_id_data);
     formik.setFieldValue("id_credit", option.stock_id_credit);
