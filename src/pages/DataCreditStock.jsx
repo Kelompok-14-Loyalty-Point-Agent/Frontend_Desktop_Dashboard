@@ -124,6 +124,8 @@ const DataCreditStock = () => {
       const parsedPrice = parseInt(price);
       const parsedQuantity = parseInt(quantity);
 
+      console.log(formikAddStockCredit);
+
       const newFormValues = {
         stock_id: id_credit,
         stock: parsedStock,
@@ -139,14 +141,28 @@ const DataCreditStock = () => {
 
   const formikAddStockInternet = useFormik({
     initialValues: {
-      id_internet_stock: 0,
+      id_internet_stock: formikAddStockCredit.values.id_data,
       stock: 0,
       price: 0,
       quantity: 0,
     },
+    enableReinitialize: true,
     onSubmit: (values) => {
-      console.log({ values });
+      const { id_internet_stock, stock, price, quantity } = values;
+
+      const formattedStock = parseInt(stock);
+      const formattedPrice = parseInt(price);
+      const formattedQuantity = parseInt(quantity);
+
+      const newFormValues = {
+        stock_id: id_internet_stock,
+        stock: formattedStock,
+        price: formattedPrice,
+        quantity: formattedQuantity,
+      };
+      dispatch(addStockDetail(newFormValues));
       formikAddStockInternet.resetForm();
+      setIsAddInternetDatas(false);
     },
   });
 
@@ -157,8 +173,6 @@ const DataCreditStock = () => {
   const filteredCredit = stockDetailDatas?.filter(
     (data) => data.stock_id === formikAddStockCredit.values.id_credit
   );
-
-  console.log(formikAddStockInternet.values);
 
   return (
     <Flex height="100vh">
@@ -356,6 +370,18 @@ const DataCreditStock = () => {
                           <Td textAlign="center">{data.stock}</Td>
                           <Td textAlign="center">{data.price}</Td>
                           <Td textAlign="center">{data.quantity}</Td>
+                          <Td>
+                            <Flex justify="center" gap={5}>
+                              <Img
+                                src="../creditAndDataProvider/edit2.svg
+                              "
+                              />
+                              <Img
+                                src="../creditAndDataProvider/trash.svg
+                              "
+                              />
+                            </Flex>
+                          </Td>
                         </Tr>
                       ))}
                       {isAddInternetDatas ? (
@@ -368,7 +394,7 @@ const DataCreditStock = () => {
                               onChange={formikAddStockInternet.handleChange}
                               value={formikAddStockCredit.values.id_data}
                               name="id_internet_stock"
-                              // display="none"
+                              display="none"
                             />
                             <Center>
                               <Input
