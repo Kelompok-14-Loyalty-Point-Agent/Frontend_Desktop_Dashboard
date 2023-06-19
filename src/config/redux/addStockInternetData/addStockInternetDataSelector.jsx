@@ -1,4 +1,4 @@
 import { useSelector } from "react-redux";
 
-export const useAddStockType = () =>
+export const useAddStockInternetType = () =>
   useSelector((state) => state?.addStockInternetData?.type);

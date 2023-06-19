@@ -7,11 +7,13 @@ import { getStockInternetDataReducer } from "./getStockInternetData/getStockInte
 import { get_customerReducer } from "./customer/customerSlice";
 import { getStockDetailReducer } from "./getStockDetail/getStockDetailSlice";
 import { get_profileReducer } from "./editProfile/editProfileSlice";
+import { addStockDetailReducer } from "./addStockDetail/addStockDetailSlice";
 
 const reducer = combineReducers({
   session: signInReducer,
   addStock: addStockReducer,
   addStockInternetData: addStockInternetDataReducer,
+  addStockDetail: addStockDetailReducer,
   getStockCredit: getStockCreditReducer,
   getStockInternetData: getStockInternetDataReducer,
   getCustomer: get_customerReducer,
