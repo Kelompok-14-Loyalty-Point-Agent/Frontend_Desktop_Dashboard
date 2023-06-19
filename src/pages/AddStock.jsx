@@ -48,12 +48,12 @@ import {
   useStockInternetDataType,
 } from "../config/redux/getStockInternetData/getStockInternetDataSelector";
 import { addStockInternetData } from "../config/redux/addStockInternetData/addStockInternetDataThunk";
-import { useAddStockType } from "../config/redux/addStockInternetData/addStockInternetDataSelector";
+import { useAddStockInternetType } from "../config/redux/addStockInternetData/addStockInternetDataSelector";
 import { formatDate, formatNumber } from "../utils/HelperMethod";
 
 function AddStock() {
   const dispatch = useDispatch();
-  const addStockType = useAddStockType();
+  const addStockInternetType = useAddStockInternetType();
   const addStockCreditType = useAddStockCreditType();
   const getStockCreditType = useStockCreditType();
   const getStockInternetDataType = useStockInternetDataType();
@@ -67,10 +67,10 @@ function AddStock() {
   }, []);
 
   React.useEffect(() => {
-    if (addStockType === "addStock/add/fulfilled") {
+    if (addStockInternetType === "addStockInternet/add/fulfilled") {
       dispatch(getStockInternetData());
     }
-  }, [addStockType]);
+  }, [addStockInternetType]);
 
   React.useEffect(() => {
     if (addStockCreditType === "addStock/add/fulfilled") {

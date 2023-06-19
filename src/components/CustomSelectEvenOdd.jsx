@@ -66,7 +66,7 @@ const CustomSelectEvenOdd = ({ options, name, formik }) => {
         >
           {options.map((option) => (
             <ListItem
-              key={option.value}
+              key={option.id}
               cursor="pointer"
               display="flex"
               justifyContent="space-between"

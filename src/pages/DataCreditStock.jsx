@@ -32,19 +32,36 @@ import { useStockDetailSelector } from "../config/redux/getStockDetail/getStockD
 import { useDispatch } from "react-redux";
 import { getStockDetail } from "../config/redux/getStockDetail/getStockDetailThunk";
 import CustomSelectEvenOdd from "../components/CustomSelectEvenOdd";
+import axios from "axios";
+import { addStockDetail } from "../config/redux/addStockDetail/addStockDetailThunk";
+import { useAddStockDetailType } from "../config/redux/addStockDetail/addStockDetailSelector";
+import { formatNumber, formatNumberPrice } from "../utils/HelperMethod";
 
 const DataCreditStock = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const stockDetail = useStockDetailSelector();
-  const [isAddCreditAmount, setIsAddCreditAmount] = useState(false);
-  const [isAddInternetDatasAmount, setIsAddInternetDatasAmount] =
-    useState(false);
+  const addStockDetailType = useAddStockDetailType();
+  const [isAddCredit, setIsAddCredit] = useState(false);
+  const [isAddInternetDatas, setIsAddInternetDatas] = useState(false);
   const stockDetailDatas = stockDetail?.data;
 
   useEffect(() => {
     dispatch(getStockDetail());
   }, []);
+
+  useEffect(() => {
+    if (addStockDetailType === "addStockDetail/addStock/fulfilled") {
+      dispatch(getStockDetail());
+    }
+  }, [addStockDetailType]);
+
+  const handleStatusAddCredit = () => {
+    setIsAddCredit(!isAddCredit);
+  };
+
+  const handleStatusAddInternet = () =>
+    setIsAddInternetDatas(!isAddInternetDatas);
 
   const optionsProvider = [
     {
@@ -96,23 +113,52 @@ const DataCreditStock = () => {
       stock_id: 0,
       id_data: 0,
       id_credit: 0,
+      stock: 0,
+      price: 0,
+      quantity: 0,
     },
     onSubmit: (values) => {
-      console.log({ values });
+      const { id_credit, stock, price, quantity } = values;
+
+      const parsedStock = parseInt(stock);
+      const parsedPrice = parseInt(price);
+      const parsedQuantity = parseInt(quantity);
+
+      const newFormValues = {
+        stock_id: id_credit,
+        stock: parsedStock,
+        price: parsedPrice,
+        quantity: parsedQuantity,
+      };
+
+      dispatch(addStockDetail(newFormValues));
+      formikAddStockCredit.resetForm();
+      setIsAddCredit(false);
     },
   });
 
-  const handleStatusAddCredit = () => setIsAddCreditAmount(!isAddCreditAmount);
-  const handleStatusAddInternet = () =>
-    setIsAddInternetDatasAmount(!isAddInternetDatasAmount);
+  const formikAddStockInternet = useFormik({
+    initialValues: {
+      id_internet_stock: 0,
+      stock: 0,
+      price: 0,
+      quantity: 0,
+    },
+    onSubmit: (values) => {
+      console.log({ values });
+      formikAddStockInternet.resetForm();
+    },
+  });
 
-  const filteredData = stockDetailDatas.filter(
+  const filteredData = stockDetailDatas?.filter(
     (data) => data.stock_id === formikAddStockCredit.values.id_data
   );
 
-  const filteredCredit = stockDetailDatas.filter(
+  const filteredCredit = stockDetailDatas?.filter(
     (data) => data.stock_id === formikAddStockCredit.values.id_credit
   );
+
+  console.log(formikAddStockInternet.values);
 
   return (
     <Flex height="100vh">
@@ -171,23 +217,47 @@ const DataCreditStock = () => {
                       {filteredCredit?.map((data, idx) => (
                         <Tr key={data.id}>
                           <Td textAlign="center">{idx + 1}</Td>
-                          <Td textAlign="center">{data.stock}</Td>
-                          <Td textAlign="center">{data.price}</Td>
+                          <Td textAlign="center">{formatNumber(data.stock)}</Td>
+                          <Td textAlign="center">
+                            {formatNumberPrice(data.price)}
+                          </Td>
                           <Td textAlign="center">{data.quantity}</Td>
+                          <Td>
+                            <Flex justify="center" gap={5}>
+                              <Img
+                                src="../creditAndDataProvider/edit2.svg
+                              "
+                              />
+                              <Img
+                                src="../creditAndDataProvider/trash.svg
+                              "
+                              />
+                            </Flex>
+                          </Td>
                         </Tr>
                       ))}
-                      {isAddCreditAmount ? (
+                      {isAddCredit ? (
                         <Tr>
                           <Td>
-                            <Center>{stockDetailDatas.length + 1}</Center>
+                            <Center>{filteredCredit.length + 1}</Center>
                           </Td>
                           <Td>
                             <Center>
                               <Input
+                                onChange={formikAddStockCredit.handleChange}
+                                value={formikAddStockCredit.values.id_credit}
+                                name="id_credit"
+                                display="none"
+                              />
+                              <Input
                                 placeholder="Input credit"
                                 width={120}
                                 bgColor="white"
+                                color="black"
                                 _placeholder={{ textAlign: "center" }}
+                                onChange={formikAddStockCredit.handleChange}
+                                value={formikAddStockCredit.values.stock}
+                                name="stock"
                               />
                             </Center>
                           </Td>
@@ -195,6 +265,10 @@ const DataCreditStock = () => {
                             <Center>
                               <Input
                                 placeholder="Input price"
+                                name="price"
+                                color="black"
+                                value={formikAddStockCredit.values.price}
+                                onChange={formikAddStockCredit.handleChange}
                                 width={120}
                                 bgColor="white"
                                 _placeholder={{ textAlign: "center" }}
@@ -204,7 +278,11 @@ const DataCreditStock = () => {
                           <Td>
                             <Center>
                               <Input
+                                color="black"
                                 placeholder="Input quantity"
+                                name="quantity"
+                                onChange={formikAddStockCredit.handleChange}
+                                value={formikAddStockCredit.values.quantity}
                                 width={140}
                                 bgColor="white"
                                 _placeholder={{ textAlign: "center" }}
@@ -213,7 +291,13 @@ const DataCreditStock = () => {
                           </Td>
                           <Td>
                             <Flex justify="center" gap={5} flexDir="column">
-                              <Button colorScheme="green">Save</Button>
+                              <Button
+                                colorScheme="green"
+                                type="button"
+                                onClick={formikAddStockCredit.handleSubmit}
+                              >
+                                Save
+                              </Button>
                               <Button
                                 colorScheme="red"
                                 onClick={handleStatusAddCredit}
@@ -274,54 +358,76 @@ const DataCreditStock = () => {
                           <Td textAlign="center">{data.quantity}</Td>
                         </Tr>
                       ))}
-                      {isAddInternetDatasAmount ? (
+                      {isAddInternetDatas ? (
                         <Tr>
                           <Td>
-                            <Center>{stockDetailDatas.length + 1}</Center>
+                            <Center>{filteredData.length + 1}</Center>
                           </Td>
-                          <form>
-                            <Td>
-                              <Center>
-                                <Input
-                                  placeholder="Input credit"
-                                  width={120}
-                                  bgColor="white"
-                                  _placeholder={{ textAlign: "center" }}
-                                />
-                              </Center>
-                            </Td>
-                            <Td>
-                              <Center>
-                                <Input
-                                  placeholder="Input price"
-                                  width={120}
-                                  bgColor="white"
-                                  _placeholder={{ textAlign: "center" }}
-                                />
-                              </Center>
-                            </Td>
-                            <Td>
-                              <Center>
-                                <Input
-                                  placeholder="Input quantity"
-                                  width={140}
-                                  bgColor="white"
-                                  _placeholder={{ textAlign: "center" }}
-                                />
-                              </Center>
-                            </Td>
-                            <Td>
-                              <Flex justify="center" gap={5} flexDir="column">
-                                <Button colorScheme="green">Save</Button>
-                                <Button
-                                  colorScheme="red"
-                                  onClick={handleStatusAddInternet}
-                                >
-                                  Cancel
-                                </Button>
-                              </Flex>
-                            </Td>
-                          </form>
+                          <Td>
+                            <Input
+                              onChange={formikAddStockInternet.handleChange}
+                              value={formikAddStockCredit.values.id_data}
+                              name="id_internet_stock"
+                              // display="none"
+                            />
+                            <Center>
+                              <Input
+                                placeholder="Input data"
+                                value={formikAddStockInternet.values.stock}
+                                onChange={formikAddStockInternet.handleChange}
+                                name="stock"
+                                color="black"
+                                width={120}
+                                bgColor="white"
+                                _placeholder={{ textAlign: "center" }}
+                              />
+                            </Center>
+                          </Td>
+                          <Td>
+                            <Center>
+                              <Input
+                                placeholder="Input price"
+                                value={formikAddStockInternet.values.price}
+                                onChange={formikAddStockInternet.handleChange}
+                                name="price"
+                                color="black"
+                                width={120}
+                                bgColor="white"
+                                _placeholder={{ textAlign: "center" }}
+                              />
+                            </Center>
+                          </Td>
+                          <Td>
+                            <Center>
+                              <Input
+                                placeholder="Input quantity"
+                                value={formikAddStockInternet.values.quantity}
+                                onChange={formikAddStockInternet.handleChange}
+                                name="quantity"
+                                color="black"
+                                width={140}
+                                bgColor="white"
+                                _placeholder={{ textAlign: "center" }}
+                              />
+                            </Center>
+                          </Td>
+                          <Td>
+                            <Flex justify="center" gap={5} flexDir="column">
+                              <Button
+                                colorScheme="green"
+                                type="button"
+                                onClick={formikAddStockInternet.handleSubmit}
+                              >
+                                Save
+                              </Button>
+                              <Button
+                                colorScheme="red"
+                                onClick={handleStatusAddInternet}
+                              >
+                                Cancel
+                              </Button>
+                            </Flex>
+                          </Td>
                         </Tr>
                       ) : null}
                       <Tr>
