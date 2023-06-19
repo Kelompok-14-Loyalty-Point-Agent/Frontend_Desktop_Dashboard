@@ -7,3 +7,11 @@ export const formatNumber = (number) => {
   const formatted = number.toLocaleString("en-US");
   return formatted;
 };
+
+export const formatNumberPrice = (number) => {
+  const formattedPrice = number.toLocaleString("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  });
+  return formattedPrice;
+};
