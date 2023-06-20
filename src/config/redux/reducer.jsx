@@ -6,6 +6,7 @@ import { getStockCreditReducer } from "./getStockCredit/getStockCreditSlice";
 import { getStockInternetDataReducer } from "./getStockInternetData/getStockInternetDataSlice";
 import { get_customerReducer } from "./customer/customerSlice";
 import { getStockDetailReducer } from "./getStockDetail/getStockDetailSlice";
+import { get_profileReducer } from "./editProfile/editProfileSlice";
 import { addStockDetailReducer } from "./addStockDetail/addStockDetailSlice";
 import { deleteStockDetailReducer } from "./deleteStockDetail/deleteStockDetailSlice";
 import { updateDataStockReducer } from "./updateStockDetail/updateStockDetailSlice";
@@ -21,6 +22,7 @@ const reducer = combineReducers({
   getStockDetail: getStockDetailReducer,
   deleteStockDetail: deleteStockDetailReducer,
   updateStockDetail: updateDataStockReducer,
+  getProfile: get_profileReducer,
 });
 
 export default reducer;
