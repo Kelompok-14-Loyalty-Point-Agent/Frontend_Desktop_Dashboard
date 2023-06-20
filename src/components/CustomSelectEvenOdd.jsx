@@ -1,22 +1,28 @@
 import { useState } from "react";
 import { Box, List, ListItem, Image, Img, Flex } from "@chakra-ui/react";
+import { useDispatch } from "react-redux";
+import { addStockDetailAction } from "../config/redux/addStockDetail/addStockDetailSlice";
+import { useStockAddDetailProviderSelector } from "../config/redux/addStockDetail/addStockDetailSelector";
 
-const CustomSelectEvenOdd = ({ options, name, formik }) => {
+const CustomSelectEvenOdd = ({ option, name, formik, id }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const dispatch = useDispatch();
+  const provider = useStockAddDetailProviderSelector();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
   const selectOption = (option) => {
+    dispatch(addStockDetailAction.setInputProvider(option));
     formik.setFieldValue(name, option.label);
     formik.setFieldValue("id_data", option.stock_id_data);
     formik.setFieldValue("id_credit", option.stock_id_credit);
     setIsOpen(false);
   };
 
-  const selectedOption = options.find(
-    (data) => data.label === formik.values.stock_id
+  const selectedOption = option?.find(
+    (data) => data.label === formik.values.stock_id && id
   );
 
   return (
@@ -63,7 +69,7 @@ const CustomSelectEvenOdd = ({ options, name, formik }) => {
           zIndex="999"
           width={300}
         >
-          {options.map((option) => (
+          {option?.map((option) => (
             <ListItem
               key={option.id}
               cursor="pointer"
