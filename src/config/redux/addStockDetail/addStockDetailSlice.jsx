@@ -3,11 +3,20 @@ import { addStockDetail } from "./addStockDetailThunk";
 
 const addStockDetailInitialState = {
   datas: [],
+  inputProvider: {},
 };
 
 const addStockDetailSlice = createSlice({
   name: "addStockDetail",
   initialState: addStockDetailInitialState,
+  reducers: {
+    setInputProvider: (state, action) => {
+      return {
+        ...state,
+        inputProvider: action.payload,
+      };
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(addStockDetail.pending, (state, action) => {
