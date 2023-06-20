@@ -14,6 +14,8 @@ const persistConfig = {
     "getStockInternetData",
     "addStockInternetData",
     "getStockDetail",
+    "deleteStockDetail",
+    "updateStockDetail",
     "getProfile",
   ],
 };

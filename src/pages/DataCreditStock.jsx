@@ -1,3 +1,9 @@
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
+import { formatNumber, formatNumberPrice } from "../utils/HelperMethod";
+
 import {
   Box,
   Button,
@@ -21,40 +27,51 @@ import {
   Th,
   Thead,
   Tr,
-  // Center,
 } from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
+
 import Sidebar from "../components/Sidebar";
 import NavbarDashboard from "../components/NavbarDashboard";
-import { useEffect, useState } from "react";
-import { useFormik } from "formik";
-import { useStockDetailSelector } from "../config/redux/getStockDetail/getStockDetailSelector";
-import { useDispatch } from "react-redux";
-import { getStockDetail } from "../config/redux/getStockDetail/getStockDetailThunk";
 import CustomSelectEvenOdd from "../components/CustomSelectEvenOdd";
-import axios from "axios";
+
+import { useStockDetailSelector } from "../config/redux/getStockDetail/getStockDetailSelector";
+import { getStockDetail } from "../config/redux/getStockDetail/getStockDetailThunk";
 import { addStockDetail } from "../config/redux/addStockDetail/addStockDetailThunk";
-import { useAddStockDetailType } from "../config/redux/addStockDetail/addStockDetailSelector";
-import { formatNumber, formatNumberPrice } from "../utils/HelperMethod";
+import {
+  useAddStockDetailType,
+  useStockAddDetailProviderSelector,
+} from "../config/redux/addStockDetail/addStockDetailSelector";
+import { deleteStockDetail } from "../config/redux/deleteStockDetail/deleteStockDetailThunk";
+import { useDeleteStockType } from "../config/redux/deleteStockDetail/deleteStockDetailSelector";
+import { updateStock } from "../config/redux/updateStockDetail/updateStockDetailThunk";
+import { useUpdateStockType } from "../config/redux/updateStockDetail/updateStockDetailSelector";
 
 const DataCreditStock = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const stockDetail = useStockDetailSelector();
+  const updateDetailStockType = useUpdateStockType();
   const addStockDetailType = useAddStockDetailType();
+  const deleteStockDetailType = useDeleteStockType();
   const [isAddCredit, setIsAddCredit] = useState(false);
   const [isAddInternetDatas, setIsAddInternetDatas] = useState(false);
+  const [isEditStock, setIsEditStock] = useState(false);
   const stockDetailDatas = stockDetail?.data;
 
   useEffect(() => {
     dispatch(getStockDetail());
-  }, []);
 
-  useEffect(() => {
     if (addStockDetailType === "addStockDetail/addStock/fulfilled") {
       dispatch(getStockDetail());
     }
-  }, [addStockDetailType]);
+
+    if (deleteStockDetailType === "deleteStockDetail/deleteStock/fulfilled") {
+      dispatch(getStockDetail());
+    }
+
+    if (updateDetailStockType === "updateStockDetail/updateData/fulfilled") {
+      dispatch(getStockDetail());
+    }
+  }, [addStockDetailType, deleteStockDetailType, updateDetailStockType]);
 
   const handleStatusAddCredit = () => {
     setIsAddCredit(!isAddCredit);
@@ -117,14 +134,13 @@ const DataCreditStock = () => {
       price: 0,
       quantity: 0,
     },
+    enableReinitialize: true,
     onSubmit: (values) => {
       const { id_credit, stock, price, quantity } = values;
 
       const parsedStock = parseInt(stock);
       const parsedPrice = parseInt(price);
       const parsedQuantity = parseInt(quantity);
-
-      console.log(formikAddStockCredit);
 
       const newFormValues = {
         stock_id: id_credit,
@@ -166,6 +182,41 @@ const DataCreditStock = () => {
     },
   });
 
+  const handleOpenEditCreditForm = (dataCreditOld) => {
+    setIsEditStock(true);
+    handleStatusAddCredit();
+
+    console.log({ dataCreditOld });
+
+    formikAddStockCredit.setValues({
+      id: dataCreditOld.id,
+      stock_id: formikAddStockCredit.values.id_credit,
+      stock: dataCreditOld.stock,
+      price: dataCreditOld.price,
+      quantity: dataCreditOld.quantity,
+    });
+  };
+
+  const handleCloseEditCreditForm = () => {
+    setIsEditStock(false);
+    handleStatusAddCredit();
+    formikAddStockCredit.resetForm();
+  };
+
+  const handleUpdateCreditStock = (dataCreditNew, event) => {
+    event.preventDefault();
+
+    const parsedQuantity = parseInt(dataCreditNew.quantity);
+
+    const updatedFormValues = {
+      ...dataCreditNew,
+      quantity: parsedQuantity,
+    };
+
+    dispatch(updateStock(updatedFormValues));
+    handleCloseEditCreditForm();
+  };
+
   const filteredData = stockDetailDatas?.filter(
     (data) => data.stock_id === formikAddStockCredit.values.id_data
   );
@@ -173,6 +224,10 @@ const DataCreditStock = () => {
   const filteredCredit = stockDetailDatas?.filter(
     (data) => data.stock_id === formikAddStockCredit.values.id_credit
   );
+
+  const handleDeleteStock = (id) => {
+    dispatch(deleteStockDetail(id));
+  };
 
   return (
     <Flex height="100vh">
@@ -185,8 +240,10 @@ const DataCreditStock = () => {
               Stock Pulsa / Data
             </Text>
             <CustomSelectEvenOdd
-              options={optionsProvider}
+              option={optionsProvider}
+              isEdit={isEditStock}
               formik={formikAddStockCredit}
+              id={formikAddStockCredit.values.stock_id}
               name="stock_id"
             />
           </Flex>
@@ -238,13 +295,27 @@ const DataCreditStock = () => {
                           <Td textAlign="center">{data.quantity}</Td>
                           <Td>
                             <Flex justify="center" gap={5}>
-                              <Img
-                                src="../creditAndDataProvider/edit2.svg
+                              <IconButton
+                                bgColor="transparent"
+                                _hover={{ bgColor: "transparent" }}
+                                icon={
+                                  <Img
+                                    src="../creditAndDataProvider/edit2.svg
                               "
+                                  />
+                                }
+                                onClick={() => handleOpenEditCreditForm(data)}
                               />
-                              <Img
-                                src="../creditAndDataProvider/trash.svg
+                              <IconButton
+                                bgColor="transparent"
+                                _hover={{ bgColor: "transparent" }}
+                                icon={
+                                  <Img
+                                    src="../creditAndDataProvider/trash.svg
                               "
+                                  />
+                                }
+                                onClick={() => handleDeleteStock(data.id)}
                               />
                             </Flex>
                           </Td>
@@ -308,15 +379,27 @@ const DataCreditStock = () => {
                               <Button
                                 colorScheme="green"
                                 type="button"
-                                onClick={formikAddStockCredit.handleSubmit}
+                                onClick={
+                                  isEditStock
+                                    ? (event) =>
+                                        handleUpdateCreditStock(
+                                          formikAddStockCredit.values,
+                                          event
+                                        )
+                                    : formikAddStockCredit.handleSubmit
+                                }
                               >
-                                Save
+                                {isEditStock ? "Update Data" : "Save"}
                               </Button>
                               <Button
                                 colorScheme="red"
-                                onClick={handleStatusAddCredit}
+                                onClick={
+                                  isEditStock
+                                    ? handleCloseEditCreditForm
+                                    : handleStatusAddCredit
+                                }
                               >
-                                Cancel
+                                {isEditStock ? "Cancel Edit" : "Cancel"}
                               </Button>
                             </Flex>
                           </Td>
@@ -367,18 +450,33 @@ const DataCreditStock = () => {
                       {filteredData?.map((data, idx) => (
                         <Tr key={data.id}>
                           <Td textAlign="center">{idx + 1}</Td>
-                          <Td textAlign="center">{data.stock}</Td>
-                          <Td textAlign="center">{data.price}</Td>
+                          <Td textAlign="center">{data.stock} GB</Td>
+                          <Td textAlign="center">
+                            {formatNumberPrice(data.price)}
+                          </Td>
                           <Td textAlign="center">{data.quantity}</Td>
                           <Td>
                             <Flex justify="center" gap={5}>
-                              <Img
-                                src="../creditAndDataProvider/edit2.svg
+                              <IconButton
+                                bgColor="transparent"
+                                _hover={{ bgColor: "transparent" }}
+                                icon={
+                                  <Img
+                                    src="../creditAndDataProvider/edit2.svg
                               "
+                                  />
+                                }
                               />
-                              <Img
-                                src="../creditAndDataProvider/trash.svg
+                              <IconButton
+                                bgColor="transparent"
+                                _hover={{ bgColor: "transparent" }}
+                                icon={
+                                  <Img
+                                    src="../creditAndDataProvider/trash.svg
                               "
+                                  />
+                                }
+                                onClick={() => handleDeleteStock(data.id)}
                               />
                             </Flex>
                           </Td>
