@@ -51,7 +51,7 @@ const CustomerData = () => {
 
   const customers = useCustomerSelector();
   const [selectedCustomer, setSelectedCustomer] = useState(customers);
-  console.log(selectedCustomer);
+  console.log(selectedCustomer.email);
 
   const formik = useFormik({
     initialValues: {
@@ -60,7 +60,7 @@ const CustomerData = () => {
     },
     validationSchema: Yup.object({
       email: Yup.string().email("Invalid email address").required("Required"),
-      phone: Yup.string().required("Required"),
+      phone: Yup.string().required("Required").max(12, "Maximum 12 characters"),
     }),
     onSubmit: (values) => {
       dispatch(
@@ -71,18 +71,13 @@ const CustomerData = () => {
         })
       );
 
-      setSelectedCustomer((prevSelectedCustomer) => ({
-        ...prevSelectedCustomer,
-        email: values.email,
-        phone: values.phone,
-      }));
-
       formik.resetForm();
       setIsEditing(false);
       alert("Update Success");
       dispatch(get_customer());
     },
   });
+  console.log(selectedCustomer.email);
 
   const handleDelete = (customerId) => {
     if (window.confirm("Are you sure you want to delete this product?")) {
@@ -102,6 +97,21 @@ const CustomerData = () => {
     return "Bronze Member";
   };
 
+  useEffect(() => {
+    if (customers.length > 0) {
+      const currentlySelectedCustomer = customers.find(
+        (customer) => customer.no === selectedCustomer.no
+      );
+      if (currentlySelectedCustomer) {
+        setSelectedCustomer(currentlySelectedCustomer);
+      } else {
+        setSelectedCustomer(customers[0]);
+      }
+    }
+  }, [customers]);
+
+  const [showActivities, setShowActivities] = useState(false);
+
   return (
     <div>
       {isEditing ? (
@@ -119,16 +129,7 @@ const CustomerData = () => {
             <Text fontSize={32} as="b" fontFamily={"heading"}>
               Customer Data
             </Text>
-            <Box
-              maxHeight={820}
-              overflowY="auto"
-              css={{
-                "&::-webkit-scrollbar": {
-                  display: "none",
-                },
-              }}
-              p={4}
-            >
+            <Box maxHeight={820} overflowY="auto" p={4}>
               {customers
                 .filter((customer) =>
                   customer.name
@@ -215,14 +216,11 @@ const CustomerData = () => {
                   </Flex>
                 ))}
             </Box>
-            <Center mt={10}>
-              <img src="./icons/dashboard/panahbawah.svg" alt="" />
-            </Center>
           </Box>
           {/* END COSTUMER DATA */}
 
           {/* DETAIL CUSTOMER */}
-          <Box flex={"1"} px={10}>
+          <Box flex={"1"} px={10} py={5}>
             <Flex opacity={"30%"} style={{ pointerEvents: "none" }}>
               <InputGroup mt={10}>
                 <InputLeftElement>
@@ -240,7 +238,7 @@ const CustomerData = () => {
             <Flex justifyContent={"center"}>
               <Flex
                 w={500}
-                h={830}
+                h={"fit-content"}
                 bg={"#262626"}
                 borderRadius={12}
                 boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
@@ -248,7 +246,7 @@ const CustomerData = () => {
                 justifyContent={"center"}
                 flexDirection={"column"}
               >
-                <Flex gap={4} px={10} justifyContent={"end"}>
+                <Flex gap={4} px={10} justifyContent={"end"} pt={5}>
                   <button onClick={handleEditClick}>
                     <img src="./icons/customer/edit.svg" alt="" />
                   </button>
@@ -318,6 +316,7 @@ const CustomerData = () => {
                         <img src="./icons/customer/phone.svg" alt="" />
                         <Input
                           name="phone"
+                          type="number"
                           defaultValue={selectedCustomer.phone}
                           value={formik.values.phone}
                           onChange={formik.handleChange}
@@ -351,9 +350,28 @@ const CustomerData = () => {
                         <Text>{selectedCustomer.date3}</Text>
                         <Text>{selectedCustomer.activity3}</Text>
                       </Flex>
+                      {showActivities && (
+                        <>
+                          <Flex color={"#ECECEC"} mt={5} gap={5}>
+                            <Text>{selectedCustomer.date4}</Text>
+                            <Text>{selectedCustomer.activity4}</Text>
+                          </Flex>
+                          <Flex color={"#ECECEC"} mt={5} gap={5}>
+                            <Text>{selectedCustomer.date5}</Text>
+                            <Text>{selectedCustomer.activity5}</Text>
+                          </Flex>
+                        </>
+                      )}
                       <Center mt={5}>
-                        <Text fontSize={12} color={"#57DAC5"}>
-                          See More
+                        <Text
+                          fontSize={12}
+                          fontFamily={"body"}
+                          color={"#57DAC5"}
+                          cursor="pointer"
+                          onClick={() => setShowActivities(!showActivities)}
+                          style={{ pointerEvents: "none" }}
+                        >
+                          {showActivities ? "See Less" : "See More"}
                         </Text>
                       </Center>
                     </Box>
@@ -424,7 +442,7 @@ const CustomerData = () => {
                       </Center>
                     </Box>
                   </Flex>
-                  <Flex justifyContent={"center"} pt={10}>
+                  <Flex justifyContent={"center"} pt={10} pb={5}>
                     <Button
                       type="submit"
                       variant="outline"
@@ -451,16 +469,7 @@ const CustomerData = () => {
             <Text fontSize={32} as="b" fontFamily={"heading"}>
               Customer Data
             </Text>
-            <Box
-              maxHeight={820}
-              overflowY="auto"
-              css={{
-                "&::-webkit-scrollbar": {
-                  display: "none",
-                },
-              }}
-              p={4}
-            >
+            <Box maxHeight={820} overflowY="auto" p={4}>
               {customers
                 .filter((customer) =>
                   customer.name
@@ -548,9 +557,6 @@ const CustomerData = () => {
                   </Flex>
                 ))}
             </Box>
-            <Center mt={10}>
-              <img src="./icons/dashboard/panahbawah.svg" alt="" />
-            </Center>
           </Box>
           {/* END COSTUMER DATA */}
 
@@ -668,9 +674,27 @@ const CustomerData = () => {
                       <Text>{selectedCustomer.date3}</Text>
                       <Text>{selectedCustomer.activity3}</Text>
                     </Flex>
+                    {showActivities && (
+                      <>
+                        <Flex color={"#ECECEC"} mt={5} gap={5}>
+                          <Text>{selectedCustomer.date4}</Text>
+                          <Text>{selectedCustomer.activity4}</Text>
+                        </Flex>
+                        <Flex color={"#ECECEC"} mt={5} gap={5}>
+                          <Text>{selectedCustomer.date5}</Text>
+                          <Text>{selectedCustomer.activity5}</Text>
+                        </Flex>
+                      </>
+                    )}
                     <Center mt={5}>
-                      <Text fontSize={12} color={"#57DAC5"}>
-                        See More
+                      <Text
+                        fontSize={12}
+                        fontFamily={"body"}
+                        color={"#57DAC5"}
+                        cursor="pointer"
+                        onClick={() => setShowActivities(!showActivities)}
+                      >
+                        {showActivities ? "See Less" : "See More"}
                       </Text>
                     </Center>
                   </Box>
