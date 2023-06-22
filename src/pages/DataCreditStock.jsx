@@ -157,6 +157,7 @@ const DataCreditStock = () => {
 
   const formikAddStockInternet = useFormik({
     initialValues: {
+      id: 0,
       id_internet_stock: formikAddStockCredit.values.id_data,
       stock: 0,
       price: 0,
@@ -186,8 +187,6 @@ const DataCreditStock = () => {
     setIsEditStock(true);
     handleStatusAddCredit();
 
-    console.log({ dataCreditOld });
-
     formikAddStockCredit.setValues({
       id: dataCreditOld.id,
       stock_id: formikAddStockCredit.values.id_credit,
@@ -203,18 +202,51 @@ const DataCreditStock = () => {
     formikAddStockCredit.resetForm();
   };
 
+  const handleCloseEditInternet = () => {
+    setIsEditStock(false);
+    handleStatusAddInternet();
+    formikAddStockInternet.resetForm();
+  };
+
   const handleUpdateCreditStock = (dataCreditNew, event) => {
     event.preventDefault();
 
+    const parsedStock = parseInt(dataCreditNew.stock);
     const parsedQuantity = parseInt(dataCreditNew.quantity);
 
     const updatedFormValues = {
       ...dataCreditNew,
+      stock: parsedStock,
       quantity: parsedQuantity,
     };
 
     dispatch(updateStock(updatedFormValues));
     handleCloseEditCreditForm();
+  };
+
+  const handleEditOpenInternet = (internetDataOld) => {
+    setIsEditStock(true);
+    handleStatusAddInternet();
+
+    formikAddStockInternet.setValues({
+      id: internetDataOld.id,
+      stock: internetDataOld.stock,
+      quantity: internetDataOld.quantity,
+      price: internetDataOld.price,
+    });
+  };
+
+  const handleUpdateInternet = (dataInternetNew, event) => {
+    event.preventDefault();
+    const parsedStock = parseInt(dataInternetNew.stock);
+    const parsedQuantity = parseInt(dataInternetNew.quantity);
+    const updatedValues = {
+      ...dataInternetNew,
+      stock: parsedStock,
+      quantity: parsedQuantity,
+    };
+    dispatch(updateStock(updatedValues));
+    handleCloseEditInternet();
   };
 
   const filteredData = stockDetailDatas?.filter(
@@ -466,6 +498,7 @@ const DataCreditStock = () => {
                               "
                                   />
                                 }
+                                onClick={() => handleEditOpenInternet(data)}
                               />
                               <IconButton
                                 bgColor="transparent"
@@ -540,15 +573,27 @@ const DataCreditStock = () => {
                               <Button
                                 colorScheme="green"
                                 type="button"
-                                onClick={formikAddStockInternet.handleSubmit}
+                                onClick={
+                                  isEditStock
+                                    ? (event) =>
+                                        handleUpdateInternet(
+                                          formikAddStockInternet.values,
+                                          event
+                                        )
+                                    : formikAddStockInternet.handleSubmit
+                                }
                               >
-                                Save
+                                {isEditStock ? "Update Data" : "Save"}
                               </Button>
                               <Button
                                 colorScheme="red"
-                                onClick={handleStatusAddInternet}
+                                onClick={
+                                  isEditStock
+                                    ? handleCloseEditInternet
+                                    : handleStatusAddInternet
+                                }
                               >
-                                Cancel
+                                {isEditStock ? "Cancel Edit" : "Close"}
                               </Button>
                             </Flex>
                           </Td>
