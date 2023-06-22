@@ -238,10 +238,12 @@ const DataCreditStock = () => {
 
   const handleUpdateInternet = (dataInternetNew, event) => {
     event.preventDefault();
+    const parsedPrice = parseInt(dataInternetNew.price);
     const parsedStock = parseInt(dataInternetNew.stock);
     const parsedQuantity = parseInt(dataInternetNew.quantity);
     const updatedValues = {
-      ...dataInternetNew,
+      id: dataInternetNew.id,
+      price: parsedPrice,
       stock: parsedStock,
       quantity: parsedQuantity,
     };
