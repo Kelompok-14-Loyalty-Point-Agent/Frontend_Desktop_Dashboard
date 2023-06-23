@@ -6,10 +6,13 @@ import { getStockCreditReducer } from "./getStockCredit/getStockCreditSlice";
 import { getStockInternetDataReducer } from "./getStockInternetData/getStockInternetDataSlice";
 import { get_customerReducer } from "./customer/customerSlice";
 import { getStockDetailReducer } from "./getStockDetail/getStockDetailSlice";
-import { get_profileReducer } from "./editProfile/editProfileSlice";
 import { addStockDetailReducer } from "./addStockDetail/addStockDetailSlice";
 import { deleteStockDetailReducer } from "./deleteStockDetail/deleteStockDetailSlice";
 import { updateDataStockReducer } from "./updateStockDetail/updateStockDetailSlice";
+import { getDataAdminReducer } from "./getDataAdmin/getDataAdminSlice";
+import { updateDataAdminReducer } from "./updateDataAdmin/updateDataAdminSlice";
+import { updatePasswordReducer } from "./updatePassword/updatePasswordSlice";
+import { get_transactionReducer } from "./getCustomerTransaction/getCustomerTransactionSlice";
 import { updateCustomerReducer } from "./updateCustomer/updateCustomerSlice";
 import { deleteCustomerReducer } from "./deleteCustomer/deleteCustomerSlice";
 
@@ -24,7 +27,10 @@ const reducer = combineReducers({
   getStockDetail: getStockDetailReducer,
   deleteStockDetail: deleteStockDetailReducer,
   updateStockDetail: updateDataStockReducer,
-  getProfile: get_profileReducer,
+  getDataAdmin: getDataAdminReducer,
+  updateDataAdmin: updateDataAdminReducer,
+  updatePassword: updatePasswordReducer,
+  getCustomerTransaction: get_transactionReducer,
   updateCustomerDetail: updateCustomerReducer,
   deleteCustomer: deleteCustomerReducer,
 });

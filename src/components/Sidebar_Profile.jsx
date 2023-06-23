@@ -1,16 +1,6 @@
 import { Box, Center, Flex, Image, Text } from "@chakra-ui/react";
-import { useProfileSelector } from "../config/redux/editProfile/editProfileSelector";
-import { get_profile } from "../config/redux/editProfile/editProfileThunk";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 
 function Sidebar_Profile() {
-  useEffect(() => {
-    dispatch(get_profile());
-  }, []);
-  const profile = useProfileSelector();
-  const dispatch = useDispatch();
-
   return (
     <Flex>
       <Box w={330} bg="#171717" h="full">
@@ -21,7 +11,7 @@ function Sidebar_Profile() {
         </Center>
         <Center mt={5} color="white">
           <Image
-            src={profile?.image}
+            src="Ellipse78.svg"
             alt="profile"
             borderRadius="full"
             boxSize="156px"

@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
-import { formatNumber, formatNumberPrice } from "../utils/HelperMethod";
+import {
+  formatDate,
+  formatNumber,
+  formatNumberPrice,
+} from "../utils/HelperMethod";
 
 import {
   Box,
@@ -10,6 +14,7 @@ import {
   ButtonGroup,
   Center,
   Flex,
+  Heading,
   IconButton,
   Img,
   Input,
@@ -36,22 +41,25 @@ import CustomSelectEvenOdd from "../components/CustomSelectEvenOdd";
 import { useStockDetailSelector } from "../config/redux/getStockDetail/getStockDetailSelector";
 import { getStockDetail } from "../config/redux/getStockDetail/getStockDetailThunk";
 import { addStockDetail } from "../config/redux/addStockDetail/addStockDetailThunk";
-import {
-  useAddStockDetailType,
-  useStockAddDetailProviderSelector,
-} from "../config/redux/addStockDetail/addStockDetailSelector";
+import { useAddStockDetailType } from "../config/redux/addStockDetail/addStockDetailSelector";
 import { deleteStockDetail } from "../config/redux/deleteStockDetail/deleteStockDetailThunk";
 import { useDeleteStockType } from "../config/redux/deleteStockDetail/deleteStockDetailSelector";
 import { updateStock } from "../config/redux/updateStockDetail/updateStockDetailThunk";
 import { useUpdateStockType } from "../config/redux/updateStockDetail/updateStockDetailSelector";
+import { useStockCreditSelector } from "../config/redux/getStockCredit/getStockCreditSelector";
+import { useStockInternetDataSelector } from "../config/redux/getStockInternetData/getStockInternetDataSelector";
 
 const DataCreditStock = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const stockCredit = useStockCreditSelector();
+  const stockInternetData = useStockInternetDataSelector();
   const stockDetail = useStockDetailSelector();
   const updateDetailStockType = useUpdateStockType();
   const addStockDetailType = useAddStockDetailType();
   const deleteStockDetailType = useDeleteStockType();
+
   const [isAddCredit, setIsAddCredit] = useState(false);
   const [isAddInternetDatas, setIsAddInternetDatas] = useState(false);
   const [isEditStock, setIsEditStock] = useState(false);
@@ -211,11 +219,13 @@ const DataCreditStock = () => {
   const handleUpdateCreditStock = (dataCreditNew, event) => {
     event.preventDefault();
 
+    const parsedPrice = parseInt(dataCreditNew.price);
     const parsedStock = parseInt(dataCreditNew.stock);
     const parsedQuantity = parseInt(dataCreditNew.quantity);
 
     const updatedFormValues = {
-      ...dataCreditNew,
+      id: dataCreditNew.id,
+      price: parsedPrice,
       stock: parsedStock,
       quantity: parsedQuantity,
     };
@@ -263,6 +273,43 @@ const DataCreditStock = () => {
     dispatch(deleteStockDetail(id));
   };
 
+  const idInternetStock = formikAddStockCredit.values.id_data;
+  const idCreditStock = formikAddStockCredit.values.id_credit;
+
+  const filteredTotalStockCredit = stockCredit?.data
+    ?.filter((data) => data.id === idCreditStock)
+    .map((data) => data.stock)[0];
+
+  const resultFilterTotalStockCredit =
+    filteredTotalStockCredit === undefined ? 0 : filteredTotalStockCredit;
+
+  const filteredTotalStockInternet = stockInternetData?.data
+    ?.filter((data) => data.id === idInternetStock)
+    .map((data) => data.stock)[0];
+
+  const resultFilterTotalStockInternet =
+    filteredTotalStockInternet === undefined ? 0 : filteredTotalStockInternet;
+
+  const lastTopUpStockCreditFiltered = stockCredit?.data
+    ?.filter((data) => data.id === idCreditStock)
+    .map((data) => formatDate(new Date(data.last_top_up)))
+    .sort((a, b) => b - a)[0];
+
+  const lastTopUpStockInternetFiltered = stockInternetData?.data
+    ?.filter((data) => data.id === idInternetStock)
+    .map((data) => formatDate(new Date(data.last_top_up)))
+    .sort((a, b) => b - a)[0];
+
+  const finalLastTopUpStockCredit =
+    lastTopUpStockCreditFiltered === undefined
+      ? formatDate(new Date())
+      : lastTopUpStockCreditFiltered;
+
+  const finalLastTopUpStockInternet =
+    lastTopUpStockInternetFiltered === undefined
+      ? formatDate(new Date())
+      : lastTopUpStockCreditFiltered;
+
   return (
     <Flex height="100vh">
       <Sidebar />
@@ -279,6 +326,7 @@ const DataCreditStock = () => {
               formik={formikAddStockCredit}
               id={formikAddStockCredit.values.stock_id}
               name="stock_id"
+              componentId="stock_id"
             />
           </Flex>
           <Tabs variant="unstyled">
@@ -365,11 +413,13 @@ const DataCreditStock = () => {
                               <Input
                                 onChange={formikAddStockCredit.handleChange}
                                 value={formikAddStockCredit.values.id_credit}
+                                id="input_id_credit"
                                 name="id_credit"
                                 display="none"
                               />
                               <Input
                                 placeholder="Input credit"
+                                id="input_value_stock_credit"
                                 width={120}
                                 bgColor="white"
                                 color="black"
@@ -383,6 +433,7 @@ const DataCreditStock = () => {
                           <Td>
                             <Center>
                               <Input
+                                id="input_price_credit"
                                 placeholder="Input price"
                                 name="price"
                                 color="black"
@@ -398,6 +449,7 @@ const DataCreditStock = () => {
                             <Center>
                               <Input
                                 color="black"
+                                id="input_quantity_credit"
                                 placeholder="Input quantity"
                                 name="quantity"
                                 onChange={formikAddStockCredit.handleChange}
@@ -413,6 +465,7 @@ const DataCreditStock = () => {
                               <Button
                                 colorScheme="green"
                                 type="button"
+                                id="button_addOrEdit_credit"
                                 onClick={
                                   isEditStock
                                     ? (event) =>
@@ -427,6 +480,7 @@ const DataCreditStock = () => {
                               </Button>
                               <Button
                                 colorScheme="red"
+                                id="button_close_addOrEdit_credit"
                                 onClick={
                                   isEditStock
                                     ? handleCloseEditCreditForm
@@ -445,6 +499,7 @@ const DataCreditStock = () => {
                             onClick={handleStatusAddCredit}
                             width="fit-content"
                             colorScheme="blackAlpha"
+                            id="button_add_credit"
                             icon={
                               <Img
                                 src="../icons/white/addcircle.svg"
@@ -457,6 +512,22 @@ const DataCreditStock = () => {
                     </Tbody>
                   </Table>
                 </TableContainer>
+                <Flex justify="center" gap={48} mt={12} mb={5}>
+                  <Box display="flex" alignItems="center" gap={5}>
+                    <Heading color="teal.500" fontSize={24}>
+                      Stock Credit :
+                    </Heading>
+                    <Heading fontSize={22}>
+                      {formatNumber(resultFilterTotalStockCredit)}
+                    </Heading>
+                  </Box>
+                  <Box display="flex" alignItems="center" gap={5}>
+                    <Heading color="teal.500" fontSize={24}>
+                      Last Topup
+                    </Heading>
+                    <Heading fontSize={22}>{finalLastTopUpStockCredit}</Heading>
+                  </Box>
+                </Flex>
               </TabPanel>
               <TabPanel bg="black" color="white" mt={5} borderRadius={12} p={6}>
                 <TableContainer>
@@ -493,6 +564,7 @@ const DataCreditStock = () => {
                             <Flex justify="center" gap={5}>
                               <IconButton
                                 bgColor="transparent"
+                                id="button_setIsEditStatus_internet"
                                 _hover={{ bgColor: "transparent" }}
                                 icon={
                                   <Img
@@ -503,6 +575,7 @@ const DataCreditStock = () => {
                                 onClick={() => handleEditOpenInternet(data)}
                               />
                               <IconButton
+                                id="button_deleteStock_data"
                                 bgColor="transparent"
                                 _hover={{ bgColor: "transparent" }}
                                 icon={
@@ -527,11 +600,13 @@ const DataCreditStock = () => {
                               onChange={formikAddStockInternet.handleChange}
                               value={formikAddStockCredit.values.id_data}
                               name="id_internet_stock"
+                              id="input_idStock_internet"
                               display="none"
                             />
                             <Center>
                               <Input
                                 placeholder="Input data"
+                                id="input_stockValue_internet"
                                 value={formikAddStockInternet.values.stock}
                                 onChange={formikAddStockInternet.handleChange}
                                 name="stock"
@@ -545,6 +620,7 @@ const DataCreditStock = () => {
                           <Td>
                             <Center>
                               <Input
+                                id="input_priceStock_internet"
                                 placeholder="Input price"
                                 value={formikAddStockInternet.values.price}
                                 onChange={formikAddStockInternet.handleChange}
@@ -559,6 +635,7 @@ const DataCreditStock = () => {
                           <Td>
                             <Center>
                               <Input
+                                id="input_quantityValue_internet"
                                 placeholder="Input quantity"
                                 value={formikAddStockInternet.values.quantity}
                                 onChange={formikAddStockInternet.handleChange}
@@ -573,6 +650,7 @@ const DataCreditStock = () => {
                           <Td>
                             <Flex justify="center" gap={5} flexDir="column">
                               <Button
+                                id="button_setIsEditState_internet"
                                 colorScheme="green"
                                 type="button"
                                 onClick={
@@ -588,6 +666,7 @@ const DataCreditStock = () => {
                                 {isEditStock ? "Update Data" : "Save"}
                               </Button>
                               <Button
+                                id="button_deleteStock_internet"
                                 colorScheme="red"
                                 onClick={
                                   isEditStock
@@ -604,6 +683,7 @@ const DataCreditStock = () => {
                       <Tr>
                         <Td textAlign="center">
                           <IconButton
+                            id="button_addStockDetail_internet"
                             onClick={handleStatusAddInternet}
                             width="fit-content"
                             colorScheme="blackAlpha"
@@ -618,6 +698,24 @@ const DataCreditStock = () => {
                       </Tr>
                     </Tbody>
                   </Table>
+                  <Flex justify="center" gap={48} mt={12} mb={5}>
+                    <Box display="flex" alignItems="center" gap={5}>
+                      <Heading color="teal.500" fontSize={24}>
+                        Stock Data :
+                      </Heading>
+                      <Heading fontSize={24}>
+                        {resultFilterTotalStockInternet} GB
+                      </Heading>
+                    </Box>
+                    <Box display="flex" alignItems="center" gap={5}>
+                      <Heading color="teal.500" fontSize={24}>
+                        Last Topup
+                      </Heading>
+                      <Heading fontSize={24}>
+                        {finalLastTopUpStockInternet}
+                      </Heading>
+                    </Box>
+                  </Flex>
                 </TableContainer>
               </TabPanel>
             </TabPanels>
@@ -637,6 +735,7 @@ const DataCreditStock = () => {
               </Button>
             </ButtonGroup>
             <Button
+              id="button_navigate_addStocks"
               onClick={() => navigate("/stocks/add")}
               mt={10}
               fontFamily="heading"

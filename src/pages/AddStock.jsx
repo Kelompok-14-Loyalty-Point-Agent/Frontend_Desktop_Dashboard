@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { isNaN, useFormik } from "formik";
 import { useDispatch } from "react-redux";
-import axios from "axios";
 
 import {
   Box,
@@ -30,23 +29,17 @@ import {
   NumberDecrementStepper,
 } from "@chakra-ui/react";
 import Sidebar from "../components/Sidebar";
-import CustomSelect from "../components/CustomSelect";
+import CustomSelectEvenOdd from "../components/CustomSelectEvenOdd";
 
 import {
   add_stock,
   getStockProvider,
 } from "../config/redux/addStocks/addStocksThunk";
 import { getStockCredit } from "../config/redux/getStockCredit/getStockCreditThunk";
-import {
-  useStockCreditSelector,
-  useStockCreditType,
-} from "../config/redux/getStockCredit/getStockCreditSelector";
+import { useStockCreditSelector } from "../config/redux/getStockCredit/getStockCreditSelector";
 import { useAddStockCreditType } from "../config/redux/addStocks/addStocksSelector";
 import { getStockInternetData } from "../config/redux/getStockInternetData/getStockInternetDataThunk";
-import {
-  useStockInternetDataSelector,
-  useStockInternetDataType,
-} from "../config/redux/getStockInternetData/getStockInternetDataSelector";
+import { useStockInternetDataSelector } from "../config/redux/getStockInternetData/getStockInternetDataSelector";
 import { addStockInternetData } from "../config/redux/addStockInternetData/addStockInternetDataThunk";
 import { useAddStockInternetType } from "../config/redux/addStockInternetData/addStockInternetDataSelector";
 import { formatDate, formatNumber } from "../utils/HelperMethod";
@@ -55,14 +48,18 @@ function AddStock() {
   const dispatch = useDispatch();
   const addStockInternetType = useAddStockInternetType();
   const addStockCreditType = useAddStockCreditType();
-  const getStockCreditType = useStockCreditType();
-  const getStockInternetDataType = useStockInternetDataType();
   const stockCredit = useStockCreditSelector();
   const stockInternetData = useStockInternetDataSelector();
 
   useEffect(() => {
     dispatch(getStockProvider());
+  }, []);
+
+  useEffect(() => {
     dispatch(getStockCredit());
+  }, []);
+
+  useEffect(() => {
     dispatch(getStockInternetData());
   }, []);
 
@@ -78,68 +75,101 @@ function AddStock() {
     }
   }, [addStockCreditType]);
 
-  const totalStockCredit = stockCredit?.data
-    ?.filter((data) => data.type === "credit")
-    .map((data) => data.stock)
-    .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  const totalStockCredit =
+    stockCredit?.data?.length > 1
+      ? stockCredit?.data
+          ?.filter((data) => data.type === "credit")
+          .map((data) => data.stock)
+          .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+      : 0;
 
-  const lastUpdateStockCredit = stockCredit?.data
-    ?.filter((data) => data.type === "credit")
-    .map((data) => formatDate(new Date(data.last_top_up)))
-    .sort((a, b) => b - a)[0];
+  const lastUpdateStockCredit =
+    stockCredit?.data?.length > 1
+      ? stockCredit?.data
+          ?.filter((data) => data.type === "credit")
+          .map((data) => formatDate(new Date(data.last_top_up)))
+          .sort((a, b) => b - a)[0]
+      : formatDate(new Date());
 
-  const totalStockInternetData = stockInternetData?.data
-    ?.filter((data) => data.type === "data")
-    .map((data) => data.stock)
-    .reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  const totalStockInternetData =
+    stockInternetData?.data?.length > 1
+      ? stockInternetData?.data
+          ?.filter((data) => data.type === "data")
+          .map((data) => data.stock)
+          .reduce((accumulator, currentValue) => accumulator + currentValue, 0)
+      : 0;
 
-  const stockInternetLastTopup = stockInternetData?.data
-    ?.filter((data) => data.type === "data")
-    .map((data) => formatDate(new Date(data.last_top_up)))
-    .sort((a, b) => b - a)[0];
+  const stockInternetLastTopup =
+    stockInternetData?.data?.length > 1
+      ? stockInternetData?.data
+          ?.filter((data) => data.type === "data")
+          .map((data) => formatDate(new Date(data.last_top_up)))
+          .sort((a, b) => b - a)[0]
+      : formatDate(new Date());
 
   const optionsProvider = [
     {
-      value: "Telkomsel",
+      id: 1,
+      stock_id_credit: 2,
+      stock_id_data: 1,
       label: "Telkomsel",
       imageSrc: "../providerDummy/telkomsel.png",
     },
     {
-      value: "XL",
+      id: 2,
+      stock_id_credit: 4,
+      stock_id_data: 3,
       label: "XL",
       imageSrc: "../providerDummy/xl.png",
     },
     {
-      value: "Smartfren",
+      id: 3,
+      stock_id_credit: 6,
+      stock_id_data: 5,
       label: "Smartfren",
       imageSrc: "../providerDummy/smartfren.png",
     },
     {
-      value: "Indosat",
+      id: 4,
+      stock_id_credit: 8,
+      stock_id_data: 7,
       label: "Indosat",
       imageSrc: "../providerDummy/indosat.jpg",
     },
     {
-      value: "Axis",
+      id: 5,
+      stock_id_credit: 10,
+      stock_id_data: 9,
       label: "Axis",
       imageSrc: "../providerDummy/axis.png",
     },
     {
-      value: "Tri / 3",
+      id: 6,
+      stock_id_credit: 12,
+      stock_id_data: 11,
       label: "Tri / 3",
       imageSrc: "../providerDummy/tri.png",
     },
   ];
 
+  const formikStockObject = useFormik({
+    initialValues: {
+      stock_id: 0,
+      id_data: 0,
+      id_credit: 0,
+    },
+  });
+
   const formikCredit = useFormik({
     initialValues: {
       user_id: 1,
-      stock_id: 2,
-      provider_name: "",
+      stock_id: formikStockObject.values.id_credit,
+      provider_name: formikStockObject.values.stock_id,
       input_stock: 0,
       payment_method: "",
       pay_amount: 0,
     },
+    enableReinitialize: true,
     onSubmit: (formData) => {
       dispatch(add_stock(formData));
       formikCredit.resetForm();
@@ -149,12 +179,13 @@ function AddStock() {
   const formikInternetData = useFormik({
     initialValues: {
       user_id: 1,
-      stock_id: 1,
-      provider_name: "",
+      stock_id: formikStockObject.values.id_data,
+      provider_name: formikStockObject.values.stock_id,
       input_stock: 0,
       payment_method: "",
       pay_amount: 0,
     },
+    enableReinitialize: true,
     onSubmit: (formData) => {
       dispatch(addStockInternetData(formData));
       formikInternetData.resetForm();
@@ -219,10 +250,12 @@ function AddStock() {
                         <FormLabel color="white" fontSize={20}>
                           Choose Provider
                         </FormLabel>
-                        <CustomSelect
-                          options={optionsProvider}
-                          formik={formikCredit}
-                          name="provider_name"
+                        <CustomSelectEvenOdd
+                          option={optionsProvider}
+                          formik={formikStockObject}
+                          id={formikStockObject.values.stock_id}
+                          name="stock_id"
+                          componentId="stock_id"
                         />
                       </FormControl>
                       <FormControl mb={8}>
@@ -233,6 +266,7 @@ function AddStock() {
                           <NumberInputField
                             onChange={handleChangeStockCredit}
                             value={formikCredit.values.input_stock}
+                            id="input_stock_credit"
                             name="input_stock"
                             placeholder="Input stock credit  e.g. 1.000.000"
                             bgColor="white"
@@ -258,6 +292,7 @@ function AddStock() {
                               Rp.
                             </Heading>
                             <Input
+                              id="input_payAmount_credit"
                               onChange={formikCredit.handleChange}
                               value={formikCredit.values.pay_amount}
                               name="pay_amount"
@@ -271,6 +306,7 @@ function AddStock() {
                         </Flex>
                       </FormControl>
                       <Button
+                        id="button_addStocks"
                         type="submit"
                         bgColor="#BE4057"
                         fontFamily="poppins"
@@ -304,6 +340,7 @@ function AddStock() {
                             }
                             value={formikCredit.values.payment_method}
                             name="payment_method"
+                            id="input_radioGroup_credit"
                           >
                             <Stack direction="row" gap={14}>
                               <Box>
@@ -311,6 +348,7 @@ function AddStock() {
                                 <Stack direction="column" gap={2}>
                                   <Radio
                                     value="bri"
+                                    id="input_radioBri_credit"
                                     colorScheme="facebook"
                                     bgColor="white"
                                   >
@@ -320,6 +358,7 @@ function AddStock() {
                                     />
                                   </Radio>
                                   <Radio
+                                    id="input_radioBni_credit"
                                     value="bni"
                                     bgColor="white"
                                     colorScheme="facebook"
@@ -338,6 +377,7 @@ function AddStock() {
                                 <Radio
                                   color="white"
                                   bgColor="white"
+                                  id="input_radioGopay_credit"
                                   value="GoPay"
                                 >
                                   <Img src="../paymentLogo/gopay.png" />
@@ -405,10 +445,12 @@ function AddStock() {
                         <FormLabel color="white" fontSize={20}>
                           Choose Provider
                         </FormLabel>
-                        <CustomSelect
-                          formik={formikInternetData}
-                          name="provider_name"
-                          options={optionsProvider}
+                        <CustomSelectEvenOdd
+                          option={optionsProvider}
+                          formik={formikStockObject}
+                          id={formikStockObject.values.stock_id}
+                          name="stock_id"
+                          componentId="stock_id"
                         />
                       </FormControl>
                       <FormControl mb={8}>
@@ -426,6 +468,7 @@ function AddStock() {
                               onChange={handleChangeStockInternetData}
                               value={formikInternetData.values.input_stock}
                               name="input_stock"
+                              id="input_valueStock_internetData"
                               placeholder="Input stock credit  e.g. 1.000.000"
                               bgColor="white"
                               width={470}
@@ -453,6 +496,7 @@ function AddStock() {
                               Rp.
                             </Heading>
                             <Input
+                              id="input_valuePayAmount_internetData"
                               onChange={formikInternetData.handleChange}
                               value={formikInternetData.values.pay_amount}
                               name="pay_amount"
@@ -466,6 +510,7 @@ function AddStock() {
                         </Flex>
                       </FormControl>
                       <Button
+                        id="input_addStocks_internetData"
                         type="submit"
                         bgColor="#BE4057"
                         fontFamily="poppins"
@@ -499,6 +544,7 @@ function AddStock() {
                             }
                             value={formikInternetData.values.payment_method}
                             name="payment_method"
+                            id="input_radioGroupPayments_internetData"
                           >
                             <Stack direction="row" gap={14}>
                               <Box>
@@ -506,6 +552,7 @@ function AddStock() {
                                 <Stack direction="column" gap={2}>
                                   <Radio
                                     value="bri"
+                                    id="input_radioBri_internetData"
                                     colorScheme="facebook"
                                     bgColor="white"
                                   >
@@ -515,6 +562,7 @@ function AddStock() {
                                     />
                                   </Radio>
                                   <Radio
+                                    id="input_radioBni_internetData"
                                     value="bni"
                                     bgColor="white"
                                     colorScheme="facebook"
@@ -531,6 +579,7 @@ function AddStock() {
                                   E-Wallet
                                 </FormLabel>
                                 <Radio
+                                  id="input_radioGopay_internetData"
                                   color="white"
                                   bgColor="white"
                                   value="gopay"
