@@ -16,6 +16,7 @@ const persistConfig = {
     "getStockDetail",
     "deleteStockDetail",
     "updateStockDetail",
+    "getTotalStockByProvider",
     "getProfile",
   ],
 };
