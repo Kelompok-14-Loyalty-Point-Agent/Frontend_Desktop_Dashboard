@@ -5,28 +5,57 @@ import { useEffect, useState } from "react";
 import NavbarDashboard from "../components/NavbarDashboard";
 import Sidebar from "../components/Sidebar";
 
-const getMembershipStatus = (transactionCount) => {
-  if (transactionCount >= 50) {
-    return "Gold Member";
-  } else if (transactionCount >= 20) {
-    return "Silver Member";
-  } else if (transactionCount >= 10) {
-    return "Bronze Member";
-  }
-  return "Bronze Member";
-};
-
 const CashOutStock = () => {
   const [customerData, setCustomerData] = useState([]);
+  // const [TransactionData, setTransactionData] = useState([]);
   const [activeCard, setActiveCard] = useState(0);
   const activeCustomer = customerData[activeCard];
   const [showActivities, setShowActivities] = useState(false);
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const customerResponse = await axios.get(
+          "https://3.0.59.152.nip.io/users/customers",
+          {
+            headers: {
+              Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjg5MzY2NDQ5fQ.JPn0Gyxs1nAwgcDya0SmDJasmRbxdtQVeTIDGUJTjJU",
+            },
+          }
+        );
+        
+        // const transactionResponse = await axios.get(
+        //   "https://3.0.59.152.nip.io/transactions/users/recent/2",
+        //   {
+        //     headers: {
+        //       Authorization:
+        //         "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjg5MzY2NDQ5fQ.JPn0Gyxs1nAwgcDya0SmDJasmRbxdtQVeTIDGUJTjJU",
+        //     },
+        //   }
+        // );
+  
+        setCustomerData(customerResponse.data.data);
+        // setTransactionData(transactionResponse.data.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    fetchData();
+  }, []);
+  
+
+  useEffect(() => {
     axios
-      .get("https://645cd09be01ac6105893f80f.mockapi.io/Customers")
+      .get("https://3.0.59.152.nip.io/users/customers", {
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjg5MzY2NDQ5fQ.JPn0Gyxs1nAwgcDya0SmDJasmRbxdtQVeTIDGUJTjJU",
+        },
+      })
       .then((response) => {
-        setCustomerData(response.data);
+        setCustomerData(response.data.data);
       })
       .catch((error) => {
         console.error(error);
@@ -37,11 +66,11 @@ const CashOutStock = () => {
     <>
       <Flex height="full">
         <Sidebar />
+        {/* STOCK CASH OUT */}
         <Box mx={"114px"} my={"80px"} w={580}>
           <Text fontSize={32} as="b" fontFamily={"heading"} ps={4}>
             Stock Cash Out
           </Text>
-          {/* STOCK CASH OUT */}
           <Box maxHeight={820} overflowY="auto" p={4}>
             {customerData.map((customer, index) => (
               <Flex
@@ -60,13 +89,15 @@ const CashOutStock = () => {
                 cursor="pointer"
               >
                 <Image
-                  src={customer.customer_image}
+                  src={customer.profile.URL}
                   alt=""
                   borderRadius="50%"
+                  width={"96px"}
+                  height={"102px"}
                 />
                 <Box>
                   <Text fontSize={24} as="b" fontFamily="heading">
-                    {customer.customer_name}
+                    {customer.name}
                   </Text>
                   <Text fontSize={16} fontFamily="body">
                     Transaction totals
@@ -77,19 +108,19 @@ const CashOutStock = () => {
                     fontFamily="heading"
                     color="#2DB5AB"
                   >
-                    {customer.total_transaction}x
+                    {customer.profile.TransactionMade}x
                   </Text>
                 </Box>
               </Flex>
             ))}
           </Box>
         </Box>
+        {/* END STOCK CASH OUT */}
+
         <Flex flex={1} flexDirection="column">
           <NavbarDashboard />
+          {/* DETAIL STOCK CASH OUT */}
           <Flex>
-            {/* END STOCK CASH OUT */}
-
-            {/* DETAIL STOCK CASH OUT */}
             {activeCustomer && (
               <Box
                 w={500}
@@ -106,9 +137,11 @@ const CashOutStock = () => {
                     <Box>
                       <Center mt={2}>
                         <Image
-                          src={activeCustomer.customer_image}
+                          src={activeCustomer.profile.URL}
                           alt=""
                           borderRadius="50%"
+                          width={"96px"}
+                          height={"102px"}
                         />
                       </Center>
                       <Center mt={5}>
@@ -118,7 +151,7 @@ const CashOutStock = () => {
                           as={"b"}
                           color={"#FFFFFF"}
                         >
-                          {activeCustomer.customer_name}
+                          {activeCustomer.name}
                         </Text>
                       </Center>
                       <Center>
@@ -128,9 +161,7 @@ const CashOutStock = () => {
                             fontFamily={"body"}
                             color={"#D09635"}
                           >
-                            {getMembershipStatus(
-                              activeCustomer.total_transaction_month
-                            )}
+                            {activeCustomer.profile.Member}
                           </Text>
                         </Center>
                       </Center>
@@ -146,7 +177,7 @@ const CashOutStock = () => {
                           Recent Activities
                         </Text>
                       </Center>
-                      <Flex color={"#ECECEC"} mt={5} gap={5}>
+                      {/* <Flex color={"#ECECEC"} mt={5} gap={5}>
                         <Text fontFamily={"body"}>
                           {activeCustomer.recent_activity_date}
                         </Text>
@@ -189,7 +220,8 @@ const CashOutStock = () => {
                             </Text>
                           </Flex>
                         </>
-                      )}
+                      )} */}
+                      
                       <Center mt={5}>
                         <Text
                           fontSize={12}
@@ -218,7 +250,7 @@ const CashOutStock = () => {
                         as={"b"}
                         color={"#2DB5AB"}
                       >
-                        {activeCustomer.total_transaction}x
+                        {activeCustomer.profile.TransactionMade}x
                       </Text>
                     </Center>
                   </Box>
@@ -235,7 +267,7 @@ const CashOutStock = () => {
                         as={"b"}
                         color={"#2DB5AB"}
                       >
-                        {activeCustomer.total_transaction_month}x
+                        {activeCustomer.profile.MonthlyTransaction}x
                       </Text>
                     </Center>
                   </Box>
@@ -244,7 +276,7 @@ const CashOutStock = () => {
                   <Box w={364} h={62} mt={10}>
                     <Text color={"#F7DA94"} fontSize={16} fontFamily={"body"}>
                       The customer has made{" "}
-                      {activeCustomer.total_transaction_month}x transactions
+                      {activeCustomer.profile.MonthlyTransaction}x transactions
                       this month, you as an admin can give 25 points to users
                       from a multiple of 5x transactions made!
                     </Text>
@@ -252,8 +284,8 @@ const CashOutStock = () => {
                 </Center>
               </Box>
             )}
-            {/* END DETAIL STOCK CASH OUT */}
           </Flex>
+          {/* END DETAIL STOCK CASH OUT */}
         </Flex>
       </Flex>
     </>
