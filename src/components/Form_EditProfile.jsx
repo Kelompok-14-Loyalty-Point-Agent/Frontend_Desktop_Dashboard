@@ -34,7 +34,7 @@ function Form_EditProfile() {
   const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
-  const dataAdmin = useDataAdminSelector().data;
+  const dataAdmin = useDataAdminSelector();
   const useDataAdminType = useUpdateDataAdminType();
   const usePasswordType = useUpdatePasswordType();
 
@@ -53,8 +53,8 @@ function Form_EditProfile() {
   const formikNameAddress = useFormik({
     initialValues: {
       id: 1,
-      name: dataAdmin.name || "",
-      address: dataAdmin.profile.Address || "",
+      name: dataAdmin?.data?.name || "",
+      address: dataAdmin?.data?.profile?.Address || "",
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Required"),
@@ -69,7 +69,7 @@ function Form_EditProfile() {
   const formikPassword = useFormik({
     initialValues: {
       id: 1,
-      password: dataAdmin.password || "",
+      password: dataAdmin?.data?.password || "",
     },
     validationSchema: Yup.object({
       password: Yup.string().required("Required"),

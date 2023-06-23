@@ -29,7 +29,7 @@ function Sidebar() {
       <Box w={330} bg="#171717" h="100%">
         <Center mt={"80px"} color="white">
           <Image
-            src={dataAdmin?.profile?.URL}
+            src="Ellipse78.svg"
             alt="profile"
             borderRadius="full"
             boxSize="156px"
@@ -37,7 +37,7 @@ function Sidebar() {
         </Center>
         <Center mt={4} color="white">
           <Text fontSize={32} fontFamily="heading" fontWeight={600}>
-            {dataAdmin?.name}
+            {dataAdmin?.data?.name}
           </Text>
         </Center>
         <Center
