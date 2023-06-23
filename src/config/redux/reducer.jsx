@@ -11,6 +11,7 @@ import { deleteStockDetailReducer } from "./deleteStockDetail/deleteStockDetailS
 import { updateDataStockReducer } from "./updateStockDetail/updateStockDetailSlice";
 import { getDataAdminReducer } from "./getDataAdmin/getDataAdminSlice";
 import { updateDataAdminReducer } from "./updateDataAdmin/updateDataAdminSlice";
+import { updatePasswordReducer } from "./updatePassword/updatePasswordSlice";
 
 const reducer = combineReducers({
   session: signInReducer,
@@ -25,6 +26,7 @@ const reducer = combineReducers({
   updateStockDetail: updateDataStockReducer,
   getDataAdmin: getDataAdminReducer,
   updateDataAdmin: updateDataAdminReducer,
+  updatePassword: updatePasswordReducer,
 });
 
 export default reducer;

@@ -20,6 +20,7 @@ const persistConfig = {
     "updateDataAdmin",
     "getTotalStockByProvider",
     "getProfile",
+    "updatePassword",
   ],
 };
 
