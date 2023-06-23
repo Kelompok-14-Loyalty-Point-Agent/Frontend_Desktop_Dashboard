@@ -26,6 +26,8 @@ import { getDataAdmin } from "../config/redux/getDataAdmin/getDataAdminThunk";
 import { useDataAdminSelector } from "../config/redux/getDataAdmin/getDataAdminSelector";
 import { updateDataAdmin } from "../config/redux/updateDataAdmin/updateDataAdminThunk";
 import { useUpdateDataAdminType } from "../config/redux/updateDataAdmin/updateDataAdminSelector";
+import { updatePassword } from "../config/redux/updatePassword/updatePasswordThunk";
+import { useUpdatePasswordType } from "../config/redux/updatePassword/updatePasswordSelector";
 import { useDispatch } from "react-redux";
 
 function Form_EditProfile() {
@@ -34,6 +36,7 @@ function Form_EditProfile() {
   const dispatch = useDispatch();
   const dataAdmin = useDataAdminSelector().data;
   const useDataAdminType = useUpdateDataAdminType();
+  const usePasswordType = useUpdatePasswordType();
 
   useEffect(() => {
     dispatch(getDataAdmin());
@@ -41,7 +44,11 @@ function Form_EditProfile() {
     if (useDataAdminType === "updateDataAdmin/updateData/fulfilled") {
       dispatch(getDataAdmin());
     }
-  }, [useDataAdminType]);
+
+    if (usePasswordType === "updatePassword/updatePassword/fulfilled") {
+      dispatch(getDataAdmin());
+    }
+  }, [useDataAdminType, usePasswordType]);
 
   const formikNameAddress = useFormik({
     initialValues: {
@@ -61,13 +68,15 @@ function Form_EditProfile() {
 
   const formikPassword = useFormik({
     initialValues: {
-      password: "",
+      id: 1,
+      password: dataAdmin.password || "",
     },
     validationSchema: Yup.object({
       password: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
-      console.log(values);
+      dispatch(updatePassword(values));
+      alert("Update Password Success");
     },
   });
 
