@@ -219,11 +219,13 @@ const DataCreditStock = () => {
   const handleUpdateCreditStock = (dataCreditNew, event) => {
     event.preventDefault();
 
+    const parsedPrice = parseInt(dataCreditNew.price);
     const parsedStock = parseInt(dataCreditNew.stock);
     const parsedQuantity = parseInt(dataCreditNew.quantity);
 
     const updatedFormValues = {
-      ...dataCreditNew,
+      id: dataCreditNew.id,
+      price: parsedPrice,
       stock: parsedStock,
       quantity: parsedQuantity,
     };
