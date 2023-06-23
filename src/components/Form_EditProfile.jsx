@@ -95,6 +95,7 @@ function Form_EditProfile() {
           Edit Profile
         </Button>
         <Button
+          id="button_home_editProfile"
           variant="outline"
           colorScheme="#030F51"
           color="#030F51"
@@ -124,7 +125,10 @@ function Form_EditProfile() {
           <TabPanels>
             <TabPanel bg="white" boxShadow="lg" mt={5} borderRadius={12} p={6}>
               <TableContainer pt={9}>
-                <form onSubmit={formikNameAddress.handleSubmit}>
+                <form
+                  id="form_name&address"
+                  onSubmit={formikNameAddress.handleSubmit}
+                >
                   <FormControl id="name" isRequired>
                     <FormLabel
                       fontFamily="heading"
@@ -187,6 +191,7 @@ function Form_EditProfile() {
                   <br />
                   <Stack spacing={4}>
                     <Button
+                      id="button_saveChanges"
                       bg="#030F51"
                       color="white"
                       _hover={{
@@ -203,7 +208,7 @@ function Form_EditProfile() {
                 <br />
                 <hr />
                 <br />
-                <form onSubmit={formikPassword.handleSubmit}>
+                <form id="form_password" onSubmit={formikPassword.handleSubmit}>
                   <FormControl id="password" isRequired>
                     <FormLabel
                       fontFamily="heading"
@@ -248,6 +253,7 @@ function Form_EditProfile() {
                   <br />
                   <Stack spacing={4}>
                     <Button
+                      id="button_changePassword"
                       bg="#030F51"
                       color="white"
                       _hover={{
@@ -261,6 +267,7 @@ function Form_EditProfile() {
                     </Button>
 
                     <Button
+                      id="button_signOut"
                       bg="#690837"
                       color="white"
                       _hover={{
@@ -269,7 +276,7 @@ function Form_EditProfile() {
                       fontWeight={400}
                       fontSize={16}
                     >
-                      Sign Out
+                      <Link to="/">Sign Out</Link>
                     </Button>
                   </Stack>
                 </form>
