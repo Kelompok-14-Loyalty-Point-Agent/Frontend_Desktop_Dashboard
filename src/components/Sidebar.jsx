@@ -11,7 +11,7 @@ function Sidebar() {
   }, []);
   const dataAdmin = useDataAdminSelector();
   const dispatch = useDispatch();
-  console.log(dataAdmin);
+  console.log({ dataAdmin });
 
   const navigate = useNavigate();
   const location = useLocation();
