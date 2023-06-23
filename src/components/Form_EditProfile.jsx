@@ -55,6 +55,7 @@ function Form_EditProfile() {
     }),
     onSubmit: (values) => {
       dispatch(updateDataAdmin(values));
+      alert("Update Nama & Alamat Success");
     },
   });
 
