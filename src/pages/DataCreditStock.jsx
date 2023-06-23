@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import {
@@ -324,6 +324,7 @@ const DataCreditStock = () => {
               formik={formikAddStockCredit}
               id={formikAddStockCredit.values.stock_id}
               name="stock_id"
+              componentId="stock_id"
             />
           </Flex>
           <Tabs variant="unstyled">
@@ -410,11 +411,13 @@ const DataCreditStock = () => {
                               <Input
                                 onChange={formikAddStockCredit.handleChange}
                                 value={formikAddStockCredit.values.id_credit}
+                                id="input_id_credit"
                                 name="id_credit"
                                 display="none"
                               />
                               <Input
                                 placeholder="Input credit"
+                                id="input_value_stock_credit"
                                 width={120}
                                 bgColor="white"
                                 color="black"
@@ -428,6 +431,7 @@ const DataCreditStock = () => {
                           <Td>
                             <Center>
                               <Input
+                                id="input_price_credit"
                                 placeholder="Input price"
                                 name="price"
                                 color="black"
@@ -443,6 +447,7 @@ const DataCreditStock = () => {
                             <Center>
                               <Input
                                 color="black"
+                                id="input_quantity_credit"
                                 placeholder="Input quantity"
                                 name="quantity"
                                 onChange={formikAddStockCredit.handleChange}
@@ -458,6 +463,7 @@ const DataCreditStock = () => {
                               <Button
                                 colorScheme="green"
                                 type="button"
+                                id="button_addOrEdit_credit"
                                 onClick={
                                   isEditStock
                                     ? (event) =>
@@ -472,6 +478,7 @@ const DataCreditStock = () => {
                               </Button>
                               <Button
                                 colorScheme="red"
+                                id="button_close_addOrEdit_credit"
                                 onClick={
                                   isEditStock
                                     ? handleCloseEditCreditForm
@@ -490,6 +497,7 @@ const DataCreditStock = () => {
                             onClick={handleStatusAddCredit}
                             width="fit-content"
                             colorScheme="blackAlpha"
+                            id="button_add_credit"
                             icon={
                               <Img
                                 src="../icons/white/addcircle.svg"
@@ -554,6 +562,7 @@ const DataCreditStock = () => {
                             <Flex justify="center" gap={5}>
                               <IconButton
                                 bgColor="transparent"
+                                id="button_setIsEditStatus_internet"
                                 _hover={{ bgColor: "transparent" }}
                                 icon={
                                   <Img
@@ -564,6 +573,7 @@ const DataCreditStock = () => {
                                 onClick={() => handleEditOpenInternet(data)}
                               />
                               <IconButton
+                                id="button_deleteStock_data"
                                 bgColor="transparent"
                                 _hover={{ bgColor: "transparent" }}
                                 icon={
@@ -588,11 +598,13 @@ const DataCreditStock = () => {
                               onChange={formikAddStockInternet.handleChange}
                               value={formikAddStockCredit.values.id_data}
                               name="id_internet_stock"
+                              id="input_idStock_internet"
                               display="none"
                             />
                             <Center>
                               <Input
                                 placeholder="Input data"
+                                id="input_stockValue_internet"
                                 value={formikAddStockInternet.values.stock}
                                 onChange={formikAddStockInternet.handleChange}
                                 name="stock"
@@ -606,6 +618,7 @@ const DataCreditStock = () => {
                           <Td>
                             <Center>
                               <Input
+                                id="input_priceStock_internet"
                                 placeholder="Input price"
                                 value={formikAddStockInternet.values.price}
                                 onChange={formikAddStockInternet.handleChange}
@@ -620,6 +633,7 @@ const DataCreditStock = () => {
                           <Td>
                             <Center>
                               <Input
+                                id="input_quantityValue_internet"
                                 placeholder="Input quantity"
                                 value={formikAddStockInternet.values.quantity}
                                 onChange={formikAddStockInternet.handleChange}
@@ -634,6 +648,7 @@ const DataCreditStock = () => {
                           <Td>
                             <Flex justify="center" gap={5} flexDir="column">
                               <Button
+                                id="button_setIsEditState_internet"
                                 colorScheme="green"
                                 type="button"
                                 onClick={
@@ -649,6 +664,7 @@ const DataCreditStock = () => {
                                 {isEditStock ? "Update Data" : "Save"}
                               </Button>
                               <Button
+                                id="button_deleteStock_internet"
                                 colorScheme="red"
                                 onClick={
                                   isEditStock
@@ -665,6 +681,7 @@ const DataCreditStock = () => {
                       <Tr>
                         <Td textAlign="center">
                           <IconButton
+                            id="button_addStockDetail_internet"
                             onClick={handleStatusAddInternet}
                             width="fit-content"
                             colorScheme="blackAlpha"

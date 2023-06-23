@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { addStockDetailAction } from "../config/redux/addStockDetail/addStockDetailSlice";
 import { useStockAddDetailProviderSelector } from "../config/redux/addStockDetail/addStockDetailSelector";
 
-const CustomSelectEvenOdd = ({ option, name, formik, id }) => {
+const CustomSelectEvenOdd = ({ option, name, formik, id, componentId }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dispatch = useDispatch();
   const provider = useStockAddDetailProviderSelector();
@@ -41,7 +41,7 @@ const CustomSelectEvenOdd = ({ option, name, formik, id }) => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Flex alignItems="center">
+        <Flex alignItems="center" id={componentId}>
           {selectedOption && (
             <Image
               src={selectedOption.imageSrc}
