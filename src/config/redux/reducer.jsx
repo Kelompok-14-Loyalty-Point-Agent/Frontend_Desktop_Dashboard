@@ -6,10 +6,11 @@ import { getStockCreditReducer } from "./getStockCredit/getStockCreditSlice";
 import { getStockInternetDataReducer } from "./getStockInternetData/getStockInternetDataSlice";
 import { get_customerReducer } from "./customer/customerSlice";
 import { getStockDetailReducer } from "./getStockDetail/getStockDetailSlice";
-import { get_profileReducer } from "./editProfile/editProfileSlice";
 import { addStockDetailReducer } from "./addStockDetail/addStockDetailSlice";
 import { deleteStockDetailReducer } from "./deleteStockDetail/deleteStockDetailSlice";
 import { updateDataStockReducer } from "./updateStockDetail/updateStockDetailSlice";
+import { getDataAdminReducer } from "./getDataAdmin/getDataAdminSlice";
+import { updateDataAdminReducer } from "./updateDataAdmin/updateDataAdminSlice";
 
 const reducer = combineReducers({
   session: signInReducer,
@@ -22,7 +23,8 @@ const reducer = combineReducers({
   getStockDetail: getStockDetailReducer,
   deleteStockDetail: deleteStockDetailReducer,
   updateStockDetail: updateDataStockReducer,
-  getProfile: get_profileReducer,
+  getDataAdmin: getDataAdminReducer,
+  updateDataAdmin: updateDataAdminReducer,
 });
 
 export default reducer;

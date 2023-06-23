@@ -1,16 +1,17 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Box, Button, Center, Flex, Image, Text } from "@chakra-ui/react";
-import { useProfileSelector } from "../config/redux/editProfile/editProfileSelector";
-import { get_profile } from "../config/redux/editProfile/editProfileThunk";
+import { getDataAdmin } from "../config/redux/getDataAdmin/getDataAdminThunk";
+import { useDataAdminSelector } from "../config/redux/getDataAdmin/getDataAdminSelector";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 function Sidebar() {
   useEffect(() => {
-    dispatch(get_profile());
+    dispatch(getDataAdmin());
   }, []);
-  const profile = useProfileSelector();
+  const dataAdmin = useDataAdminSelector().data;
   const dispatch = useDispatch();
+  console.log(dataAdmin);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,7 +29,7 @@ function Sidebar() {
       <Box w={330} bg="#171717" h="100%">
         <Center mt={"80px"} color="white">
           <Image
-            src={profile?.image}
+            src={dataAdmin.profile.URL}
             alt="profile"
             borderRadius="full"
             boxSize="156px"
@@ -36,7 +37,7 @@ function Sidebar() {
         </Center>
         <Center mt={4} color="white">
           <Text fontSize={32} fontFamily="heading" fontWeight={600}>
-            {profile?.name}
+            {dataAdmin.name}
           </Text>
         </Center>
         <Center
