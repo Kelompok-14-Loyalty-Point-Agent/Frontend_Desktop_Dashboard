@@ -80,7 +80,7 @@ function Sidebar() {
                   }/dashboard-active.svg`}
                   alt=""
                 />
-                <Link to="/dashboard">
+                <Link id="button_navigate_dashboard" to="/dashboard">
                   <Text
                     ml={2}
                     color={
@@ -110,7 +110,7 @@ function Sidebar() {
                   alt="people.svg"
                   width={26}
                 />
-                <Link to="/customers">
+                <Link id="button_navigate_customerData" to="/customers">
                   <Text
                     ml={2}
                     fontWeight={700}
@@ -140,7 +140,10 @@ function Sidebar() {
                   alt="receiptitem.svg"
                   width={26}
                 />
-                <Link to="/transactions">
+                <Link
+                  id="button_navigate_customerTransaction"
+                  to="/transactions"
+                >
                   <Text
                     ml={2}
                     fontWeight={700}
@@ -176,7 +179,7 @@ function Sidebar() {
                   alt="people.svg"
                   width={26}
                 />
-                <Link to="/stocks">
+                <Link id="button_navigate_stocks" to="/stocks">
                   <Text
                     ml={2}
                     fontWeight={700}
@@ -208,7 +211,7 @@ function Sidebar() {
                   alt="people.svg"
                   width={26}
                 />
-                <Link to="/cashout">
+                <Link id="button_navigate_cashout" to="/cashout">
                   <Text
                     ml={2}
                     fontWeight={700}
