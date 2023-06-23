@@ -18,6 +18,8 @@ const persistConfig = {
     "updateStockDetail",
     "getDataAdmin",
     "updateDataAdmin",
+    "getTotalStockByProvider",
+    "getProfile",
   ],
 };
 
