@@ -9,9 +9,9 @@ function Sidebar() {
   useEffect(() => {
     dispatch(getDataAdmin());
   }, []);
-  const dataAdmin = useDataAdminSelector().data;
+  const dataAdmin = useDataAdminSelector();
   const dispatch = useDispatch();
-  console.log(dataAdmin);
+  console.log({ dataAdmin });
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -29,7 +29,7 @@ function Sidebar() {
       <Box w={330} bg="#171717" h="100%">
         <Center mt={"80px"} color="white">
           <Image
-            src={dataAdmin.profile.URL}
+            src={dataAdmin?.profile?.URL}
             alt="profile"
             borderRadius="full"
             boxSize="156px"
@@ -37,7 +37,7 @@ function Sidebar() {
         </Center>
         <Center mt={4} color="white">
           <Text fontSize={32} fontFamily="heading" fontWeight={600}>
-            {dataAdmin.name}
+            {dataAdmin?.name}
           </Text>
         </Center>
         <Center
