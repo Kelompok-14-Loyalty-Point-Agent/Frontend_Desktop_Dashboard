@@ -378,6 +378,7 @@ const DataCreditStock = () => {
                           <Td>
                             <Flex justify="center" gap={5}>
                               <IconButton
+                                id="button_edit_credit"
                                 bgColor="transparent"
                                 _hover={{ bgColor: "transparent" }}
                                 icon={
@@ -389,6 +390,7 @@ const DataCreditStock = () => {
                                 onClick={() => handleOpenEditCreditForm(data)}
                               />
                               <IconButton
+                                id="button_delete_credit"
                                 bgColor="transparent"
                                 _hover={{ bgColor: "transparent" }}
                                 icon={
