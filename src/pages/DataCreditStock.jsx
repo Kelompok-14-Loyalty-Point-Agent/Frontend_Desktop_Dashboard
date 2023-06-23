@@ -733,6 +733,7 @@ const DataCreditStock = () => {
               </Button>
             </ButtonGroup>
             <Button
+              id="button_navigate_addStocks"
               onClick={() => navigate("/stocks/add")}
               mt={10}
               fontFamily="heading"
