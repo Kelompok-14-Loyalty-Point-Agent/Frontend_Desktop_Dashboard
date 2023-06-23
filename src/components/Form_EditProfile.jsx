@@ -17,44 +17,66 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useEffect } from "react";
+import { getDataAdmin } from "../config/redux/getDataAdmin/getDataAdminThunk";
+import { useDataAdminSelector } from "../config/redux/getDataAdmin/getDataAdminSelector";
+import { updateDataAdmin } from "../config/redux/updateDataAdmin/updateDataAdminThunk";
+import { useUpdateDataAdminType } from "../config/redux/updateDataAdmin/updateDataAdminSelector";
+import { updatePassword } from "../config/redux/updatePassword/updatePasswordThunk";
+import { useUpdatePasswordType } from "../config/redux/updatePassword/updatePasswordSelector";
 import { useDispatch } from "react-redux";
-import {
-  get_profile,
-  update_profile,
-} from "../config/redux/editProfile/editProfileThunk";
-import { useProfileSelector } from "../config/redux/editProfile/editProfileSelector";
 
 function Form_EditProfile() {
   const [showPassword, setShowPassword] = useState(false);
+
   const dispatch = useDispatch();
+  const dataAdmin = useDataAdminSelector();
+  const useDataAdminType = useUpdateDataAdminType();
+  const usePasswordType = useUpdatePasswordType();
+
   useEffect(() => {
-    dispatch(get_profile());
-  }, []);
-  const profile = useProfileSelector();
+    dispatch(getDataAdmin());
 
-  const navigate = useNavigate();
+    if (useDataAdminType === "updateDataAdmin/updateData/fulfilled") {
+      dispatch(getDataAdmin());
+    }
 
-  const formik = useFormik({
+    if (usePasswordType === "updatePassword/updatePassword/fulfilled") {
+      dispatch(getDataAdmin());
+    }
+  }, [useDataAdminType, usePasswordType]);
+
+  const formikNameAddress = useFormik({
     initialValues: {
-      id: profile?.id,
-      name: profile?.name,
-      address: profile?.address,
+      id: 1,
+      name: dataAdmin?.data?.name || "",
+      address: dataAdmin?.data?.profile?.Address || "",
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Required"),
       address: Yup.string().required("Required"),
     }),
     onSubmit: (values) => {
-      dispatch(update_profile(values));
+      dispatch(updateDataAdmin(values));
+      alert("Update Nama & Alamat Success");
+    },
+  });
 
-      alert("Update Success");
-      navigate("/dashboard");
+  const formikPassword = useFormik({
+    initialValues: {
+      id: 1,
+      password: dataAdmin?.data?.password || "",
+    },
+    validationSchema: Yup.object({
+      password: Yup.string().required("Required"),
+    }),
+    onSubmit: (values) => {
+      dispatch(updatePassword(values));
+      alert("Update Password Success");
     },
   });
 
@@ -102,7 +124,7 @@ function Form_EditProfile() {
           <TabPanels>
             <TabPanel bg="white" boxShadow="lg" mt={5} borderRadius={12} p={6}>
               <TableContainer pt={9}>
-                <form onSubmit={formik.handleSubmit}>
+                <form onSubmit={formikNameAddress.handleSubmit}>
                   <FormControl id="name" isRequired>
                     <FormLabel
                       fontFamily="heading"
@@ -118,16 +140,19 @@ function Form_EditProfile() {
                       placeholder="Andrew Mathew"
                       _placeholder={{ color: "gray.500" }}
                       type="text"
-                      name="name"
-                      value={formik.values.name}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
+                      id="name"
+                      {...formikNameAddress.getFieldProps("name")}
+                      isInvalid={
+                        formikNameAddress.touched.name &&
+                        formikNameAddress.errors.name
+                      }
                     />
-                    {formik.touched.name && formik.errors.name && (
-                      <Text color="#BE4057" textAlign="start" mt={1}>
-                        {formik.errors.name}
-                      </Text>
-                    )}
+                    {formikNameAddress.touched.name &&
+                      formikNameAddress.errors.name && (
+                        <Text color="#BE4057" textAlign="start" mt={1}>
+                          {formikNameAddress.errors.name}
+                        </Text>
+                      )}
                   </FormControl>
                   <br />
                   <FormControl id="address" isRequired>
@@ -145,16 +170,19 @@ function Form_EditProfile() {
                       placeholder="Jakarta, Indonesia"
                       _placeholder={{ color: "gray.500" }}
                       type="text"
-                      name="address"
-                      value={formik.values.address}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
+                      id="address"
+                      {...formikNameAddress.getFieldProps("address")}
+                      isInvalid={
+                        formikNameAddress.touched.address &&
+                        formikNameAddress.errors.address
+                      }
                     />
-                    {formik.touched.address && formik.errors.address && (
-                      <Text color="#BE4057" textAlign="start" mt={1}>
-                        {formik.errors.address}
-                      </Text>
-                    )}
+                    {formikNameAddress.touched.address &&
+                      formikNameAddress.errors.address && (
+                        <Text color="#BE4057" textAlign="start" mt={1}>
+                          {formikNameAddress.errors.address}
+                        </Text>
+                      )}
                   </FormControl>
                   <br />
                   <Stack spacing={4}>
@@ -175,62 +203,76 @@ function Form_EditProfile() {
                 <br />
                 <hr />
                 <br />
-                <FormControl id="password">
-                  <FormLabel
-                    fontFamily="heading"
-                    fontWeight={700}
-                    fontSize={24}
-                  >
-                    Password
-                  </FormLabel>
-                  <InputGroup>
-                    <Input
-                      height="60px"
-                      fontWeight={400}
-                      fontSize={20}
-                      placeholder="***********************"
-                      _placeholder={{ color: "gray.500" }}
-                      type={showPassword ? "text" : "password"}
-                      id="password"
-                    />
-                    <InputRightElement h={"full"}>
-                      <Button
-                        variant={"ghost"}
-                        onClick={() =>
-                          setShowPassword((showPassword) => !showPassword)
+                <form onSubmit={formikPassword.handleSubmit}>
+                  <FormControl id="password" isRequired>
+                    <FormLabel
+                      fontFamily="heading"
+                      fontWeight={700}
+                      fontSize={24}
+                    >
+                      Password
+                    </FormLabel>
+                    <InputGroup>
+                      <Input
+                        height="60px"
+                        fontWeight={400}
+                        fontSize={20}
+                        placeholder="***********************"
+                        _placeholder={{ color: "gray.500" }}
+                        type={showPassword ? "text" : "password"}
+                        id="password"
+                        {...formikPassword.getFieldProps("password")}
+                        isInvalid={
+                          formikPassword.touched.password &&
+                          formikPassword.errors.password
                         }
-                      >
-                        {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                      </Button>
-                    </InputRightElement>
-                  </InputGroup>
-                </FormControl>
-                <br />
-                <Stack spacing={4}>
-                  <Button
-                    bg="#030F51"
-                    color="white"
-                    _hover={{
-                      background: "#385898",
-                    }}
-                    fontWeight={400}
-                    fontSize={16}
-                  >
-                    Change Password
-                  </Button>
+                      />
+                      <InputRightElement h={"full"}>
+                        <Button
+                          variant={"ghost"}
+                          onClick={() =>
+                            setShowPassword((showPassword) => !showPassword)
+                          }
+                        >
+                          {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                        </Button>
+                      </InputRightElement>
+                    </InputGroup>
+                    {formikPassword.touched.password &&
+                      formikPassword.errors.password && (
+                        <Text color="#BE4057" textAlign="start" mt={1}>
+                          {formikPassword.errors.password}
+                        </Text>
+                      )}
+                  </FormControl>
+                  <br />
+                  <Stack spacing={4}>
+                    <Button
+                      bg="#030F51"
+                      color="white"
+                      _hover={{
+                        background: "#385898",
+                      }}
+                      fontWeight={400}
+                      fontSize={16}
+                      type="submit"
+                    >
+                      Change Password
+                    </Button>
 
-                  <Button
-                    bg="#690837"
-                    color="white"
-                    _hover={{
-                      background: "#e53e3e",
-                    }}
-                    fontWeight={400}
-                    fontSize={16}
-                  >
-                    Sign Out
-                  </Button>
-                </Stack>
+                    <Button
+                      bg="#690837"
+                      color="white"
+                      _hover={{
+                        background: "#e53e3e",
+                      }}
+                      fontWeight={400}
+                      fontSize={16}
+                    >
+                      Sign Out
+                    </Button>
+                  </Stack>
+                </form>
               </TableContainer>
             </TabPanel>
           </TabPanels>

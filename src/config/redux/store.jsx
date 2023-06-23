@@ -5,21 +5,24 @@ import thunkMiddleware from 'redux-thunk';
 import reducer from './reducer';
 
 const persistConfig = {
-	key: 'root',
-	storage,
-	whitelist: [
-		'session',
-		'addStock',
-		'getStockCredit',
-		'getStockInternetData',
-		'addStockInternetData',
-		'getStockDetail',
-		'deleteStockDetail',
-		'updateStockDetail',
-		'getTotalStockByProvider',
-		'getProfile',
-		'getCustomerTransaction',
-	],
+  key: "root",
+  storage,
+  whitelist: [
+    "session",
+    "addStock",
+    "getStockCredit",
+    "getStockInternetData",
+    "addStockInternetData",
+    "getStockDetail",
+    "deleteStockDetail",
+    "updateStockDetail",
+    "getDataAdmin",
+    "updateDataAdmin",
+    "getTotalStockByProvider",
+    "getProfile",
+    "updatePassword",
+    'getCustomerTransaction',
+  ],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducer);
