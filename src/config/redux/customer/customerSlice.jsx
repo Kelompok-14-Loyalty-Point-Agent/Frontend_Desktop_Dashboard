@@ -47,70 +47,8 @@ const getCustomerSlice = createSlice({
           get_customerError: action.payload,
           type: action.type,
         };
-      })
-      // GET CUSTOMER
-
-      // UPDATE CUSTOMER
-      .addCase(update_customer.pending, (state, action) => {
-        return {
-          ...state,
-          update_customerLoading: true,
-          update_customerError: undefined,
-          type: action.type,
-        };
-      })
-      .addCase(update_customer.fulfilled, (state, action) => {
-        const updatedCustomers = state.customers.map((customer) =>
-          customer.id === action.payload.no ? action.payload : customer
-        );
-        return {
-          ...state,
-          customers: updatedCustomers,
-          update_customerLoading: false,
-          update_customerError: undefined,
-          type: action.type,
-        };
-      })
-      .addCase(update_customer.rejected, (state, action) => {
-        return {
-          ...state,
-          update_customerLoading: false,
-          update_customerError: action.payload,
-          type: action.type,
-        };
-      })
-      // UPDATE CUSTOMER
-
-      // DELETE CUSTOMER
-      .addCase(delete_customer.pending, (state, action) => {
-        return {
-          ...state,
-          delete_customerLoading: true,
-          delete_customerError: undefined,
-          type: action.type,
-        };
-      })
-      .addCase(delete_customer.fulfilled, (state, action) => {
-        const filteredCustomers = state.customers.filter(
-          (customer) => customer.no !== action.payload
-        );
-        return {
-          ...state,
-          customers: filteredCustomers,
-          delete_customerLoading: false,
-          delete_customerError: undefined,
-          type: action.type,
-        };
-      })
-      .addCase(delete_customer.rejected, (state, action) => {
-        return {
-          ...state,
-          delete_customerLoading: false,
-          delete_customerError: action.payload,
-          type: action.type,
-        };
       });
-    // DELETE CUSTOMER
+    // GET CUSTOMER
   },
 });
 

@@ -13,6 +13,8 @@ import { getDataAdminReducer } from "./getDataAdmin/getDataAdminSlice";
 import { updateDataAdminReducer } from "./updateDataAdmin/updateDataAdminSlice";
 import { updatePasswordReducer } from "./updatePassword/updatePasswordSlice";
 import { get_transactionReducer } from "./getCustomerTransaction/getCustomerTransactionSlice";
+import { updateCustomerReducer } from "./updateCustomer/updateCustomerSlice";
+import { deleteCustomerReducer } from "./deleteCustomer/deleteCustomerSlice";
 
 const reducer = combineReducers({
   session: signInReducer,
@@ -29,6 +31,8 @@ const reducer = combineReducers({
   updateDataAdmin: updateDataAdminReducer,
   updatePassword: updatePasswordReducer,
   getCustomerTransaction: get_transactionReducer,
+  updateCustomerDetail: updateCustomerReducer,
+  deleteCustomer: deleteCustomerReducer,
 });
 
 export default reducer;
