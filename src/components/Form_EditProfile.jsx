@@ -53,8 +53,8 @@ function Form_EditProfile() {
   const formikNameAddress = useFormik({
     initialValues: {
       id: 1,
-      name: dataAdmin.name || "",
-      address: dataAdmin.profile.Address || "",
+      name: dataAdmin?.name || "",
+      address: dataAdmin?.profile?.Address || "",
     },
     validationSchema: Yup.object({
       name: Yup.string().required("Required"),
@@ -69,7 +69,7 @@ function Form_EditProfile() {
   const formikPassword = useFormik({
     initialValues: {
       id: 1,
-      password: dataAdmin.password || "",
+      password: dataAdmin?.password || "",
     },
     validationSchema: Yup.object({
       password: Yup.string().required("Required"),
