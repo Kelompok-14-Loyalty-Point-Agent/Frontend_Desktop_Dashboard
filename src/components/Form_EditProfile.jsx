@@ -34,7 +34,7 @@ function Form_EditProfile() {
   const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
-  const dataAdmin = useDataAdminSelector().data;
+  const dataAdmin = useDataAdminSelector();
   const useDataAdminType = useUpdateDataAdminType();
   const usePasswordType = useUpdatePasswordType();
 

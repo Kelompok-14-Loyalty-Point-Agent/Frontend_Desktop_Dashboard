@@ -9,7 +9,7 @@ function Sidebar() {
   useEffect(() => {
     dispatch(getDataAdmin());
   }, []);
-  const dataAdmin = useDataAdminSelector().data;
+  const dataAdmin = useDataAdminSelector();
   const dispatch = useDispatch();
   console.log(dataAdmin);
 
@@ -29,7 +29,7 @@ function Sidebar() {
       <Box w={330} bg="#171717" h="100%">
         <Center mt={"80px"} color="white">
           <Image
-            src={dataAdmin?.profile?.URL}
+            src="Ellipse78.svg"
             alt="profile"
             borderRadius="full"
             boxSize="156px"
