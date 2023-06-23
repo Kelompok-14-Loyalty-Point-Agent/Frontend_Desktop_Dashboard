@@ -17,6 +17,8 @@ const persistConfig = {
     "deleteStockDetail",
     "updateStockDetail",
     "getProfile",
+    "updateCustomerDetail",
+    "deleteCustomer",
   ],
 };
 

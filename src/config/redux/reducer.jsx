@@ -10,6 +10,8 @@ import { get_profileReducer } from "./editProfile/editProfileSlice";
 import { addStockDetailReducer } from "./addStockDetail/addStockDetailSlice";
 import { deleteStockDetailReducer } from "./deleteStockDetail/deleteStockDetailSlice";
 import { updateDataStockReducer } from "./updateStockDetail/updateStockDetailSlice";
+import { updateCustomerReducer } from "./updateCustomer/updateCustomerSlice";
+import { deleteCustomerReducer } from "./deleteCustomer/deleteCustomerSlice";
 
 const reducer = combineReducers({
   session: signInReducer,
@@ -23,6 +25,8 @@ const reducer = combineReducers({
   deleteStockDetail: deleteStockDetailReducer,
   updateStockDetail: updateDataStockReducer,
   getProfile: get_profileReducer,
+  updateCustomerDetail: updateCustomerReducer,
+  deleteCustomer: deleteCustomerReducer,
 });
 
 export default reducer;
