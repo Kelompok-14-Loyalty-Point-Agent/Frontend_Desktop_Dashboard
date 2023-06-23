@@ -37,7 +37,7 @@ function Sidebar() {
         </Center>
         <Center mt={4} color="white">
           <Text fontSize={32} fontFamily="heading" fontWeight={600}>
-            {dataAdmin?.name}
+            {dataAdmin?.data?.name}
           </Text>
         </Center>
         <Center
