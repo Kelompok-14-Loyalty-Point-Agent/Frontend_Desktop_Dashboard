@@ -37,6 +37,7 @@ function NavbarDashboard() {
   return (
     <Flex gap={5} justifyContent="end" mb={4} mx={10} mt={10}>
       <Button
+        id="button_editProfile"
         variant="outline"
         colorScheme="blue.700"
         color="blue.700"
@@ -47,6 +48,7 @@ function NavbarDashboard() {
         Profile
       </Button>
       <Button
+        id="button_signOut"
         variant="outline"
         colorScheme="red.700"
         color="red.700"
