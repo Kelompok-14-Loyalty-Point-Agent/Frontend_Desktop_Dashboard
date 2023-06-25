@@ -37,12 +37,21 @@ const DashboardHome = () => {
                   key={index}
                 >
                   <Flex gap={20}>
-                    <Image
-                      src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                      alt=""
-                      borderRadius="full"
-                      boxSize="120px"
-                    />
+                    {customer.profile.URL ? (
+                      <Image
+                        src={customer.profile.URL}
+                        alt=""
+                        borderRadius="full"
+                        boxSize={"120px"}
+                      />
+                    ) : (
+                      <Image
+                        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                        alt=""
+                        borderRadius="full"
+                        boxSize={"120px"}
+                      />
+                    )}
                     <Flex flexDirection={"column"} w={200}>
                       <Text fontSize={26} as="b" fontFamily={"heading"}>
                         {customer.name}
@@ -65,7 +74,9 @@ const DashboardHome = () => {
                       <Flex>
                         <img src="./icons/dashboard/coin1.svg" alt="" />
                         <Text
-                          fontSize={24}
+                          fontSize={
+                            String(customer.profile.Point).length > 5 ? 19 : 24
+                          }
                           as={"b"}
                           color={"#2DB5AB"}
                           fontFamily={"heading"}
