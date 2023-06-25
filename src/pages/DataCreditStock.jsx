@@ -722,20 +722,7 @@ const DataCreditStock = () => {
               </TabPanel>
             </TabPanels>
           </Tabs>
-          <Flex justify="space-between" alignItems="center">
-            <ButtonGroup>
-              <Button fontSize={24} colorScheme="teal" height={50}>
-                1
-              </Button>
-              <Button
-                fontSize={24}
-                colorScheme="teal"
-                height={50}
-                variant="outline"
-              >
-                2
-              </Button>
-            </ButtonGroup>
+          <Flex justify="end" alignItems="center">
             <Button
               id="button_navigate_addStocks"
               onClick={() => navigate("/stocks/add")}
