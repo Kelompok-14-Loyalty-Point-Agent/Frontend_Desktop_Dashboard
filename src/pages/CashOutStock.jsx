@@ -7,10 +7,13 @@ import Sidebar from "../components/Sidebar";
 
 const CashOutStock = () => {
   const [customerData, setCustomerData] = useState([]);
-  // const [TransactionData, setTransactionData] = useState([]);
+  const [transactionData, setTransactionData] = useState([]);
   const [activeCard, setActiveCard] = useState(0);
   const activeCustomer = customerData[activeCard];
   const [showActivities, setShowActivities] = useState(false);
+  const [displayedActivities, setDisplayedActivities] = useState(3);
+  const moreActivities = displayedActivities + 2;
+  const fewerActivities = 3;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,43 +27,38 @@ const CashOutStock = () => {
             },
           }
         );
-        
-        // const transactionResponse = await axios.get(
-        //   "https://3.0.59.152.nip.io/transactions/users/recent/2",
-        //   {
-        //     headers: {
-        //       Authorization:
-        //         "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjg5MzY2NDQ5fQ.JPn0Gyxs1nAwgcDya0SmDJasmRbxdtQVeTIDGUJTjJU",
-        //     },
-        //   }
-        // );
-  
+
         setCustomerData(customerResponse.data.data);
-        // setTransactionData(transactionResponse.data.data);
       } catch (error) {
         console.error(error);
       }
     };
-  
+
     fetchData();
   }, []);
-  
 
   useEffect(() => {
-    axios
-      .get("https://3.0.59.152.nip.io/users/customers", {
-        headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjg5MzY2NDQ5fQ.JPn0Gyxs1nAwgcDya0SmDJasmRbxdtQVeTIDGUJTjJU",
-        },
-      })
-      .then((response) => {
-        setCustomerData(response.data.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+    if (activeCustomer) {
+      axios
+        .get(
+          `https://3.0.59.152.nip.io/transactions/users/recent/${activeCustomer.id}`,
+          {
+            headers: {
+              Authorization:
+                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiZXhwIjoxNjg5MzY2NDQ5fQ.JPn0Gyxs1nAwgcDya0SmDJasmRbxdtQVeTIDGUJTjJU",
+            },
+          }
+        )
+        .then((response) => {
+          setTransactionData(response.data.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [activeCustomer]);
+  console.log("customer data:", customerData);
+  console.log("Data Transaksi", transactionData.transaction);
 
   return (
     <>
@@ -88,13 +86,23 @@ const CashOutStock = () => {
                 onClick={() => setActiveCard(index)}
                 cursor="pointer"
               >
-                <Image
-                  src={customer.profile.URL}
-                  alt=""
-                  borderRadius="50%"
-                  width={"96px"}
-                  height={"102px"}
-                />
+                {customer.profile.URL ? (
+                  <Image
+                    src={customer.profile.URL}
+                    alt=""
+                    borderRadius="50%"
+                    width={"102px"}
+                    height={"102px"}
+                  />
+                ) : (
+                  <Image
+                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                    alt=""
+                    borderRadius="50%"
+                    width={"102px"}
+                    height={"102px"}
+                  />
+                )}
                 <Box>
                   <Text fontSize={24} as="b" fontFamily="heading">
                     {customer.name}
@@ -136,13 +144,23 @@ const CashOutStock = () => {
                   <Center gap={28}>
                     <Box>
                       <Center mt={2}>
-                        <Image
-                          src={activeCustomer.profile.URL}
-                          alt=""
-                          borderRadius="50%"
-                          width={"96px"}
-                          height={"102px"}
-                        />
+                        {activeCustomer.profile.URL ? (
+                          <Image
+                            src={activeCustomer.profile.URL}
+                            alt=""
+                            borderRadius="50%"
+                            width={"102px"}
+                            height={"102px"}
+                          />
+                        ) : (
+                          <Image
+                            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                            alt=""
+                            borderRadius="50%"
+                            width={"102px"}
+                            height={"102px"}
+                          />
+                        )}
                       </Center>
                       <Center mt={5}>
                         <Text
@@ -177,62 +195,52 @@ const CashOutStock = () => {
                           Recent Activities
                         </Text>
                       </Center>
-                      {/* <Flex color={"#ECECEC"} mt={5} gap={5}>
-                        <Text fontFamily={"body"}>
-                          {activeCustomer.recent_activity_date}
-                        </Text>
-                        <Text fontFamily={"body"}>
-                          {activeCustomer.recent_activity_act}
-                        </Text>
-                      </Flex>
-                      <Flex color={"#ECECEC"} mt={1} gap={5}>
-                        <Text fontFamily={"body"}>
-                          {activeCustomer.recent_activity_date_2}
-                        </Text>
-                        <Text fontFamily={"body"}>
-                          {activeCustomer.recent_activity_act_2}
-                        </Text>
-                      </Flex>
-                      <Flex color={"#ECECEC"} mt={1} gap={5}>
-                        <Text fontFamily={"body"}>
-                          {activeCustomer.recent_activity_date_3}
-                        </Text>
-                        <Text fontFamily={"body"}>
-                          {activeCustomer.recent_activity_act_3}
-                        </Text>
-                      </Flex>
-                      {showActivities && (
-                        <>
-                          <Flex color={"#ECECEC"} mt={1} gap={5}>
-                            <Text fontFamily={"body"}>
-                              {activeCustomer.recent_activity_date_4}
-                            </Text>
-                            <Text fontFamily={"body"}>
-                              {activeCustomer.recent_activity_act_4}
-                            </Text>
-                          </Flex>
-                          <Flex color={"#ECECEC"} mt={1} gap={5}>
-                            <Text fontFamily={"body"}>
-                              {activeCustomer.recent_activity_date_5}
-                            </Text>
-                            <Text fontFamily={"body"}>
-                              {activeCustomer.recent_activity_act_5}
-                            </Text>
-                          </Flex>
-                        </>
-                      )} */}
-                      
-                      <Center mt={5}>
-                        <Text
-                          fontSize={12}
-                          fontFamily={"body"}
-                          color={"#57DAC5"}
-                          cursor="pointer"
-                          onClick={() => setShowActivities(!showActivities)}
-                        >
-                          {showActivities ? "See Less" : "See More"}
-                        </Text>
-                      </Center>
+
+                      {transactionData.length > 0 ? (
+                        transactionData
+                          .slice(0, displayedActivities)
+                          .map((transaction) => (
+                            <Flex
+                              key={transaction.id}
+                              color={"#ECECEC"}
+                              mt={1}
+                              gap={5}
+                            >
+                              <Text fontFamily={"body"}>
+                                {transaction.created_at.substring(0, 10)}
+                              </Text>
+                              <Text fontFamily={"body"}>
+                                {transaction.description}
+                              </Text>
+                            </Flex>
+                          ))
+                      ) : (
+                        <Flex color={"#ECECEC"} mt={1}>
+                          <Text fontFamily={"body"}>
+                            No activities recently
+                          </Text>
+                        </Flex>
+                      )}
+                      {transactionData.length > 3 && (
+                        <Center mt={5}>
+                          <Text
+                            fontSize={12}
+                            fontFamily={"body"}
+                            color={"#57DAC5"}
+                            cursor="pointer"
+                            id="showIndicator"
+                            onClick={() => {
+                              const newDisplayedActivities = showActivities
+                                ? fewerActivities
+                                : moreActivities;
+                              setDisplayedActivities(newDisplayedActivities);
+                              setShowActivities(!showActivities);
+                            }}
+                          >
+                            {showActivities ? "See Less" : "See More"}
+                          </Text>
+                        </Center>
+                      )}
                     </Box>
                   </Center>
                 </Box>
