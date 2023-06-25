@@ -15,6 +15,7 @@ import { useTransactionSelector } from '../config/redux/getCustomerTransaction/g
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { get_transaction } from '../config/redux/getCustomerTransaction/getCustomerTransactionThunk';
+import { formatDateTime, formatNumber } from '../utils/HelperMethod';
 
 const CustomerTransaction = () => {
 	const dispatch = useDispatch();
@@ -25,6 +26,37 @@ const CustomerTransaction = () => {
 	useEffect(() => {
 		dispatch(get_transaction());
 	}, []);
+
+	const renderPaymentMethod = (paymentMethod) => {
+		if (paymentMethod === 'GoPay') {
+			return (
+				<Image
+					boxSize='40px'
+					src='./paymentLogo/gopay.png'
+					alt={paymentMethod}
+				/>
+			);
+		}
+		if (paymentMethod === 'BNI') {
+			return (
+				<Image boxSize='40px' src='./paymentLogo/BNI.png' alt={paymentMethod} />
+			);
+		}
+		if (paymentMethod === 'BRI') {
+			return (
+				<Image boxSize='40px' src='./paymentLogo/BRI.png' alt={paymentMethod} />
+			);
+		}
+		if (paymentMethod === 'Shopee') {
+			return (
+				<Image
+					boxSize='40px'
+					src='./paymentLogo/shopee.png'
+					alt={paymentMethod}
+				/>
+			);
+		}
+	};
 
 	return (
 		<>
@@ -56,7 +88,7 @@ const CustomerTransaction = () => {
 								Bonus Tpoint
 							</Text>
 						</SimpleGrid>
-						<Box maxHeight={820} overflowY='auto'>
+						<Box maxHeight={800} overflowY='auto' p={4}>
 							{transactions?.data?.map((transaction) => (
 								<Card
 									key={transaction.id}
@@ -66,7 +98,7 @@ const CustomerTransaction = () => {
 									px={10}
 									py={5}
 									mb={5}
-									shadow='0 4px 25px 1px rgba(0, 0, 0, 0.25)'
+									shadow='0 0 15px 4px rgba(0, 0, 0, 0.25)'
 									cursor='pointer'>
 									<Flex alignItems='center'>
 										<Avatar
@@ -90,31 +122,23 @@ const CustomerTransaction = () => {
 											</Text>
 											<Center>
 												<Box bg='white' p={2} rounded={'xl'} w='56px'>
-													<Image boxSize='40px' src='./image 25.svg' alt='' />
+													{renderPaymentMethod(transaction.payment_method)}
 												</Box>
 											</Center>
 											<Text as='b' fontSize={14} fontFamily='heading'>
-												{transaction.price}
+												{formatNumber(transaction.price)}
 											</Text>
 											<Text as='b' fontSize={14} fontFamily='heading'>
-												25/04/23 | 14.20 WIB
+												{formatDateTime(new Date(transaction.created_at))}
 											</Text>
 											<Text as='b' fontSize={14} fontFamily='heading'>
-												{transaction.point}
+												+{transaction.point}
 											</Text>
 										</SimpleGrid>
 									</Flex>
 								</Card>
 							))}
 						</Box>
-						<Center>
-							<Image
-								boxSize='30px'
-								src='./icons/black/arrowdown2.svg'
-								alt=''
-								cursor='pointer'
-							/>
-						</Center>
 					</Box>
 				</Box>
 			</Flex>
