@@ -40,6 +40,7 @@ const CustomSelectEvenOdd = ({ option, name, formik, id, componentId }) => {
         width={300}
         justifyContent="space-between"
         alignItems="center"
+        id={"selectDropdown_" + name}
       >
         <Flex alignItems="center" id={componentId}>
           {selectedOption && (
@@ -79,6 +80,7 @@ const CustomSelectEvenOdd = ({ option, name, formik, id, componentId }) => {
               pl={3}
               py={4}
               _hover={{ bgColor: "#95AEF0" }}
+              id={"option_" + option.label}
               onClick={() => selectOption(option)}
             >
               {option.label}
