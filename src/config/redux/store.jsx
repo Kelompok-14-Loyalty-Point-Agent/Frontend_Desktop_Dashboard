@@ -24,6 +24,7 @@ const persistConfig = {
     "logoutUser",
     "updateCustomerDetail",
     "deleteCustomer",
+    "updatePicture",
   ],
 };
 
