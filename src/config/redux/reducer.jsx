@@ -16,6 +16,7 @@ import { get_transactionReducer } from "./getCustomerTransaction/getCustomerTran
 import { logoutUserReducer } from "./logout/logoutUserSlice";
 import { updateCustomerReducer } from "./updateCustomer/updateCustomerSlice";
 import { deleteCustomerReducer } from "./deleteCustomer/deleteCustomerSlice";
+import { updatePictureReducer } from "./updatePicture/updatePictureSlice";
 
 const reducer = combineReducers({
   session: signInReducer,
@@ -35,6 +36,7 @@ const reducer = combineReducers({
   logoutUser: logoutUserReducer,
   updateCustomerDetail: updateCustomerReducer,
   deleteCustomer: deleteCustomerReducer,
+  updatePicture: updatePictureReducer,
 });
 
 export default reducer;
