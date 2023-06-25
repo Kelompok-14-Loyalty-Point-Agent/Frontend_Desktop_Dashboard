@@ -29,7 +29,7 @@ function Sidebar() {
       <Box w={330} bg="#171717" h="100%">
         <Center mt={"80px"} color="white">
           <Image
-            src="Ellipse78.svg"
+            src={`https://3.0.59.152.nip.io/images/url/${dataAdmin?.data?.profile?.URL}`}
             alt="profile"
             borderRadius="full"
             boxSize="156px"
