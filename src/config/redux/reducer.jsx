@@ -13,6 +13,7 @@ import { getDataAdminReducer } from "./getDataAdmin/getDataAdminSlice";
 import { updateDataAdminReducer } from "./updateDataAdmin/updateDataAdminSlice";
 import { updatePasswordReducer } from "./updatePassword/updatePasswordSlice";
 import { get_transactionReducer } from "./getCustomerTransaction/getCustomerTransactionSlice";
+import { logoutUserReducer } from "./logout/logoutUserSlice";
 
 const reducer = combineReducers({
   session: signInReducer,
@@ -29,6 +30,7 @@ const reducer = combineReducers({
   updateDataAdmin: updateDataAdminReducer,
   updatePassword: updatePasswordReducer,
   getCustomerTransaction: get_transactionReducer,
+  logoutUser: logoutUserReducer,
 });
 
 export default reducer;
