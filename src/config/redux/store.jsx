@@ -22,6 +22,8 @@ const persistConfig = {
     "updatePassword",
     "getCustomerTransaction",
     "logoutUser",
+    "updateCustomerDetail",
+    "deleteCustomer",
   ],
 };
 

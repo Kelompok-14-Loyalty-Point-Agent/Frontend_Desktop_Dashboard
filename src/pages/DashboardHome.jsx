@@ -8,12 +8,11 @@ import { useDispatch } from "react-redux";
 import { get_customer } from "../config/redux/customer/customerThunk";
 
 const DashboardHome = () => {
+  const dispatch = useDispatch();
+  const customers = useCustomerSelector().data;
   useEffect(() => {
     dispatch(get_customer());
   }, []);
-  const customers = useCustomerSelector();
-  const dispatch = useDispatch();
-  console.log(customers);
 
   return (
     <div>
@@ -24,73 +23,68 @@ const DashboardHome = () => {
           <Text fontSize={32} as="b" fontFamily={"heading"}>
             Customer Leaderboard
           </Text>
-          <Box
-            maxHeight={820}
-            overflowY="auto"
-            css={{
-              "&::-webkit-scrollbar": {
-                display: "none",
-              },
-            }}
-            p={4}
-          >
-            {customers.map((customer, index) => (
-              <Flex
-                w={"full"}
-                h={"fit-content"}
-                boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
-                mt={5}
-                borderRadius={6}
-                p={4}
-                justifyContent={"center"}
-                key={index}
-              >
-                <Flex gap={20}>
-                  <Image
-                    src={customer.image}
-                    alt=""
-                    borderRadius="full"
-                    boxSize="120px"
-                  />
-                  <Flex flexDirection={"column"} w={200}>
-                    <Text fontSize={26} as="b" fontFamily={"heading"}>
-                      {customer.name}
-                    </Text>
-                    <Text>Transation Made</Text>
-                    <Text
-                      fontSize={32}
-                      as="b"
-                      color={"#2DB5AB"}
-                      fontFamily={"heading"}
-                    >
-                      {customer.transaction_made}x
-                    </Text>
-                  </Flex>
-                  <Flex flexDirection={"column"}>
-                    <Text fontSize={24} as="b" color={"white"}>
-                      .
-                    </Text>
-                    <Text>Total tPoint</Text>
-                    <Flex>
-                      <img src="./icons/dashboard/coin1.svg" alt="" />
+          <Box maxHeight={820} overflowY="auto" p={4}>
+            {customers?.length ? (
+              customers?.map((customer, index) => (
+                <Flex
+                  w={"full"}
+                  h={"fit-content"}
+                  boxShadow="0px 0px 15px rgba(0, 0, 0, 0.25)"
+                  mt={5}
+                  borderRadius={6}
+                  p={4}
+                  justifyContent={"center"}
+                  key={index}
+                >
+                  <Flex gap={20}>
+                    <Image
+                      src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                      alt=""
+                      borderRadius="full"
+                      boxSize="120px"
+                    />
+                    <Flex flexDirection={"column"} w={200}>
+                      <Text fontSize={26} as="b" fontFamily={"heading"}>
+                        {customer.name}
+                      </Text>
+                      <Text>Transation Made</Text>
                       <Text
-                        fontSize={24}
-                        as={"b"}
+                        fontSize={32}
+                        as="b"
                         color={"#2DB5AB"}
                         fontFamily={"heading"}
                       >
-                        {customer.total_ttpoint}
+                        {customer.profile.TransactionMade}x
                       </Text>
+                    </Flex>
+                    <Flex flexDirection={"column"}>
+                      <Text fontSize={24} as="b" color={"white"}>
+                        .
+                      </Text>
+                      <Text>Total tPoint</Text>
+                      <Flex>
+                        <img src="./icons/dashboard/coin1.svg" alt="" />
+                        <Text
+                          fontSize={24}
+                          as={"b"}
+                          color={"#2DB5AB"}
+                          fontFamily={"heading"}
+                        >
+                          {customer.profile.Point}
+                        </Text>
+                      </Flex>
                     </Flex>
                   </Flex>
                 </Flex>
-              </Flex>
-            ))}
+              ))
+            ) : (
+              <Center>
+                <Text color={"red.400"} fontSize={50} alignItems={"center"}>
+                  Data belum ada
+                </Text>
+              </Center>
+            )}
           </Box>
-
-          <Center mt={10}>
-            <img src="./icons/dashboard/panahbawah.svg" alt="" />
-          </Center>
         </Box>
         {/* END COSTUMER LEADERBOARD */}
         {/* TOTAL USER & STATUS STOCK */}
@@ -118,15 +112,22 @@ const DashboardHome = () => {
                       color={"#ECECEC"}
                       fontFamily={"heading"}
                     >
-                      {customers.length}
+                      {customers?.length ? (
+                        customers.length
+                      ) : (
+                        <Center>Data Not Found</Center>
+                      )}
                     </Text>
                   </Center>
                   ;
                   <Flex>
                     <img src="./icons/dashboard/grow.svg" alt="" />
                     <Text fontSize={24} color={"#6AB044"}>
-                      {" "}
-                      +{customers.length} This Month
+                      {customers?.length ? (
+                        <Text>+{customers.length} This Month</Text>
+                      ) : (
+                        <Center>Data Not Found</Center>
+                      )}
                     </Text>
                   </Flex>
                 </Box>
