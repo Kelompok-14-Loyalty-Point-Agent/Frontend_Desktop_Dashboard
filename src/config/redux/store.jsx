@@ -21,6 +21,7 @@ const persistConfig = {
     "getTotalStockByProvider",
     "updatePassword",
     "getCustomerTransaction",
+    "logoutUser",
     "updateCustomerDetail",
     "deleteCustomer",
   ],
