@@ -59,6 +59,7 @@ function Sidebar_Profile() {
         </Center>
         <Center mt={3} color="white" fontWeight={400} fontSize={16}>
           <Input
+            id="input_image"
             type="file"
             style={{
               opacity: 0,
@@ -74,6 +75,7 @@ function Sidebar_Profile() {
         {file && (
           <Center>
             <Button
+              id="button_updateProfile"
               bg="#030F51"
               color="white"
               _hover={{
