@@ -17,7 +17,7 @@ import {
   Tabs,
   Text,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useFormik } from "formik";
@@ -29,6 +29,13 @@ import { useUpdateDataAdminType } from "../config/redux/updateDataAdmin/updateDa
 import { updatePassword } from "../config/redux/updatePassword/updatePasswordThunk";
 import { useUpdatePasswordType } from "../config/redux/updatePassword/updatePasswordSelector";
 import { useDispatch } from "react-redux";
+import { logoutUser } from "../config/redux/logout/logoutUserThunk";
+import {
+  useLogoutUserDatasSelector,
+  useLogoutUserType,
+} from "../config/redux/logout/logoutUserSelector";
+import { logoutUserAction } from "../config/redux/logout/logoutUserSlice";
+import { signInAction } from "../config/redux/signin/SignInSlice";
 
 function Form_EditProfile() {
   const [showPassword, setShowPassword] = useState(false);
@@ -79,6 +86,23 @@ function Form_EditProfile() {
       alert("Update Password Success");
     },
   });
+
+  const navigate = useNavigate();
+  const logoutUserData = useLogoutUserDatasSelector();
+  const logoutUserType = useLogoutUserType();
+
+  const handleClickLogout = () => {
+    dispatch(logoutUser());
+  };
+
+  useEffect(() => {
+    if (logoutUserData?.data) {
+      dispatch(logoutUserAction.setClearDatas());
+      dispatch(signInAction.setToken(""));
+      dispatch(signInAction.setType());
+      navigate("/signin");
+    }
+  }, [logoutUserType]);
 
   return (
     <Box px={10} pt={10} flex="1">
@@ -275,8 +299,9 @@ function Form_EditProfile() {
                       }}
                       fontWeight={400}
                       fontSize={16}
+                      onClick={handleClickLogout}
                     >
-                      <Link to="/">Sign Out</Link>
+                      Sign Out
                     </Button>
                   </Stack>
                 </form>
