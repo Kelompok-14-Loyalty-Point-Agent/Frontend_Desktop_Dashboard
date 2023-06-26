@@ -57,8 +57,6 @@ const CashOutStock = () => {
         });
     }
   }, [activeCustomer]);
-  console.log("customer data:", customerData);
-  console.log("Data Transaksi", transactionData.transaction);
 
   return (
     <>
