@@ -8,14 +8,7 @@ const getCustomerTransactionInitState = {
 const getCustomerTransactionSlice = createSlice({
 	name: 'getCustomerTransaction',
 	initialState: getCustomerTransactionInitState,
-	reducers: {
-		setTransaction: (state, action) => {
-			return {
-				...state,
-				transactions: action.payload,
-			};
-		},
-	},
+	reducers: {},
 	extraReducers: (builder) => {
 		builder
 			.addCase(get_transaction.pending, (state, action) => {
