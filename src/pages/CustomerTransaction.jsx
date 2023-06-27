@@ -12,23 +12,27 @@ import {
 import Sidebar from '../components/Sidebar';
 import NavbarDashboard from '../components/NavbarDashboard';
 import { useTransactionSelector } from '../config/redux/getCustomerTransaction/getCustomerTransactionSelector';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { get_transaction } from '../config/redux/getCustomerTransaction/getCustomerTransactionThunk';
 import { formatDateTime, formatNumber } from '../utils/HelperMethod';
+import { useNavigate } from 'react-router-dom';
 
 const CustomerTransaction = () => {
 	const dispatch = useDispatch();
 	const transactions = useTransactionSelector();
-
-	console.log(transactions);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		dispatch(get_transaction());
 	}, []);
 
 	const renderPaymentMethod = (paymentMethod) => {
-		if (paymentMethod === 'GoPay') {
+		if (
+			paymentMethod === 'GoPay' ||
+			paymentMethod === 'Go Pay' ||
+			paymentMethod === 'Gopay'
+		) {
 			return (
 				<Image
 					boxSize='40px'
@@ -47,7 +51,11 @@ const CustomerTransaction = () => {
 				<Image boxSize='40px' src='./paymentLogo/BRI.png' alt={paymentMethod} />
 			);
 		}
-		if (paymentMethod === 'Shopee') {
+		if (
+			paymentMethod === 'shoope' ||
+			paymentMethod === 'Shopee' ||
+			paymentMethod === 'Shoope'
+		) {
 			return (
 				<Image
 					boxSize='40px'
@@ -56,6 +64,19 @@ const CustomerTransaction = () => {
 				/>
 			);
 		}
+		if (paymentMethod === 'Dana') {
+			return (
+				<Image
+					boxSize='40px'
+					src='./paymentLogo/dana.png'
+					alt={paymentMethod}
+				/>
+			);
+		}
+	};
+
+	const handleNavigateDetail = (transaction) => {
+		navigate(`/transactions/${transaction.id}`, { state: transaction });
 	};
 
 	return (
@@ -99,12 +120,15 @@ const CustomerTransaction = () => {
 									py={5}
 									mb={5}
 									shadow='0 0 15px 4px rgba(0, 0, 0, 0.25)'
-									cursor='pointer'>
+									cursor='pointer'
+									onClick={() => {
+										handleNavigateDetail(transaction);
+									}}>
 									<Flex alignItems='center'>
 										<Avatar
 											size='lg'
-											name='Maria Belina'
-											src='./maria belina.svg'
+											name={transaction.user_name}
+											src={transaction.url}
 										/>
 										<SimpleGrid
 											columns={6}
@@ -113,9 +137,9 @@ const CustomerTransaction = () => {
 											w='100%'>
 											<Box ms={6} textAlign='start'>
 												<Heading size='sm' mb={1}>
-													Maria Belina
+													{transaction.user_name}
 												</Heading>
-												<Text fontSize={14}>Gold Member</Text>
+												<Text fontSize={14}>{transaction.member} member</Text>
 											</Box>
 											<Text as='b' fontSize={14} fontFamily='heading'>
 												{transaction.description}
