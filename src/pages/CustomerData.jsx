@@ -97,7 +97,6 @@ const CustomerData = () => {
         )
         .then((response) => {
           setTransactionData(response.data.data);
-          console.log("description", transactionData.description);
         })
         .catch((error) => {
           console.error(error);
@@ -372,12 +371,28 @@ const CustomerData = () => {
                         <img src="./icons/customer/calender.svg" alt="" />
                         <Text>{selectedCustomer.profile.Age} years old</Text>
                       </Flex>
-                      <Flex gap={4} mt={5} opacity={"30%"}>
-                        <Center>
-                          <img src="./icons/customer/women-gen.svg" alt="" />
-                        </Center>
-                        <Text>{selectedCustomer.profile.Gender}</Text>
-                      </Flex>
+                      {selectedCustomer.profile.Gender === "woman" ||
+                      selectedCustomer.profile.Gender === "man" ? (
+                        <Flex gap={4} mt={5} opacity={"30%"}>
+                          <Center>
+                            {selectedCustomer.profile.Gender === "woman" ? (
+                              <Image
+                                src="./icons/customer/women-gen.svg"
+                                boxSize={"20px"}
+                                alt=""
+                              />
+                            ) : (
+                              <Image
+                                src="./icons/customer/men-gen.svg"
+                                boxSize={"20px"}
+                                alt=""
+                              />
+                            )}
+                          </Center>
+                          <Text>{selectedCustomer.profile.Gender}</Text>
+                        </Flex>
+                      ) : null}
+
                       <Flex gap={3} mt={5} opacity={"30%"}>
                         <img src="./icons/customer/location.svg" alt="" />
                         <Text>{selectedCustomer.profile.Address}</Text>
@@ -579,7 +594,7 @@ const CustomerData = () => {
                       <Flex gap={10}>
                         {customer.profile.URL ? (
                           <Image
-                            src={customer.profile.URL}
+                            src={`https://3.0.59.152.nip.io/images/url/${customer.profile.URL}`}
                             alt=""
                             borderRadius="50%"
                             width={"102px"}
@@ -723,7 +738,7 @@ const CustomerData = () => {
                       <Center mt={2}>
                         {selectedCustomer.profile.URL ? (
                           <Image
-                            src={selectedCustomer.profile.URL}
+                            src={`https://3.0.59.152.nip.io/images/url/${selectedCustomer.profile.URL}`}
                             alt=""
                             borderRadius="50%"
                             width={"102px"}
@@ -763,12 +778,27 @@ const CustomerData = () => {
                       <img src="./icons/customer/calender.svg" alt="" />
                       <Text>{selectedCustomer.profile.Age} years old</Text>
                     </Flex>
-                    <Flex gap={4} mt={5}>
-                      <Center>
-                        <img src="./icons/customer/women-gen.svg" alt="" />
-                      </Center>
-                      <Text>{selectedCustomer.profile.Gender}</Text>
-                    </Flex>
+                    {selectedCustomer.profile.Gender === "woman" ||
+                    selectedCustomer.profile.Gender === "man" ? (
+                      <Flex gap={4} mt={5}>
+                        <Center>
+                          {selectedCustomer.profile.Gender === "woman" ? (
+                            <Image
+                              src="./icons/customer/women-gen.svg"
+                              boxSize={"20px"}
+                              alt=""
+                            />
+                          ) : (
+                            <Image
+                              src="./icons/customer/men-gen.svg"
+                              boxSize={"20px"}
+                              alt=""
+                            />
+                          )}
+                        </Center>
+                        <Text>{selectedCustomer.profile.Gender}</Text>
+                      </Flex>
+                    ) : null}
                     <Flex gap={3} mt={5}>
                       <img src="./icons/customer/location.svg" alt="" />
                       <Text> {selectedCustomer.profile.Address} </Text>
