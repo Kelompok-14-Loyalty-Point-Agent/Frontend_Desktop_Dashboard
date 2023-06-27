@@ -75,7 +75,7 @@ const DashboardHome = () => {
                         <img src="./icons/dashboard/coin1.svg" alt="" />
                         <Text
                           fontSize={
-                            String(customer.profile.Point).length > 5 ? 19 : 24
+                            String(customer.profile.Point).length > 5 ? 14 : 24
                           }
                           as={"b"}
                           color={"#2DB5AB"}

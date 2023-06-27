@@ -128,10 +128,10 @@ const CustomerData = () => {
       phone: selectedCustomer.Phone,
     },
     validationSchema: Yup.object({
-      email: Yup.string().email("Invalid email address").required("Required"),
+      email: Yup.string().email("Invalid email address"),
       phone: Yup.string()
         .required("Required")
-        .max(13, "Maximum 12 characters")
+        .max(13, "Maximum 13 characters")
         .matches(/^[0-9]+$/, "Invalid phone number")
         .min(12, "Minimum 12 characters"),
     }),
@@ -190,9 +190,9 @@ const CustomerData = () => {
                       key={index}
                     >
                       <Flex gap={10}>
-                        {customer.profile.URL ? (
+                        {customer?.profile?.URL ? (
                           <Image
-                            src={customer.profile.URL}
+                            src={`https://3.0.59.152.nip.io/images/url/${customer?.profile?.URL}`}
                             alt=""
                             borderRadius="50%"
                             width={"102px"}
@@ -218,7 +218,7 @@ const CustomerData = () => {
                                 : "black"
                             }
                           >
-                            {customer.name}
+                            {customer?.name}
                           </Text>
                           <Text
                             color={
@@ -235,7 +235,7 @@ const CustomerData = () => {
                             color={"#2DB5AB"}
                             fontFamily={"heading"}
                           >
-                            {customer.profile.TransactionMade}x
+                            {customer?.profile?.TransactionMade}x
                           </Text>
                         </Flex>
                         <Flex flexDirection={"column"}>
@@ -263,15 +263,15 @@ const CustomerData = () => {
                             <img src="./icons/dashboard/coin1.svg" alt="" />
                             <Text
                               fontSize={
-                                String(customer.profile.Point).length > 5
-                                  ? 19
+                                String(customer?.profile?.Point).length > 5
+                                  ? 16
                                   : 24
                               }
                               as={"b"}
                               color={"#2DB5AB"}
                               fontFamily={"heading"}
                             >
-                              {customer.profile.Point}
+                              {customer?.profile?.Point}
                             </Text>
                           </Flex>
                         </Flex>
@@ -328,9 +328,9 @@ const CustomerData = () => {
                     <Center>
                       <Box>
                         <Center mt={2}>
-                          {selectedCustomer.profile.URL ? (
+                          {selectedCustomer?.profile?.URL ? (
                             <Image
-                              src={selectedCustomer.profile.URL}
+                              src={selectedCustomer?.profile?.URL}
                               alt=""
                               borderRadius="50%"
                               width={"102px"}
@@ -354,12 +354,12 @@ const CustomerData = () => {
                             fontFamily={"heading"}
                             opacity={"30%"}
                           >
-                            {selectedCustomer.name}
+                            {selectedCustomer?.name}
                           </Text>
                         </Center>
                         <Center>
                           <Text fontSize={16} color={"#D09635"}>
-                            {selectedCustomer.profile.Member}
+                            {selectedCustomer?.profile?.Member}
                           </Text>
                         </Center>
                       </Box>
@@ -369,13 +369,13 @@ const CustomerData = () => {
                     <Box color={"#ECECEC"}>
                       <Flex gap={3} opacity={"30%"}>
                         <img src="./icons/customer/calender.svg" alt="" />
-                        <Text>{selectedCustomer.profile.Age} years old</Text>
+                        <Text>{selectedCustomer?.profile?.Age} years old</Text>
                       </Flex>
-                      {selectedCustomer.profile.Gender === "woman" ||
-                      selectedCustomer.profile.Gender === "man" ? (
+                      {selectedCustomer?.profile?.Gender === "woman" ||
+                      selectedCustomer?.profile?.Gender === "man" ? (
                         <Flex gap={4} mt={5} opacity={"30%"}>
                           <Center>
-                            {selectedCustomer.profile.Gender === "woman" ? (
+                            {selectedCustomer?.profile?.Gender === "woman" ? (
                               <Image
                                 src="./icons/customer/women-gen.svg"
                                 boxSize={"20px"}
@@ -389,20 +389,24 @@ const CustomerData = () => {
                               />
                             )}
                           </Center>
-                          <Text>{selectedCustomer.profile.Gender}</Text>
+                          <Text>{selectedCustomer?.profile?.Gender}</Text>
                         </Flex>
                       ) : null}
 
                       <Flex gap={3} mt={5} opacity={"30%"}>
                         <img src="./icons/customer/location.svg" alt="" />
-                        <Text>{selectedCustomer.profile.Address}</Text>
+                        {selectedCustomer?.profile?.Address ? (
+                          <Text>{selectedCustomer?.profile?.Address}</Text>
+                        ) : (
+                          <Text>-</Text>
+                        )}
                       </Flex>
                       <Flex gap={3} mt={5}>
                         <img src="./icons/customer/email.svg" alt="" />
                         <Input
                           id="email_customerData"
                           name="email"
-                          defaultValue={selectedCustomer.email}
+                          defaultValue={selectedCustomer?.email}
                           value={formik.values.email}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -416,7 +420,7 @@ const CustomerData = () => {
                         <Input
                           id="email_customerData"
                           name="phone"
-                          defaultValue={selectedCustomer.profile.Phone}
+                          defaultValue={selectedCustomer?.profile.Phone}
                           value={formik.values.phone}
                           onChange={formik.handleChange}
                           onBlur={formik.handleBlur}
@@ -437,42 +441,51 @@ const CustomerData = () => {
                           Recent Activities
                         </Text>
                       </Center>
-                      <Flex color={"#ECECEC"} mt={5} gap={5}>
-                        <Text>{selectedCustomer.date1}</Text>
-                        <Text>{selectedCustomer.activity1}</Text>
-                      </Flex>
-                      <Flex color={"#ECECEC"} mt={5} gap={5}>
-                        <Text>{selectedCustomer.date2}</Text>
-                        <Text>{selectedCustomer.activity2}</Text>
-                      </Flex>
-                      <Flex color={"#ECECEC"} mt={5} gap={5}>
-                        <Text>{selectedCustomer.date3}</Text>
-                        <Text>{selectedCustomer.activity3}</Text>
-                      </Flex>
-                      {showActivities && (
-                        <>
-                          <Flex color={"#ECECEC"} mt={5} gap={5}>
-                            <Text>{selectedCustomer.date4}</Text>
-                            <Text>{selectedCustomer.activity4}</Text>
-                          </Flex>
-                          <Flex color={"#ECECEC"} mt={5} gap={5}>
-                            <Text>{selectedCustomer.date5}</Text>
-                            <Text>{selectedCustomer.activity5}</Text>
-                          </Flex>
-                        </>
+                      {transactionData?.length > 0 ? (
+                        transactionData
+                          .slice(0, displayedActivities)
+                          .map((transaction) => (
+                            <Flex
+                              key={transaction.id}
+                              color={"#ECECEC"}
+                              mt={1}
+                              gap={5}
+                            >
+                              <Text fontFamily={"body"}>
+                                {transaction.created_at.substring(0, 10)}
+                              </Text>
+                              <Text fontFamily={"body"}>
+                                {transaction.description}
+                              </Text>
+                            </Flex>
+                          ))
+                      ) : (
+                        <Flex color={"#ECECEC"} mt={1}>
+                          <Text fontFamily={"body"}>
+                            No activities recently
+                          </Text>
+                        </Flex>
                       )}
-                      <Center mt={5}>
-                        <Text
-                          fontSize={12}
-                          fontFamily={"body"}
-                          color={"#57DAC5"}
-                          cursor="pointer"
-                          onClick={() => setShowActivities(!showActivities)}
-                          style={{ pointerEvents: "none" }}
-                        >
-                          {showActivities ? "See Less" : "See More"}
-                        </Text>
-                      </Center>
+                      {transactionData.length > 3 && (
+                        <Center mt={5}>
+                          <Text
+                            fontSize={12}
+                            fontFamily={"body"}
+                            color={"#57DAC5"}
+                            cursor="pointer"
+                            id="showIndicator"
+                            onClick={() => {
+                              const newDisplayedActivities = showActivities
+                                ? fewerActivities
+                                : moreActivities;
+                              setDisplayedActivities(newDisplayedActivities);
+                              setShowActivities(!showActivities);
+                            }}
+                          >
+                            {showActivities ? "See Less" : "See More"}
+                          </Text>
+                        </Center>
+                      )}
                     </Box>
                   </Flex>
                   <Flex justifyContent={"center"} gap={10} mt={20}>
@@ -489,7 +502,7 @@ const CustomerData = () => {
                           color={"#2DB5AB"}
                           fontFamily={"heading"}
                         >
-                          {selectedCustomer.profile.TransactionMade}x
+                          {selectedCustomer?.profile?.TransactionMade}x
                         </Text>
                       </Center>
                       <Center>
@@ -504,7 +517,7 @@ const CustomerData = () => {
                           color={"#2DB5AB"}
                           fontFamily={"heading"}
                         >
-                          {selectedCustomer.profile.Point}
+                          {selectedCustomer?.profile?.Point}
                         </Text>
                       </Center>
                     </Box>
@@ -521,7 +534,7 @@ const CustomerData = () => {
                           color={"#2DB5AB"}
                           fontFamily={"heading"}
                         >
-                          {selectedCustomer.profile.MonthlyTransaction}x
+                          {selectedCustomer?.profile?.MonthlyTransaction}x
                         </Text>
                       </Center>
                       <Center>
@@ -536,7 +549,7 @@ const CustomerData = () => {
                           color={"#2DB5AB"}
                           fontFamily={"heading"}
                         >
-                          {selectedCustomer.profile.TotalRedeem}x
+                          {selectedCustomer?.profile?.TotalRedeem}x
                         </Text>
                       </Center>
                     </Box>
@@ -620,7 +633,7 @@ const CustomerData = () => {
                                 : "black"
                             }
                           >
-                            {customer.name}
+                            {customer?.name}
                           </Text>
                           <Text
                             color={
@@ -637,7 +650,7 @@ const CustomerData = () => {
                             color={"#2DB5AB"}
                             fontFamily={"heading"}
                           >
-                            {customer.profile.TransactionMade}x
+                            {customer?.profile?.TransactionMade}x
                           </Text>
                         </Flex>
                         <Flex flexDirection={"column"}>
@@ -665,15 +678,15 @@ const CustomerData = () => {
                             <img src="./icons/dashboard/coin1.svg" alt="" />
                             <Text
                               fontSize={
-                                String(customer.profile.Point).length > 5
-                                  ? 19
+                                String(customer?.profile?.Point).length > 5
+                                  ? 15
                                   : 24
                               }
                               as={"b"}
                               color={"#2DB5AB"}
                               fontFamily={"heading"}
                             >
-                              {customer.profile.Point}
+                              {customer?.profile?.Point}
                             </Text>
                           </Flex>
                         </Flex>
@@ -736,7 +749,7 @@ const CustomerData = () => {
                   <Center>
                     <Box>
                       <Center mt={2}>
-                        {selectedCustomer.profile.URL ? (
+                        {selectedCustomer?.profile?.URL ? (
                           <Image
                             src={`https://3.0.59.152.nip.io/images/url/${selectedCustomer.profile.URL}`}
                             alt=""
@@ -761,12 +774,12 @@ const CustomerData = () => {
                           color={"#ECECEC"}
                           fontFamily={"heading"}
                         >
-                          {selectedCustomer.name}
+                          {selectedCustomer?.name}
                         </Text>
                       </Center>
                       <Center>
                         <Text fontSize={16} color={"#D09635"}>
-                          {selectedCustomer.profile.Member}
+                          {selectedCustomer?.profile?.Member}
                         </Text>
                       </Center>
                     </Box>
@@ -778,11 +791,11 @@ const CustomerData = () => {
                       <img src="./icons/customer/calender.svg" alt="" />
                       <Text>{selectedCustomer.profile.Age} years old</Text>
                     </Flex>
-                    {selectedCustomer.profile.Gender === "woman" ||
-                    selectedCustomer.profile.Gender === "man" ? (
+                    {selectedCustomer?.profile?.Gender === "woman" ||
+                    selectedCustomer?.profile?.Gender === "man" ? (
                       <Flex gap={4} mt={5}>
                         <Center>
-                          {selectedCustomer.profile.Gender === "woman" ? (
+                          {selectedCustomer?.profile?.Gender === "woman" ? (
                             <Image
                               src="./icons/customer/women-gen.svg"
                               boxSize={"20px"}
@@ -796,20 +809,28 @@ const CustomerData = () => {
                             />
                           )}
                         </Center>
-                        <Text>{selectedCustomer.profile.Gender}</Text>
+                        <Text>{selectedCustomer?.profile?.Gender}</Text>
                       </Flex>
                     ) : null}
                     <Flex gap={3} mt={5}>
                       <img src="./icons/customer/location.svg" alt="" />
-                      <Text> {selectedCustomer.profile.Address} </Text>
+                      {selectedCustomer?.profile?.Address ? (
+                        <Text>{selectedCustomer?.profile?.Address}</Text>
+                      ) : (
+                        <Text>-</Text>
+                      )}
                     </Flex>
                     <Flex gap={3} mt={5}>
                       <img src="./icons/customer/email.svg" alt="" />
-                      <Text>{selectedCustomer.email}</Text>
+                      <Text>{selectedCustomer?.email}</Text>
                     </Flex>
                     <Flex gap={3} mt={5}>
                       <img src="./icons/customer/phone.svg" alt="" />
-                      <Text>{selectedCustomer.profile.Phone}</Text>
+                      {selectedCustomer?.profile?.Phone ? (
+                        <Text>{selectedCustomer?.profile?.Phone}</Text>
+                      ) : (
+                        <Text>-</Text>
+                      )}
                     </Flex>
                   </Box>
                   <Box>
@@ -823,7 +844,7 @@ const CustomerData = () => {
                         Recent Activities
                       </Text>
                     </Center>
-                    {transactionData.length > 0 ? (
+                    {transactionData?.length > 0 ? (
                       transactionData
                         .slice(0, displayedActivities)
                         .map((transaction) => (
@@ -882,7 +903,7 @@ const CustomerData = () => {
                         color={"#2DB5AB"}
                         fontFamily={"heading"}
                       >
-                        {selectedCustomer.profile.TransactionMade}
+                        {selectedCustomer?.profile?.TransactionMade}
                       </Text>
                     </Center>
                     <Center>
@@ -897,7 +918,7 @@ const CustomerData = () => {
                         color={"#2DB5AB"}
                         fontFamily={"heading"}
                       >
-                        {selectedCustomer.profile.Point}
+                        {selectedCustomer?.profile?.Point}
                       </Text>
                     </Center>
                   </Box>
@@ -914,7 +935,7 @@ const CustomerData = () => {
                         color={"#2DB5AB"}
                         fontFamily={"heading"}
                       >
-                        {selectedCustomer.profile.MonthlyTransaction}x
+                        {selectedCustomer?.profile?.MonthlyTransaction}x
                       </Text>
                     </Center>
                     <Center>
@@ -929,7 +950,7 @@ const CustomerData = () => {
                         color={"#2DB5AB"}
                         fontFamily={"heading"}
                       >
-                        {selectedCustomer.profile.TotalRedeem}x
+                        {selectedCustomer?.profile?.TotalRedeem}x
                       </Text>
                     </Center>
                   </Box>
