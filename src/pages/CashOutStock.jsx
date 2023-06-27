@@ -86,7 +86,7 @@ const CashOutStock = () => {
               >
                 {customer.profile.URL ? (
                   <Image
-                    src={customer.profile.URL}
+                    src={`https://3.0.59.152.nip.io/images/url/${customer.profile.URL}`}
                     alt=""
                     borderRadius="50%"
                     width={"102px"}
@@ -144,7 +144,7 @@ const CashOutStock = () => {
                       <Center mt={2}>
                         {activeCustomer.profile.URL ? (
                           <Image
-                            src={activeCustomer.profile.URL}
+                            src={`https://3.0.59.152.nip.io/images/url/${activeCustomer.profile.URL}`}
                             alt=""
                             borderRadius="50%"
                             width={"102px"}
