@@ -37,8 +37,6 @@ const CustomerTransactionDetail = () => {
 	const navigate = useNavigate();
 	const { state } = useLocation();
 
-	console.log(state);
-
 	useEffect(() => {
 		dispatch(get_transactionDetail({ id: params.id }));
 
@@ -128,7 +126,6 @@ const CustomerTransactionDetail = () => {
 
 	const renderSuccessUpdatePoint = (amount, point) => {
 		const countAmount_point = amount * 0.001;
-		console.log(countAmount_point);
 		if (countAmount_point !== point) {
 			return setAmountError(true);
 		} else {
@@ -187,8 +184,8 @@ const CustomerTransactionDetail = () => {
 								<Flex alignItems='center'>
 									<Avatar
 										size='lg'
-										name={transactionDetail?.data.user_name}
-										src={transactionDetail?.data.url}
+										name={transactionDetail?.data?.user_name}
+										src={transactionDetail?.data?.url}
 									/>
 									<SimpleGrid
 										columns={6}
@@ -197,32 +194,32 @@ const CustomerTransactionDetail = () => {
 										w='100%'>
 										<Box ms={6} textAlign='start'>
 											<Heading size='sm' mb={1}>
-												{transactionDetail?.data.user_name}
+												{transactionDetail?.data?.user_name}
 											</Heading>
 											<Text fontSize={14}>
-												{transactionDetail?.data.member} member
+												{transactionDetail?.data?.member} member
 											</Text>
 										</Box>
 										<Text as='b' fontSize={14} fontFamily='heading'>
-											{transactionDetail?.data.description}
+											{transactionDetail?.data?.description}
 										</Text>
 										<Center>
 											<Box bg='white' p={2} rounded={'xl'} w='56px'>
 												{renderPaymentMethod(
-													transactionDetail?.data.payment_method
+													transactionDetail?.data?.payment_method
 												)}
 											</Box>
 										</Center>
 										<Text as='b' fontSize={14} fontFamily='heading'>
-											{formatNumber(transactionDetail?.data.price)}
+											{formatNumber(transactionDetail?.data?.price)}
 										</Text>
 										<Text as='b' fontSize={14} fontFamily='heading'>
 											{formatDateTime(
-												new Date(transactionDetail?.data.created_at)
+												new Date(transactionDetail?.data?.created_at)
 											)}
 										</Text>
 										<Text as='b' fontSize={14} fontFamily='heading'>
-											+{transactionDetail?.data.point}
+											+{transactionDetail?.data?.point}
 										</Text>
 									</SimpleGrid>
 								</Flex>
