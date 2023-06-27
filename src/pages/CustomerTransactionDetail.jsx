@@ -16,12 +16,12 @@ import {
 } from '@chakra-ui/react';
 import Sidebar from '../components/Sidebar';
 import NavbarDashboard from '../components/NavbarDashboard';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useTransactionDetailSelector } from '../config/redux/getCustomerTransactionDetail/getCustomerTransactionDetailSelector';
 import { useEffect, useState } from 'react';
 import { get_transactionDetail } from '../config/redux/getCustomerTransactionDetail/getCustomerTransactionDetailThunk';
-import { formatDateTime, formatNumber } from '../utils/HelperMethod';
+import { formatDateTime } from '../utils/HelperMethod';
 import { useUpdatePointType } from '../config/redux/updatePoint/updatePointSelector';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -211,7 +211,7 @@ const CustomerTransactionDetail = () => {
 											</Box>
 										</Center>
 										<Text as='b' fontSize={14} fontFamily='heading'>
-											{formatNumber(transactionDetail?.data?.price)}
+											{transactionDetail?.data?.price}
 										</Text>
 										<Text as='b' fontSize={14} fontFamily='heading'>
 											{formatDateTime(
