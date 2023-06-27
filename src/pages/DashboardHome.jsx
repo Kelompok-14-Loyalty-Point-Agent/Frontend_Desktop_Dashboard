@@ -39,7 +39,7 @@ const DashboardHome = () => {
                   <Flex gap={20}>
                     {customer.profile.URL ? (
                       <Image
-                        src={customer.profile.URL}
+                        src={`https://3.0.59.152.nip.io/images/url/${customer.profile.URL}`}
                         alt=""
                         borderRadius="full"
                         boxSize={"120px"}
